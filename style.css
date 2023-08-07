@@ -1,0 +1,418 @@
+body {
+  display: grid;
+  background-color: rgb(0, 0, 35) ;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  justify-items: center;
+}
+
+* {
+  font-family: 'Tektur', cursive;
+}
+
+button {
+  padding: 10px;
+  border-radius: 5px;
+  width: 7ch;
+  margin: 3px;
+  font-size: 30px;
+  background-color: #f0f0f0;
+}
+
+
+.hide {
+  display: none !important
+}
+  
+.show {
+  display: grid !important
+}
+
+
+
+/********************************************************************************************************************************/
+
+.titleDiv {
+  display: grid;
+  width: fit-content;
+  margin: 0px auto;
+  padding: 0px;
+  color: white;
+  text-align: center;
+  z-index: 1000;
+}
+
+.titleDiv a {
+  margin: 0 auto;
+  font-family: 'Bungee Spice', cursive;
+  font-size: 3em ;
+}
+  
+
+#board {
+  position: relative;
+  width: 320px;
+  height: 465px;
+  margin: 30px;
+  background-color: green;
+  justify-content: center;
+  justify-items: center;
+  justify-self: center;
+  margin: 0 auto;
+  border-radius: 20px;
+  border: 10px ridge burlywood;
+}
+
+
+.startGame {
+  display: grid;
+  position: absolute;
+  padding: 20px;
+  height: auto;
+  width: auto;
+  align-self: center;
+  justify-self: center;
+  z-index: 999999;
+  border-radius: 50px;
+}
+
+/********************************************************************************************************************************/
+#topBoard {
+  display: grid;
+  grid-template-columns: 2fr 4fr;
+  height: 60px;
+  width: 320px;
+  margin-bottom: 10px;
+  margin-top: 5px;
+}
+
+#deck{
+  position: relative;
+  margin-left: 5px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-content: center;
+  align-items: center;
+}
+
+#drawnCard{
+  position: relative;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  position: relative;
+  margin-left: 2px;
+}
+
+#drawBtn {
+  position: absolute;
+  align-self: center;
+  font-size: 10px;
+  padding: 5px;
+}
+
+
+#foundation {
+  display: flex;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  align-items: center;
+  justify-content:space-around;
+}
+
+
+#tableau {
+  display: grid;
+  position: relative;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  height: 390px;
+  align-self: start;
+  align-content: start;
+  justify-content: center;
+  margin-bottom: 0;
+}
+
+.cardStack {
+  justify-content: center;
+  position: relative;
+  display: grid;
+  align-items: top;
+  align-content: top;
+  width: 1fr;
+  height: 390px;
+  justify-items: center;
+  border-radius: 20px;
+}
+
+
+
+#userInterface {
+  display: grid;
+  position: absolute;
+  width: 500px;
+  height: fit-content;
+  align-self: center;
+  justify-self: center;
+  opacity: 0; 
+}
+
+#playerOptions {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  justify-self: center;
+}
+
+/**
+button:hover{
+  animation: glowing3 1200ms infinite;
+  border: 1px solid white;
+}
+*/
+
+/********************************************************************************************************************************/
+
+.cardPlaceHolder {
+  margin: 0px;
+  width: 36px;
+  height: 54px;
+  border-radius: 16px;
+  padding: 0px;
+  border: 3px solid white;
+  text-align: center; 
+  justify-self: center;
+}
+
+.cardDiv {
+  position: absolute;
+  display: grid;
+  text-align: center;
+  background-color: transparent;
+  z-index: 1000;
+  border-radius: 16px;
+}
+
+.card {
+  display: grid;
+  position: relative;
+  background-color: #ddd;
+  border-radius: 16px;
+  padding: 0px;
+  margin: 0;
+  text-align: center;
+  bottom: 0; 
+  pointer-events: none;
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+  
+}
+
+/**
+.cardDiv:hover {
+  background-color: lightblue;
+  animation: glowing4 1500ms infinite;
+}
+*/
+
+.frontCard {
+  position: relative;
+  display: grid;
+  justify-self: center;
+  align-self: center;
+  border-radius: 16px;
+  border: 3px solid #ddd;
+  pointer-events: none;
+}
+
+.top {
+  justify-self: left;
+}
+  
+.center {
+  justify-self: center;
+  align-self : center;
+}
+  
+.bottom {
+  justify-self: right;
+  bottom: 0;
+}
+
+.top, .center, .bottom {
+  position: absolute;
+  background-color: green;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+}
+
+.labelFrame {
+  position: relative;
+  display: grid;
+  justify-self: center;
+  align-self: center;
+  border-radius: 16px;
+  margin: 0px;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; 
+}
+
+.labelDiv {
+  display: grid;
+  margin: 2px;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  justify-content: center;
+  text-align: center;
+  pointer-events: none;
+}
+  
+.cardLabel {
+  align-self: center;
+  text-align: center;
+  font-size: 10px;
+  padding: 5px;
+  pointer-events: none;
+}
+
+
+.backCard {
+  position: relative;
+  display: grid;
+  border-radius: 16px;
+  border: 3px solid #ddd;
+  align-self: center;
+  justify-self: center;
+  background-color: rgb(2,0,36);
+  background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%,     rgba(0,212,255,1) 100%); 
+}
+  
+
+@keyframes rotateY {
+  100% {rotate: y 180deg }
+}
+  
+.rotated {
+  rotate: y 180deg
+}
+  
+.animate {
+  animation: rotateY 1s 1 linear forwards
+}
+
+/********************************************************************************************************************************/
+
+
+
+.message, .turnMessage {
+  position: absolute;
+  display: block;
+  text-align: center;
+  justify-content: center;
+  justify-self: center;
+  align-items: center;
+  align-self: center;
+  background-color: whitesmoke;
+  border-radius: 20px;
+  width: max-content;
+  height: fit-content;
+  font-size: 20px;
+  z-index: 9999;
+
+}
+
+.message {
+  border: 10px ridge #F55C47;
+  padding-bottom: none;
+}
+
+.messageText {
+  padding: 0px 10px;
+}
+
+.message button {
+  border-radius: 0px 0px 10px 10px;
+  background-color: #F55C47;
+}
+
+.turnMessage {
+  border: 10px ridge #47F5A1;
+}
+
+.turnMessageText {
+  padding: 0px 10px;
+}
+
+.matchButton {
+  padding: 10px;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  border: none;
+  margin: 0px;
+  padding: 15px 0px;
+  text-align: center;
+  font-size: 30px;
+}
+
+.matchButton:hover {
+  opacity: 0.5;
+}
+
+.btnDiv button:first-of-type {
+  background-color: #47F5A1;
+  font-size: 30px;
+}
+
+.btnDiv button:last-of-type {
+  background-color: #F55C47;
+  border-radius: 0px 0px 8px 8px;
+  font-size: 30px;
+}
+
+/********************************************************************************************************************************/
+
+@keyframes glowing1 {
+  0% {  box-shadow: 0 0 3px white; }
+  50% {  box-shadow: 0 0 40px yellow; }
+  100% { box-shadow: 0 0 3px white; }
+}
+
+@keyframes glowing2 {
+  0% { background-color: green;}
+  50% { background-color: default; }
+  100% { background-color: green; }
+}
+
+@keyframes glowing3 {
+  0% { background-color: default; box-shadow: 0 0 3px #B20000; }
+  50% { background-color: yellow; box-shadow: 0 0 40px #FF0000; color: black; }
+  100% { background-color: default; box-shadow: 0 0 3px #B20000; }
+}
+
+@keyframes glowing4 {
+  0% { box-shadow: none; color: black;}
+  50% {box-shadow: 0 0 30px white; }
+  100% {box-shadow: none; color: black;  }
+}
+
+
+.flash {
+  animation: glowing1 1500ms infinite;
+}
+
+.flash2 {
+  animation: glowing2 1500ms infinite;
+}
+
+.flash3 {
+  animation: glowing3 1500ms infinite;
+}
+
+.flash4 {
+  animation: glowing4 1500ms infinite;
+}
