@@ -1315,7 +1315,7 @@ function startGameButton() {
   startGameBtn.classList.add('startGame')
   startGameBtn.innerHTML = 'Start New Game?'
   startGameBtn.style.opacity = 0
-  document.body.appendChild(startGameBtn)
+  board.appendChild(startGameBtn)
   playerTurn = false
   
   setTimeout(() => {
