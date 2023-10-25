@@ -53,6 +53,7 @@ let foundationSpot = ''
 let targetTop
 let targetRight
 
+let clicked = false
 let clickable = false
 let playerTurn = true
 
