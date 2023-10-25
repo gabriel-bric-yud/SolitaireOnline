@@ -5,6 +5,7 @@ body {
   width: 100%;
   justify-content: center;
   justify-items: center;
+  margin: 0 auto;
 }
 
 * {
@@ -29,6 +30,11 @@ button {
   display: grid !important
 }
 
+button:hover {
+  background-color: #ddd;
+  animation: glowing3 1200ms infinite;
+}
+
 
 
 /********************************************************************************************************************************/
@@ -43,10 +49,24 @@ button {
   z-index: 1000;
 }
 
-.titleDiv a {
+.titleDiv span {
   margin: 0 auto;
   font-family: 'Bungee Spice', cursive;
   font-size: 3em ;
+  display: inline-block;
+  transition: transform .5s;
+  /**transform-style: preserve-3d;*/
+}
+
+.titleDiv:hover span:nth-of-type(odd){
+  text-shadow: 0px 0px 20px rgba(225, 9, 9, 1);
+  transform: rotate(9deg) rotateY(360deg);
+  
+}
+
+.titleDiv:hover span:nth-of-type(even){
+  text-shadow: 0px 0px 20px rgba(103, 7, 199, 0.75);
+  transform: rotate(-9deg) rotateY(-360deg);
 }
   
 
@@ -77,6 +97,19 @@ button {
   border-radius: 50px;
 }
 
+#reset {
+  position: absolute;
+  align-self: end;
+  justify-self: center;
+  margin: 20px;
+  font-size: 10px;
+  width: fit-content;
+  background-color: #F55C47;
+  color: azure;
+  text-align: center;
+  text-shadow: 0 0 12px black;
+}
+
 /********************************************************************************************************************************/
 #topBoard {
   display: grid;
@@ -89,7 +122,7 @@ button {
 
 #deck{
   position: relative;
-  margin-left: 5px;
+  margin: 5px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-content: center;
@@ -107,9 +140,10 @@ button {
 
 #drawBtn {
   position: absolute;
-  align-self: center;
+  left: -1px;
   font-size: 10px;
   padding: 5px;
+  z-index: 9999;
 }
 
 
@@ -119,6 +153,21 @@ button {
   align-items: center;
   justify-content:space-around;
 }
+
+#foundation1, #foundation2, #foundation3, #foundation4 {
+  text-shadow: 0px 0px 4px rgb(225, 218, 9);
+  align-self: center;
+  justify-self: center;
+  align-items: center;
+  font-size: 2em;
+  pointer-events: none;
+}
+
+.hearts, .diamonds {
+  color: red;
+}
+
+
 
 
 #tableau {
@@ -144,25 +193,6 @@ button {
   border-radius: 20px;
 }
 
-
-
-#userInterface {
-  display: grid;
-  position: absolute;
-  width: 500px;
-  height: fit-content;
-  align-self: center;
-  justify-self: center;
-  opacity: 0; 
-}
-
-#playerOptions {
-  display: flex;
-  justify-items: center;
-  align-items: center;
-  justify-self: center;
-}
-
 /**
 button:hover{
   animation: glowing3 1200ms infinite;
@@ -173,6 +203,8 @@ button:hover{
 /********************************************************************************************************************************/
 
 .cardPlaceHolder {
+  display: grid;
+  position: relative;
   margin: 0px;
   width: 36px;
   height: 54px;
@@ -181,6 +213,8 @@ button:hover{
   border: 3px solid white;
   text-align: center; 
   justify-self: center;
+  align-content: center;
+  align-items: center;
 }
 
 .cardDiv {
@@ -188,6 +222,8 @@ button:hover{
   display: grid;
   text-align: center;
   background-color: transparent;
+  justify-self: center;
+  align-self: center;
   z-index: 1000;
   border-radius: 16px;
 }
@@ -195,15 +231,16 @@ button:hover{
 .card {
   display: grid;
   position: relative;
-  background-color: #ddd;
+  background-color: azure;
   border-radius: 16px;
   padding: 0px;
   margin: 0;
   text-align: center;
   bottom: 0; 
   pointer-events: none;
+  transition: transform 1s;
+  transform-style: preserve-3d;
   box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
-  
 }
 
 /**
@@ -219,9 +256,49 @@ button:hover{
   justify-self: center;
   align-self: center;
   border-radius: 16px;
-  border: 3px solid #ddd;
+  border: 3px solid azure;
+  pointer-events: none;
+  transform: rotateY(180deg);
+}
+
+
+
+.backCard {
+  position: relative;
+  display: grid;
+  border-radius: 16px;
+  border: 3px solid azure;
+  align-self: center;
+  justify-self: center;
+  background-color: rgb(2,0,36);
+  background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%,     rgba(0,212,255,1) 100%); 
   pointer-events: none;
 }
+  
+
+@keyframes rotateY {
+  100% {rotate: y 180deg }
+}
+  
+.rotated {
+  rotate: y 180deg
+}
+  
+.animate {
+  animation: rotateY 1s 1 linear forwards
+}
+
+.flip {
+  transform: rotateY(180deg);
+}
+
+
+.noShadow {
+  box-shadow: none;
+}
+
+/***********************************************************************************************************/
+
 
 .top {
   justify-self: left;
@@ -239,7 +316,8 @@ button:hover{
 
 .top, .center, .bottom {
   position: absolute;
-  background-color: green;
+  border: 1px solid black;
+  background-color: #ddd;
   justify-content: center;
   align-content: center;
   text-align: center;
@@ -277,32 +355,9 @@ button:hover{
   font-size: 10px;
   padding: 5px;
   pointer-events: none;
+
 }
 
-
-.backCard {
-  position: relative;
-  display: grid;
-  border-radius: 16px;
-  border: 3px solid #ddd;
-  align-self: center;
-  justify-self: center;
-  background-color: rgb(2,0,36);
-  background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%,     rgba(0,212,255,1) 100%); 
-}
-  
-
-@keyframes rotateY {
-  100% {rotate: y 180deg }
-}
-  
-.rotated {
-  rotate: y 180deg
-}
-  
-.animate {
-  animation: rotateY 1s 1 linear forwards
-}
 
 /********************************************************************************************************************************/
 
@@ -396,7 +451,7 @@ button:hover{
 
 @keyframes glowing4 {
   0% { box-shadow: none; color: black;}
-  50% {box-shadow: 0 0 30px white; }
+  50% {box-shadow: 0 0 15px white; }
   100% {box-shadow: none; color: black;  }
 }
 
