@@ -72,6 +72,7 @@ button:hover {
 
 #board {
   position: relative;
+  displayy: grid;
   width: 320px;
   height: 465px;
   margin: 30px;
