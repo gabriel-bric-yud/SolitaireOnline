@@ -76,20 +76,19 @@ button:hover {
   
 
 #board {
-  position: absolute;
-  top: 6ch;
+  position: relative;
+  display: grid;
   width: 320px;
   height: 465px;
   background-color: green;
-  justify-content: center;
-  justify-items: center;
-  justify-self: center;
+  margin: 0 auto;
   border-radius: 20px;
   border: 10px ridge burlywood;
 }
 
 
 .startGame {
+  display: grid;
   position: absolute;
   padding: 20px;
   height: 4ch;
@@ -101,11 +100,8 @@ button:hover {
 }
 
 #reset {
-  position: absolute;
-  align-self: end;
-  justify-self: center;
+  display: grid;
   font-size: 10px;
-  bottom: 5ch;
   width: fit-content;
   background-color: #F55C47;
   color: azure;
@@ -193,6 +189,7 @@ button:hover {
   height: 390px;
   justify-items: center;
   border-radius: 20px;
+  margin: 1px;
 }
 
 /**
