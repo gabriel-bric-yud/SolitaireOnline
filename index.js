@@ -1488,7 +1488,7 @@ screenType.style.color = 'white'
 screenType.style.position = 'absolute'
 screenType.innerHTML = screen.orientation.type
 
-screen.orientation.lock('portait-primary')
+screen.orientation.lock('portrait-primary')
 .then(() => {
   screenType.innerHTML = 'screen locked in ' + screen.orientation.type
 })
