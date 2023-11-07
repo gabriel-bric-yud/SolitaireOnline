@@ -1243,12 +1243,6 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
 
     currentDivArray = getCurrentArray2(dragTarget)[1]
     
-    if (currentDivArray != drawnCardsDivArray) {
-      for (let y = currentDivArray.indexOf(dragTarget.querySelector('.card')) + 1; y < currentDivArray.length; y++) {
-
-
-      }
-    }
   })
   
   elem.addEventListener('touchend', (e) => { 
@@ -1312,6 +1306,8 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
   
   document.addEventListener('touchmove', (e) => {
     if (clicked == true) {
+      e.preventDefault()
+      e.stopPropagation()
       dragTarget.style.left = (e.touches[0].clientX + offSet[0]) + 'px'
       dragTarget.style.top = (e.touches[0].clientY+ offSet[1]) + 'px' 
       currentTouch = {
@@ -1332,7 +1328,7 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
           cardDiv.parentNode.style.left = (e.touches[0].clientX + offSetExtra[0]) + 'px'
           cardDiv.parentNode.style.top = (e.touches[0].clientY+ offSetExtra[1]) + 'px' 
         }
-      }
+      } 
 
 
       foundationSpots.forEach(spot => {
@@ -1344,7 +1340,7 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
       })
     } 
 
-  })
+  }, false)
 }
 
 function checkWin() {
