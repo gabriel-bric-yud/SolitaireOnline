@@ -1249,6 +1249,7 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
 
       }
     }
+    e.stopPropagation()
   })
   
   elem.addEventListener('touchend', (e) => { 
