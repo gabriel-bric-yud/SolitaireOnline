@@ -585,9 +585,8 @@ button {
 .noLandscape {
   transform: rotate(-90deg) !important;
   transform-origin: left top !important;
-  position: absolute;
-  width: 80vh !important;
-  height: 80% !important;
+  width: 75vh !important;
+  height: 100%;
   overflow: hidden !important;
   position: absolute !important;
   top: 100% !important;
@@ -629,5 +628,10 @@ button {
 }
 
 .noLandscapeCardStack {
-  width: 13vh !important;
+  width: 11vh !important;
+}
+
+.noLandscapetitleDiv {
+  font-size: 1em;
+  height: 2ch;
 }
