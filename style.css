@@ -569,3 +569,10 @@ button {
   }
   
 }
+
+
+@media (orientation: landscape) {
+  html {
+    transform: rotateZ(90deg);
+  }
+}
