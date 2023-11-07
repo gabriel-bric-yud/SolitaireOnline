@@ -1495,6 +1495,7 @@ screen.orientation.addEventListener("change", (event) => {
     document.querySelectorAll('.cardPlaceHolder').forEach((item) => item.classList.add('noLandscardPlaceHolder'))
     document.querySelectorAll('.cardStack').forEach((item) => item.classList.add('noLandscapeCardStack'))
     document.querySelector('#topBoard').classList.add('noLandscapetopBoard')
+    document.querySelectorAll('span').forEach((item) => item.classList.add('noLandScapetitleDiv'))
     //document.body.classList.add('noLandscape')
     console.log(screen.orientation.type)
   }
@@ -1509,6 +1510,7 @@ screen.orientation.addEventListener("change", (event) => {
     document.querySelectorAll('.cardPlaceHolder').forEach((item) => item.classList.remove('noLandscardPlaceHolder'))
     document.querySelectorAll('.cardStack').forEach((item) => item.classList.remove('noLandscapeCardStack'))
     document.querySelector('#topBoard').classList.remove('noLandscapetopBoard')
+    document.querySelectorAll('span').forEach((item) => item.classList.remove('noLandscapetitleDiv'))
   }
   console.log(`ScreenOrientation change: ${type}, ${angle} degrees.`);
 });
