@@ -1313,6 +1313,7 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
   
   document.addEventListener('touchmove', (e) => {
     if (clicked == true) {
+      e.preventDefault()
       dragTarget.style.left = (e.touches[0].clientX + offSet[0]) + 'px'
       dragTarget.style.top = (e.touches[0].clientY+ offSet[1]) + 'px' 
       currentTouch = {
