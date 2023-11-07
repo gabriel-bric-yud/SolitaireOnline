@@ -1490,9 +1490,10 @@ screenType.innerHTML = screen.orientation.type
 
 screen.orientation.lock('portait-primary')
 .then(() => {
-  screenType.innerHTML = 'screen locked in' + screen.orientation.type
+  screenType.innerHTML = 'screen locked in ' + screen.orientation.type
 })
 .catch((error) => {
+  screenType.innerHTML = `${error}`
   console.log(`${error}`);
 });
 
