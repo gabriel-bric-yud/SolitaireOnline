@@ -10,7 +10,9 @@ body {
 
 * {
   font-family: 'Tektur', cursive;
+  overflow: hidden;
 }
+
 
 button {
   padding: 10px;
