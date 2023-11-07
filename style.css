@@ -585,8 +585,10 @@ button {
 .noLandscape {
   transform: rotate(-90deg) !important;
   transform-origin: left top !important;
-  width: 100vh!important;
-  overflow-x: hidden !important;
+  position: absolute;
+  width: 80vh !important;
+  height: 80% !important;
+  overflow: hidden !important;
   position: absolute !important;
   top: 100% !important;
   left: 0 !important;
@@ -594,11 +596,11 @@ button {
 
 
 .noLandscapeBoard {
-  width: 360px !important;
+  width: 320px !important;
 }
 
 .noLandscapetopBoard {
-  width: 360px !important;
+  width: 320px !important;
 }
 
 .noLandScapecardPlaceHolder {
@@ -607,9 +609,9 @@ button {
 }
 
 .noLandscapelabelDiv {
-  width: 15px !important;
-  height: 15px !important;
-  padding: 4px !important;
+  width: 13px !important;
+  height: 13px !important;
+  padding: 3px !important;
 }
   
 .noLandscapecardLabel {
