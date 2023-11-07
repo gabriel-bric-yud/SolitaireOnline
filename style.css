@@ -632,6 +632,6 @@ button {
 }
 
 .noLandscapetitleDiv {
-  font-size: 1em;
-  height: 2ch;
+  font-size: 2em !important;
+  height: 2ch !important;
 }
