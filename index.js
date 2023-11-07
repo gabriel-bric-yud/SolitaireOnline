@@ -1507,3 +1507,6 @@ resetButton.addEventListener('click', (e) => {
     startGameButton()
   }
 })
+
+
+screen.orientation.lock('natural')
