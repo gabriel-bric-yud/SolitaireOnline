@@ -570,19 +570,3 @@ button {
   
 }
 
-
-@media (orientation: landscape) {
-  html {
-    transform: rotateZ(90deg);
-  }
-  
-  body {
-    display: grid;
-    background-color: rgb(0, 0, 35) ;
-    height: 100%;
-    width: 100%;
-    justify-content: center;
-    justify-items: center;
-    overflow: hidden;
-  }  
-}
