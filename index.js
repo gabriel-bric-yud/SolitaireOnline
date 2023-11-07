@@ -1542,6 +1542,7 @@ resetButton.addEventListener('click', (e) => {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
 screen.orientation.addEventListener("change", (event) => {
   const type = event.target.type;
   const angle = event.target.angle;
@@ -1576,4 +1577,6 @@ screen.orientation.addEventListener("change", (event) => {
   }
   console.log(`ScreenOrientation change: ${type}, ${angle} degrees.`);
 });
+
+*/
 
