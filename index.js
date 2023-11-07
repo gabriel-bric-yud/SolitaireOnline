@@ -463,6 +463,12 @@ function createCard(deckArray, width, height, parent, cardArray, cardDivArray) {
   parent.appendChild(cardDiv)
 
   loadCardRank(deckArray, card, cardArray, cardDivArray)
+  if (negative == true) {
+    document.querySelectorAll('.frontCard').forEach((item) => item.classList.add('noLandscapefrontCard'))
+    document.querySelectorAll('.backCard').forEach((item) => item.classList.add('noLandscapebackCard'))
+    document.querySelectorAll('.labelDiv').forEach((item) => item.classList.add('noLandscapelabelDiv'))
+    document.querySelectorAll('.cardLabel').forEach((item) => item.classList.add('noLandscapecardLabel'))
+  }
 
   //if (deck.length > 0 && drawnCount <= 0) {
     //cardDivArray.push(card)
@@ -1551,7 +1557,7 @@ screen.orientation.addEventListener("change", (event) => {
     document.querySelectorAll('.cardPlaceHolder').forEach((item) => item.classList.add('noLandscapecardPlaceHolder'))
     document.querySelectorAll('.cardStack').forEach((item) => item.classList.add('noLandscapeCardStack'))
     document.querySelector('#topBoard').classList.add('noLandscapetopBoard')
-    document.querySelectorAll('span').forEach((item) => item.classList.add('noLandScapetitleDiv'))
+    document.querySelectorAll('span').forEach((item) => item.classList.add('noLandscapetitleDiv'))
     //document.body.classList.add('noLandscape')
     console.log(screen.orientation.type)
   }
@@ -1570,5 +1576,4 @@ screen.orientation.addEventListener("change", (event) => {
   }
   console.log(`ScreenOrientation change: ${type}, ${angle} degrees.`);
 });
-
 
