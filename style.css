@@ -493,6 +493,16 @@ button {
     height: 60px;
   }
 
+  .labelDiv {
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+  }
+    
+  .cardLabel {
+    font-size: 11px;
+  }
+
 }
 
 
