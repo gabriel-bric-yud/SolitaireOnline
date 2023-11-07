@@ -35,6 +35,8 @@ let foundationSpadesDivArray = []
 let currentDrawnCards = []
 let drawnCardsArray = []
 let drawnCardsDivArray = []
+let currentDivArray
+let extraCardsArray
 let drawnCount = 0
 let dealCount = 0
 
@@ -56,6 +58,7 @@ let targetRight
 let clicked = false
 let clickable = false
 let playerTurn = true
+let extraCards = false
 
 const boardWidth = 252
 const cardWidth = boardWidth/7
@@ -439,10 +442,10 @@ function createCard(deckArray, width, height, parent, cardArray, cardDivArray) {
   backOfCard.classList.add('backCard')
   backOfCard.classList.add('show')
 
-  frontOfCard.style.width = `${width}px`;
-  frontOfCard.style.height = `${height}px`;
-  backOfCard.style.width = `${width}px`;
-  backOfCard.style.height = `${height}px`;
+  //frontOfCard.style.width = `${width}px`;
+  //frontOfCard.style.height = `${height}px`;
+  //backOfCard.style.width = `${width}px`;
+  //backOfCard.style.height = `${height}px`;
   card.classList.add(`c${cardCount}`)
   card.appendChild(frontOfCard)
   card.appendChild(backOfCard)
@@ -507,7 +510,7 @@ function positionCardsBottom(cardDivArray, i) {
   cardDivArray.forEach(elem => {
     if (i > 0) {
       //let position = getComputedStyle(elem.parentNode).left.replace('px', '')   
-      let endPosition1 = (cardHeight/2 * cardDivArray.indexOf(elem))
+      let endPosition1 = (cardHeight/1.6 * cardDivArray.indexOf(elem))
       slideIn(elem.parentNode, endPosition1 + 150, endPosition1, 'top', -10)
     }
     else {
@@ -519,7 +522,7 @@ function positionCardsBottom(cardDivArray, i) {
 
 
 function positionCard(cardDiv, cardDivArray) {
-    let endPosition1 = (cardHeight/2 * cardDivArray.indexOf(cardDiv.querySelector('.card')))
+    let endPosition1 = (cardHeight/1.6 * cardDivArray.indexOf(cardDiv.querySelector('.card')))
     slideIn(cardDiv, endPosition1 + .1, endPosition1, 'top', -.1)
 }
 
@@ -536,7 +539,7 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, cardDivArray, f
     setTimeout(() => {
       fadeIn(newCard, .05, 20)
       if (parent == drawnCard) {
-        slideIn(newCard, 50, 5, 'right', -2.5)
+        slideIn(newCard, 50, 0, 'right', -2.5)
       }
       else {
       positionCardsBottom(cardDivArray, i)
@@ -802,9 +805,9 @@ function changeArrays(elem, elemDiv, stackArray, stackDivArray, num) {
 }
 
 function getCurrentArray(elemDiv, cardArray, cardDivArray) {
-    //console.log('current arrays: ')
-    //console.log(cardArray)
-    //console.log(cardDivArray)
+    console.log('current arrays: ')
+    console.log(cardArray)
+    console.log(cardDivArray)
     switch(elemDiv.dataset.stack) {
       case '1':
         return [stack1Array, stack1DivArray]
@@ -846,6 +849,51 @@ function getCurrentArray(elemDiv, cardArray, cardDivArray) {
         return [cardArray, cardDivArray]
         break;
     }
+}
+
+
+function getCurrentArray2(elemDiv) {
+  switch(elemDiv.parentNode.id) {
+    case 'stack1':
+      return [stack1Array, stack1DivArray]
+      break;
+    case 'stack2':
+      return [stack2Array, stack2DivArray]
+      break;
+    case 'stack3':
+      return [stack3Array, stack3DivArray]
+      break;
+    case 'stack4':
+      return [stack4Array, stack4DivArray]
+      break;
+    case 'stack5':
+      return [stack5Array, stack5DivArray]
+      break;
+    case 'stack6':
+      return [stack6Array, stack6DivArray]
+      break;
+    case 'stack7':
+      return [stack7Array, stack7DivArray]
+      break;
+    case 'clubs':
+      return [foundationClubsArray, foundationClubsDivArray]
+      break;
+    case 'diamonds':
+      return [foundationDiamondsArray, foundationDiamondsDivArray]
+      break; 
+    case 'hearts':
+      return [foundationHeartsArray, foundationHeartsDivArray]
+      break;
+    case 'spades':
+      return [foundationSpadesArray, foundationSpadesDivArray]
+      break;
+    case 'drawnCard':
+      return [drawnCardsArray, drawnCardsDivArray]
+      break;
+    case undefined:
+      return [cardArray, cardDivArray]
+      break;
+  }
 }
 
 
@@ -1192,6 +1240,15 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
     console.log(offSet)
     console.log('dragTarget is:')
     console.log(dragTarget)
+
+    currentDivArray = getCurrentArray2(dragTarget)[1]
+    
+    if (currentDivArray != drawnCardsDivArray) {
+      for (let y = currentDivArray.indexOf(dragTarget.querySelector('.card')) + 1; y < currentDivArray.length; y++) {
+
+
+      }
+    }
   })
   
   elem.addEventListener('touchend', (e) => { 
@@ -1261,15 +1318,31 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
         x : e.changedTouches[0].clientX,
         y : e.changedTouches[0].clientY
       }
-    }
+      let currentDivArray = getCurrentArray2(dragTarget)[1]
+      //console.log(currentDivArray)
+      console.log(dragTarget)
+      console.log(offSet)
+      if (currentDivArray != drawnCardsDivArray) {
+        for (let y = currentDivArray.indexOf(dragTarget.querySelector('.card')) + 1; y < currentDivArray.length; y++) {
 
-    foundationSpots.forEach(spot => {
-      checkHitbox3(dragTarget, currentTouch, spot)
-    })
+          let cardDiv = currentDivArray[y]
+          let offSetExtra = [cardDiv.parentNode.offsetLeft - e.touches[0].clientX, cardDiv.parentNode.offsetTop - e.touches[0].clientY]
+          console.log(cardDiv.parentNode)
+          console.log(offSetExtra)
+          cardDiv.parentNode.style.left = (e.touches[0].clientX + offSetExtra[0]) + 'px'
+          cardDiv.parentNode.style.top = (e.touches[0].clientY+ offSetExtra[1]) + 'px' 
+        }
+      }
 
-    dropSpots.forEach(spot => {
-      checkHitbox3(dragTarget, currentTouch, spot)
-    })
+
+      foundationSpots.forEach(spot => {
+        checkHitbox3(dragTarget, currentTouch, spot)
+      })
+  
+      dropSpots.forEach(spot => {
+        checkHitbox3(dragTarget, currentTouch, spot)
+      })
+    } 
 
   })
 }
@@ -1316,6 +1389,7 @@ function startGameButton() {
   startGameBtn.innerHTML = 'Start New Game?'
   startGameBtn.style.opacity = 0
   board.appendChild(startGameBtn)
+  resetButton.style.display = 'none'
   playerTurn = false
   
   setTimeout(() => {
@@ -1325,6 +1399,7 @@ function startGameButton() {
     startGameBtn.addEventListener('click', (e) => {
       startGame()
       startGameBtn.remove()
+      resetButton.style.display = 'grid'
     })
 
   }, 600 )
@@ -1438,11 +1513,3 @@ resetButton.addEventListener('click', (e) => {
     startGameButton()
   }
 })
-
-
-
-// heart = &#9829
-// diamond = &#9830
-// spade = &#9824
-// club = &#9827 !!
-
