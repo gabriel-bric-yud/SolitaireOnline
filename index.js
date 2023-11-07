@@ -1481,22 +1481,6 @@ function reset() {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-screenType = document.createElement('div')
-document.body.appendChild(screenType)
-screenType.style.zIndex = '9999999'
-screenType.style.color = 'white'
-screenType.style.position = 'absolute'
-screenType.innerHTML = screen.orientation.type
-
-screen.orientation.lock('portrait-primary')
-.then(() => {
-  screenType.innerHTML = 'screen locked in ' + screen.orientation.type
-})
-.catch((error) => {
-  screenType.innerHTML = `${error}`
-  console.log(`${error}`);
-});
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
