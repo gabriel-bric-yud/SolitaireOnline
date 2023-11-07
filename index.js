@@ -1340,7 +1340,7 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
       })
     } 
 
-  }, false)
+  })
 }
 
 function checkWin() {
