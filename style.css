@@ -585,8 +585,7 @@ button {
 .noLandscape {
   transform: rotate(-90deg) !important;
   transform-origin: left top !important;
-  width: 75vh !important;
-  height: 100%;
+  width: 79vh !important;
   overflow: hidden !important;
   position: absolute !important;
   top: 100% !important;
@@ -595,15 +594,15 @@ button {
 
 
 .noLandscapeBoard {
-  width: 320px !important;
+  width: 300px !important;
 }
 
 .noLandscapetopBoard {
-  width: 320px !important;
+  width: 300px !important;
 }
 
-.noLandScapecardPlaceHolder {
-  width: 11vh !important;
+.noLandscapecardPlaceHolder {
+  width: 9vh !important;
   height: 16.5vh !important;
 }
 
@@ -618,17 +617,17 @@ button {
 }
 
 .noLandscapefrontCard {
-  width: 11vh !important;
+  width: 9vh !important;
   height: 16.5vh !important;
 }
 
 .noLandscapebackCard {
-  width: 11vh !important;
+  width: 9vh !important;
   height: 16.5vh !important;
 }
 
 .noLandscapeCardStack {
-  width: 11vh !important;
+  width: 7vh !important;
 }
 
 .noLandscapetitleDiv {
