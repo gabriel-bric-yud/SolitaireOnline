@@ -1480,7 +1480,38 @@ function reset() {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+screen.orientation.addEventListener("change", (event) => {
+  const type = event.target.type;
+  const angle = event.target.angle;
+  if (type == 'landscape' || type == 'landscape-primary' || type == 'landscape-secondary') {
+    negative = true
+    console.log(negative)
+    document.querySelector('html').classList.add('noLandscape')
+    board.classList.add('noLandscapeBoard')
+    document.querySelectorAll('.frontCard').forEach((item) => item.classList.add('noLandscapefrontCard'))
+    document.querySelectorAll('.backCard').forEach((item) => item.classList.add('noLandscapebackCard'))
+    document.querySelectorAll('.labelDiv').forEach((item) => item.classList.add('noLandscapelabelDiv'))
+    document.querySelectorAll('.cardLabel').forEach((item) => item.classList.add('noLandscapecardLabel'))
+    document.querySelectorAll('.cardPlaceHolder').forEach((item) => item.classList.add('noLandscardPlaceHolder'))
+    document.querySelectorAll('.cardStack').forEach((item) => item.classList.add('noLandscapeCardStack'))
+    document.querySelector('#topBoard').classList.add('noLandscapetopBoard')
+    //document.body.classList.add('noLandscape')
+    console.log(screen.orientation.type)
+  }
+  else {
+    negative = false
+    document.querySelector('html').classList.remove('noLandscape')
+    board.classList.remove('noLandscapeBoard')
+    document.querySelectorAll('.frontCard').forEach((item) => item.classList.remove('noLandscapefrontCard'))
+    document.querySelectorAll('.backCard').forEach((item) => item.classList.remove('noLandscapebackCard'))
+    document.querySelectorAll('.labelDiv').forEach((item) => item.classList.remove('noLandscapelabelDiv'))
+    document.querySelectorAll('.cardLabel').forEach((item) => item.classList.remove('noLandscapecardLabel'))
+    document.querySelectorAll('.cardPlaceHolder').forEach((item) => item.classList.remove('noLandscardPlaceHolder'))
+    document.querySelectorAll('.cardStack').forEach((item) => item.classList.remove('noLandscapeCardStack'))
+    document.querySelector('#topBoard').classList.remove('noLandscapetopBoard')
+  }
+  console.log(`ScreenOrientation change: ${type}, ${angle} degrees.`);
+});
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
