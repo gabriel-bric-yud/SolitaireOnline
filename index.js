@@ -3,6 +3,7 @@ let suitArray = ['hearts', 'diamonds', 'spades', 'clubs']
 let deck = []
 let playerCardArray = []
 let playerCardDivArray = []
+let negative = false
 
 
 let stack1Array = []
@@ -1226,6 +1227,7 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
 
 
   elem.addEventListener('touchstart', (e) => {
+    e.preventDefault()
     dragTarget = e.target;
     currentIndex = dragTarget.style.zIndex
     dragTarget.style.zIndex = 9999
@@ -1233,8 +1235,14 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
     targetRight = dragTarget.style.right
     dragTarget.style.removeProperty('right')
     console.log(targetTop)
-    offSet = [dragTarget.offsetLeft - e.touches[0].clientX, dragTarget.offsetTop - e.touches[0].clientY]
-    clicked = true  
+    if (negative == true) {
+      offSet = [dragTarget.offsetLeft - e.touches[0].clientY, dragTarget.offsetTop - e.touches[0].clientX]
+    }
+    else {
+      offSet = [dragTarget.offsetLeft - e.touches[0].clientX, dragTarget.offsetTop - e.touches[0].clientY]
+    }
+    
+    clicked = true 
 
     console.log('offset is:')
     console.log(offSet)
@@ -1243,6 +1251,12 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
 
     currentDivArray = getCurrentArray2(dragTarget)[1]
     
+    if (currentDivArray != drawnCardsDivArray) {
+      for (let y = currentDivArray.indexOf(dragTarget.querySelector('.card')) + 1; y < currentDivArray.length; y++) {
+
+
+      }
+    }
   })
   
   elem.addEventListener('touchend', (e) => { 
@@ -1306,19 +1320,31 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
   
   document.addEventListener('touchmove', (e) => {
     if (clicked == true) {
-      dragTarget.style.left = (e.touches[0].clientX + offSet[0]) + 'px'
-      dragTarget.style.top = (e.touches[0].clientY+ offSet[1]) + 'px' 
-      currentTouch = {
-        x : e.changedTouches[0].clientX,
-        y : e.changedTouches[0].clientY
+      if (negative == true) {
+        dragTarget.style.right = (e.touches[0].clientY + offSet[0]) + 'px'
+        dragTarget.style.top = (e.touches[0].clientX+ offSet[1]) + 'px'
+        currentTouch = {
+          x : e.changedTouches[0].clientX,
+          y : e.changedTouches[0].clientY
+        }
       }
+      else {
+
+        dragTarget.style.left = (e.touches[0].clientX + offSet[0]) + 'px'
+        dragTarget.style.top = (e.touches[0].clientY+ offSet[1]) + 'px' 
+        currentTouch = {
+          x : e.changedTouches[0].clientX,
+          y : e.changedTouches[0].clientY
+        }
+      }
+
+      
       let currentDivArray = getCurrentArray2(dragTarget)[1]
       //console.log(currentDivArray)
       console.log(dragTarget)
       console.log(offSet)
       if (currentDivArray != drawnCardsDivArray) {
         for (let y = currentDivArray.indexOf(dragTarget.querySelector('.card')) + 1; y < currentDivArray.length; y++) {
-
           let cardDiv = currentDivArray[y]
           let offSetExtra = [cardDiv.parentNode.offsetLeft - e.touches[0].clientX, cardDiv.parentNode.offsetTop - e.touches[0].clientY]
           console.log(cardDiv.parentNode)
@@ -1326,7 +1352,7 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
           cardDiv.parentNode.style.left = (e.touches[0].clientX + offSetExtra[0]) + 'px'
           cardDiv.parentNode.style.top = (e.touches[0].clientY+ offSetExtra[1]) + 'px' 
         }
-      } 
+      }
 
 
       foundationSpots.forEach(spot => {
@@ -1480,6 +1506,36 @@ function reset() {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+drawBtn.addEventListener('click', (e) => {
+  if (playerTurn == true){
+    deal()
+  }
+})
+
+window.addEventListener('load', (e) => {
+  startGameButton()
+}) 
+
+window.addEventListener('selectstart', (e) => {
+  e.preventDefault();
+})
+
+
+resetButton.addEventListener('click', (e) => {
+  if (playerTurn == true) {
+    reset()
+    startGameButton()
+  }
+})
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 screen.orientation.addEventListener("change", (event) => {
   const type = event.target.type;
   const angle = event.target.angle;
@@ -1515,29 +1571,4 @@ screen.orientation.addEventListener("change", (event) => {
   console.log(`ScreenOrientation change: ${type}, ${angle} degrees.`);
 });
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-drawBtn.addEventListener('click', (e) => {
-  if (playerTurn == true){
-    deal()
-  }
-})
-
-window.addEventListener('load', (e) => {
-  startGameButton()
-}) 
-
-window.addEventListener('selectstart', (e) => {
-  e.preventDefault();
-})
-
-
-resetButton.addEventListener('click', (e) => {
-  if (playerTurn == true) {
-    reset()
-    startGameButton()
-  }
-})
-
-
-screen.orientation.lock('natural')
