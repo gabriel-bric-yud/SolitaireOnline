@@ -30,11 +30,6 @@ button {
   display: grid !important
 }
 
-button:hover {
-  background-color: #ddd;
-  animation: glowing3 1200ms infinite;
-}
-
 
 
 /********************************************************************************************************************************/
@@ -57,28 +52,18 @@ button:hover {
 .titleDiv span {
   margin: 0 auto;
   font-family: 'Bungee Spice', cursive;
-  font-size: 3em ;
+  font-size: 2em;
+  height: 2ch;
   display: inline-block;
   transition: transform .5s;
   /**transform-style: preserve-3d;*/
-}
-
-.titleDiv:hover span:nth-of-type(odd){
-  text-shadow: 0px 0px 20px rgba(225, 9, 9, 1);
-  transform: rotate(9deg) rotateY(360deg);
-  
-}
-
-.titleDiv:hover span:nth-of-type(even){
-  text-shadow: 0px 0px 20px rgba(103, 7, 199, 0.75);
-  transform: rotate(-9deg) rotateY(-360deg);
 }
   
 
 #board {
   position: relative;
   display: grid;
-  width: 320px;
+  width: 90vw; /**320*/
   height: 465px;
   background-color: green;
   margin: 0 auto;
@@ -101,20 +86,24 @@ button:hover {
 
 #reset {
   display: grid;
-  font-size: 10px;
+  font-size: 12px;
   width: fit-content;
   background-color: #F55C47;
   color: azure;
   text-align: center;
+  z-index: 9999;
   text-shadow: 0 0 12px black;
+  position: absolute;
+  left: 0;
+  top: -13%;
 }
 
 /********************************************************************************************************************************/
 #topBoard {
   display: grid;
   grid-template-columns: 2fr 4fr;
-  height: 60px;
-  width: 320px;
+  height:80px;
+  width: 90vw;
   margin-bottom: 10px;
   margin-top: 5px;
 }
@@ -133,16 +122,18 @@ button:hover {
   display: flex;
   align-content: center;
   align-items: center;
+  justify-content: center;
+  justify-self: center;
   position: relative;
   margin-left: 2px;
 }
 
 #drawBtn {
   position: absolute;
-  left: -1px;
-  font-size: 10px;
+  font-size: 11px;
+  justify-self: center;
   padding: 5px;
-  z-index: 9999;
+  z-index: 99999;
 }
 
 
@@ -192,12 +183,6 @@ button:hover {
   margin: 1px;
 }
 
-/**
-button:hover{
-  animation: glowing3 1200ms infinite;
-  border: 1px solid white;
-}
-*/
 
 /********************************************************************************************************************************/
 
@@ -205,8 +190,8 @@ button:hover{
   display: grid;
   position: relative;
   margin: 0px;
-  width: 36px;
-  height: 54px;
+  width: 46px;
+  height: 69px;
   border-radius: 16px;
   padding: 0px;
   border: 3px solid white;
@@ -230,7 +215,7 @@ button:hover{
 .card {
   display: grid;
   position: relative;
-  background-color: azure;
+  
   border-radius: 16px;
   padding: 0px;
   margin: 0;
@@ -253,7 +238,10 @@ button:hover{
   position: relative;
   display: grid;
   justify-self: center;
+  background-color: azure;
   align-self: center;
+  width: 46px;
+  height: 69px;
   border-radius: 16px;
   border: 3px solid azure;
   pointer-events: none;
@@ -267,11 +255,13 @@ button:hover{
   display: grid;
   border-radius: 16px;
   border: 3px solid azure;
+  width: 46px;
+  height: 69px;
   align-self: center;
   justify-self: center;
   background-color: rgb(2,0,36);
   background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%,     rgba(0,212,255,1) 100%); 
-  pointer-events: none;
+  /**pointer-events: none;*/
 }
   
 
@@ -351,7 +341,8 @@ button:hover{
 .cardLabel {
   align-self: center;
   text-align: center;
-  font-size: 10px;
+  font-family:Arial, Helvetica, sans-serif;
+  font-size: 13px;
   padding: 5px;
   pointer-events: none;
 
@@ -428,6 +419,14 @@ button:hover{
   font-size: 30px;
 }
 
+
+&:hover {
+  -webkit-transform:none;
+  -moz-transform:none;
+  -ms-transform:none;
+  transform:none;
+}
+
 /********************************************************************************************************************************/
 
 @keyframes glowing1 {
@@ -469,4 +468,104 @@ button:hover{
 
 .flash4 {
   animation: glowing4 1500ms infinite;
+}
+
+@media (max-width: 420px) { 
+  #board {
+    width: 370px
+  }
+  #topBoard {
+    width: 370px;
+  }
+  .cardPlaceHolder {
+    width: 40px;
+    height: 60px;
+  }
+
+  .frontCard {
+    width: 40px;
+    height: 60px;
+  }
+
+  .backCard {
+    width: 40px;
+    height: 60px;
+  }
+
+}
+
+
+@media (min-width: 700px) {
+  #board {
+    width: 680px
+  }
+
+  #topBoard {
+    height: 127.5px;
+    width: 680px;
+  }
+
+  .cardPlaceHolder {
+    width: 60px;
+    height: 90px;
+  }
+
+  .frontCard {
+    width: 60px;
+    height: 90px;
+  }
+
+  .backCard {
+    width: 60px;
+    height: 90px;
+  }
+
+  .labelDiv {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+  }
+    
+  .cardLabel {
+    font-size: 22px;
+  }
+
+  #drawBtn, #reset {
+    font-size: 20px;
+  }
+
+  #reset {
+    top: -16%;
+  }
+
+  .titleDiv span {
+    font-size: 4em;
+    height: fit-content;
+  }
+
+  button:hover {
+    background-color: #ddd;
+    animation: glowing3 1200ms infinite;
+  }
+
+
+  .titleDiv:hover span:nth-of-type(odd){
+    text-shadow: 0px 0px 20px rgba(225, 9, 9, 1);
+    transform: rotate(9deg) rotateY(360deg);
+    
+  }
+  
+  .titleDiv:hover span:nth-of-type(even){
+    text-shadow: 0px 0px 20px rgba(103, 7, 199, 0.75);
+    transform: rotate(-9deg) rotateY(-360deg);
+  }
+
+  .matchButton:hover {
+    opacity: 0.5;
+  }
+
+  .frontCard:hover {
+    background-color: red;
+  }
+  
 }
