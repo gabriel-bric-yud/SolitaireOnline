@@ -1249,7 +1249,6 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
 
       }
     }
-    e.stopPropagation()
   })
   
   elem.addEventListener('touchend', (e) => { 
@@ -1313,7 +1312,8 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
   
   document.addEventListener('touchmove', (e) => {
     if (clicked == true) {
-      e.preventDefault()
+      document.body.style.overflow = 'hidden'
+      document.body.style.height = '100%'
       dragTarget.style.left = (e.touches[0].clientX + offSet[0]) + 'px'
       dragTarget.style.top = (e.touches[0].clientY+ offSet[1]) + 'px' 
       currentTouch = {
