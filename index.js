@@ -3,7 +3,6 @@ let suitArray = ['hearts', 'diamonds', 'spades', 'clubs']
 let deck = []
 let playerCardArray = []
 let playerCardDivArray = []
-let negative = false
 
 
 let stack1Array = []
@@ -463,12 +462,6 @@ function createCard(deckArray, width, height, parent, cardArray, cardDivArray) {
   parent.appendChild(cardDiv)
 
   loadCardRank(deckArray, card, cardArray, cardDivArray)
-  if (negative == true) {
-    document.querySelectorAll('.frontCard').forEach((item) => item.classList.add('noLandscapefrontCard'))
-    document.querySelectorAll('.backCard').forEach((item) => item.classList.add('noLandscapebackCard'))
-    document.querySelectorAll('.labelDiv').forEach((item) => item.classList.add('noLandscapelabelDiv'))
-    document.querySelectorAll('.cardLabel').forEach((item) => item.classList.add('noLandscapecardLabel'))
-  }
 
   //if (deck.length > 0 && drawnCount <= 0) {
     //cardDivArray.push(card)
@@ -1241,12 +1234,8 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
     targetRight = dragTarget.style.right
     dragTarget.style.removeProperty('right')
     console.log(targetTop)
-    if (negative == true) {
-      offSet = [dragTarget.offsetLeft - e.touches[0].clientY, dragTarget.offsetTop - e.touches[0].clientX]
-    }
-    else {
-      offSet = [dragTarget.offsetLeft - e.touches[0].clientX, dragTarget.offsetTop - e.touches[0].clientY]
-    }
+  
+    offSet = [dragTarget.offsetLeft - e.touches[0].clientX, dragTarget.offsetTop - e.touches[0].clientY]
     
     clicked = true 
 
@@ -1326,24 +1315,12 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
   
   document.addEventListener('touchmove', (e) => {
     if (clicked == true) {
-      if (negative == true) {
-        dragTarget.style.right = (e.touches[0].clientY + offSet[0]) + 'px'
-        dragTarget.style.top = (e.touches[0].clientX+ offSet[1]) + 'px'
-        currentTouch = {
-          x : e.changedTouches[0].clientX,
-          y : e.changedTouches[0].clientY
-        }
+      dragTarget.style.left = (e.touches[0].clientX + offSet[0]) + 'px'
+      dragTarget.style.top = (e.touches[0].clientY+ offSet[1]) + 'px' 
+      currentTouch = {
+        x : e.changedTouches[0].clientX,
+        y : e.changedTouches[0].clientY  
       }
-      else {
-
-        dragTarget.style.left = (e.touches[0].clientX + offSet[0]) + 'px'
-        dragTarget.style.top = (e.touches[0].clientY+ offSet[1]) + 'px' 
-        currentTouch = {
-          x : e.changedTouches[0].clientX,
-          y : e.changedTouches[0].clientY
-        }
-      }
-
       
       let currentDivArray = getCurrentArray2(dragTarget)[1]
       //console.log(currentDivArray)
@@ -1540,43 +1517,4 @@ resetButton.addEventListener('click', (e) => {
   }
 })
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/**
-screen.orientation.addEventListener("change", (event) => {
-  const type = event.target.type;
-  const angle = event.target.angle;
-  if (type == 'landscape' || type == 'landscape-primary' || type == 'landscape-secondary') {
-    negative = true
-    console.log(negative)
-    document.querySelector('html').classList.add('noLandscape')
-    board.classList.add('noLandscapeBoard')
-    document.querySelectorAll('.frontCard').forEach((item) => item.classList.add('noLandscapefrontCard'))
-    document.querySelectorAll('.backCard').forEach((item) => item.classList.add('noLandscapebackCard'))
-    document.querySelectorAll('.labelDiv').forEach((item) => item.classList.add('noLandscapelabelDiv'))
-    document.querySelectorAll('.cardLabel').forEach((item) => item.classList.add('noLandscapecardLabel'))
-    document.querySelectorAll('.cardPlaceHolder').forEach((item) => item.classList.add('noLandscapecardPlaceHolder'))
-    document.querySelectorAll('.cardStack').forEach((item) => item.classList.add('noLandscapeCardStack'))
-    document.querySelector('#topBoard').classList.add('noLandscapetopBoard')
-    document.querySelectorAll('span').forEach((item) => item.classList.add('noLandscapetitleDiv'))
-    //document.body.classList.add('noLandscape')
-    console.log(screen.orientation.type)
-  }
-  else {
-    negative = false
-    document.querySelector('html').classList.remove('noLandscape')
-    board.classList.remove('noLandscapeBoard')
-    document.querySelectorAll('.frontCard').forEach((item) => item.classList.remove('noLandscapefrontCard'))
-    document.querySelectorAll('.backCard').forEach((item) => item.classList.remove('noLandscapebackCard'))
-    document.querySelectorAll('.labelDiv').forEach((item) => item.classList.remove('noLandscapelabelDiv'))
-    document.querySelectorAll('.cardLabel').forEach((item) => item.classList.remove('noLandscapecardLabel'))
-    document.querySelectorAll('.cardPlaceHolder').forEach((item) => item.classList.remove('noLandscapecardPlaceHolder'))
-    document.querySelectorAll('.cardStack').forEach((item) => item.classList.remove('noLandscapeCardStack'))
-    document.querySelector('#topBoard').classList.remove('noLandscapetopBoard')
-    document.querySelectorAll('span').forEach((item) => item.classList.remove('noLandscapetitleDiv'))
-  }
-  console.log(`ScreenOrientation change: ${type}, ${angle} degrees.`);
-});
-
-*/
 
