@@ -380,7 +380,7 @@ function loadCardRank(deckArray, cardDiv, cardArray, cardDivArray) {
     drawnCardsDivArray.splice(drawnCount, 1, cardDiv)
     switch(drawnCardsArray[drawnCount].suit) {
       case 'spades':
-      changeCardLabel(`${drawnCardsArray[drawnCount].rank}&#9824`, 'black', cardLabels);
+        changeCardLabel(`${drawnCardsArray[drawnCount].rank}&#9824`, 'black', cardLabels);
         break;
       case 'clubs':
         changeCardLabel(`${drawnCardsArray[drawnCount].rank}&#9827;`, 'black', cardLabels);
@@ -542,7 +542,7 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, cardDivArray, f
         slideIn(newCard, 50, 0, 'right', -2.5)
       }
       else {
-      positionCardsBottom(cardDivArray, i)
+        positionCardsBottom(cardDivArray, i)
       }
     }, 100)
     
@@ -1146,7 +1146,10 @@ function checkHitbox3(target, touchCoord, container) {
         item.classList.remove('flash')
         dropSpot = container
       })
-      container.classList.add('flash')
+      if (!(container.classList.contains('flash'))) {
+        container.classList.add('flash')
+      }
+      
     }
   }
 }
@@ -1243,15 +1246,7 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
     console.log(offSet)
     console.log('dragTarget is:')
     console.log(dragTarget)
-
-    currentDivArray = getCurrentArray2(dragTarget)[1]
     
-    if (currentDivArray != drawnCardsDivArray) {
-      for (let y = currentDivArray.indexOf(dragTarget.querySelector('.card')) + 1; y < currentDivArray.length; y++) {
-
-
-      }
-    }
   })
   
   elem.addEventListener('touchend', (e) => { 
@@ -1321,18 +1316,6 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
         x : e.changedTouches[0].clientX,
         y : e.changedTouches[0].clientY  
       }
-      
-      let currentDivArray = getCurrentArray2(dragTarget)[1]
-      if (currentDivArray != drawnCardsDivArray) {
-        for (let y = currentDivArray.indexOf(dragTarget.querySelector('.card')) + 1; y < currentDivArray.length; y++) {
-          let cardDiv = currentDivArray[y]
-          let offSetExtra = [cardDiv.parentNode.offsetLeft - e.touches[0].clientX, cardDiv.parentNode.offsetTop - e.touches[0].clientY]
-          cardDiv.parentNode.style.left = (e.touches[0].clientX + offSetExtra[0]) + 'px'
-          cardDiv.parentNode.style.top = (e.touches[0].clientY+ offSetExtra[1]) + 'px' 
-        }
-      }
-
-
       foundationSpots.forEach(spot => {
         checkHitbox3(dragTarget, currentTouch, spot)
       })
