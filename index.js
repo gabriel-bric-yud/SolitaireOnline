@@ -1323,15 +1323,10 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
       }
       
       let currentDivArray = getCurrentArray2(dragTarget)[1]
-      //console.log(currentDivArray)
-      console.log(dragTarget)
-      console.log(offSet)
       if (currentDivArray != drawnCardsDivArray) {
         for (let y = currentDivArray.indexOf(dragTarget.querySelector('.card')) + 1; y < currentDivArray.length; y++) {
           let cardDiv = currentDivArray[y]
           let offSetExtra = [cardDiv.parentNode.offsetLeft - e.touches[0].clientX, cardDiv.parentNode.offsetTop - e.touches[0].clientY]
-          console.log(cardDiv.parentNode)
-          console.log(offSetExtra)
           cardDiv.parentNode.style.left = (e.touches[0].clientX + offSetExtra[0]) + 'px'
           cardDiv.parentNode.style.top = (e.touches[0].clientY+ offSetExtra[1]) + 'px' 
         }
