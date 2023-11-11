@@ -540,22 +540,17 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, cardDivArray, f
       fadeIn(newCard, .05, 20)
       if (parent == drawnCard) {
         newCard.style.opacity = 1;
-        slideIn(newCard, -50, 0, 'top', 2.5)
+        slideIn(newCard, 50, 0, 'right', -2.5)
       }
       else {
         positionCardsBottom(cardDivArray, i)
       }
-    }, 100)
-    
-    setTimeout(() => {
       if (flipBool) {
-        addCardFlip(newCard.querySelector('.card'), newCard.querySelector('.frontCard'), newCard.querySelector('.backCard'))
-      }
-    }, 100)
-
-    setTimeout(() => {
-      createDraggable(newCard, cardArray, cardDivArray, i)
-    }, 1099)
+          addCardFlip(newCard.querySelector('.card'), newCard.querySelector('.frontCard'), newCard.querySelector('.backCard'))
+          setTimeout(() => {
+            createDraggable(newCard, cardArray, cardDivArray, i)
+          }, 1099)
+    }, 100)    
   
   }
 }
