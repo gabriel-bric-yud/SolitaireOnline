@@ -540,6 +540,7 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, cardDivArray, f
       fadeIn(newCard, .05, 20)
       if (parent == drawnCard) {
         slideIn(newCard, 50, 0, 'top', -2.5)
+        
       }
       else {
         positionCardsBottom(cardDivArray, i)
@@ -550,7 +551,7 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, cardDivArray, f
       if (flipBool) {
         addCardFlip(newCard.querySelector('.card'), newCard.querySelector('.frontCard'), newCard.querySelector('.backCard'))
       }
-    }, 100)
+    }, 400)
 
     setTimeout(() => {
       createDraggable(newCard, cardArray, cardDivArray, i)
