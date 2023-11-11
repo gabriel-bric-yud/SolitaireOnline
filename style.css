@@ -476,7 +476,7 @@ button {
   animation: glowing4 1500ms infinite;
 }
 
-/** 
+
 @media (max-width: 420px) { 
   #board {
     width: 370px
@@ -638,4 +638,3 @@ button {
   height: 2ch !important;
 }
 
-*/
