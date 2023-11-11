@@ -423,24 +423,15 @@ function createCard(deckArray, width, height, parent, cardArray, cardDivArray) {
   card.classList.add('card');
 
   const frontOfCard = document.createElement('div')
-  frontOfCard.classList.add('frontCard')
-  frontOfCard.classList.add('hide')
+  
   const labelFrame = document.createElement('div')
   labelFrame.classList.add('labelFrame')
 
-  if (width > 40) {
-    createCardLabel('top', frontOfCard, labelFrame)
-    createCardLabel('center', frontOfCard, labelFrame)
-    createCardLabel('bottom', frontOfCard, labelFrame)
-  }
-  else {
-    createCardLabel('top', frontOfCard, labelFrame)
-    createCardLabel('bottom', frontOfCard, labelFrame)
-  }
+  createCardLabel('top', frontOfCard, labelFrame)
+  createCardLabel('bottom', frontOfCard, labelFrame)
   
   const backOfCard = document.createElement('div')
-  backOfCard.classList.add('backCard')
-  backOfCard.classList.add('show')
+  
 
   //frontOfCard.style.width = `${width}px`;
   //frontOfCard.style.height = `${height}px`;
@@ -458,14 +449,14 @@ function createCard(deckArray, width, height, parent, cardArray, cardDivArray) {
   cardDiv.classList.add('cardDiv')
   cardDiv.style.opacity = 0
   cardDiv.appendChild(card)
+  frontOfCard.classList.add('frontCard')
+  frontOfCard.classList.add('hide')
+  backOfCard.classList.add('backCard')
+  backOfCard.classList.add('show')
   cardDiv.style.pointerEvents = 'none'
   parent.appendChild(cardDiv)
 
   loadCardRank(deckArray, card, cardArray, cardDivArray)
-
-  //if (deck.length > 0 && drawnCount <= 0) {
-    //cardDivArray.push(card)
-  //}
   
   return cardDiv
 }
