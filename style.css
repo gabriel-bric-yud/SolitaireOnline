@@ -42,6 +42,7 @@ button {
   display: grid;
   width: fit-content;
   height: fit-content;
+  min-height: 70px;
   margin: 0 auto;
   padding: 0px;
   color: white;
@@ -51,6 +52,7 @@ button {
 
 .titleDiv a {
   height: fit-content;
+  margin: auto;
 }
 
 .titleDiv span {
@@ -100,7 +102,7 @@ button {
   text-shadow: 0 0 12px black;
   position: absolute;
   left: 0;
-  top: -8%;
+  top: -11%;
 }
 
 /********************************************************************************************************************************/
