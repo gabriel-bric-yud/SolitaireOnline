@@ -1317,7 +1317,7 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
         y : e.changedTouches[0].clientY  
       }
 
-      /**
+      
       foundationSpots.forEach(spot => {
         checkHitbox3(dragTarget, currentTouch, spot)
       })
@@ -1325,7 +1325,7 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
       dropSpots.forEach(spot => {
         checkHitbox3(dragTarget, currentTouch, spot)
       })
-      */
+      
     } 
 
   })
