@@ -536,16 +536,16 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, cardDivArray, f
       else {
         positionCardsBottom(cardDivArray, i)
       }
-    }, 300)
+    }, 200)
 
     if (flipBool)  {
-        if (drawnCardsArray.length == 1) {
+        if (drawnCardsArray.length == 1 || (deck.length == 0 && drawnCount == 0) {
           addCardFlip(newCard.querySelector('.card'), newCard.querySelector('.frontCard'), newCard.querySelector('.backCard'))
         }
         else {
           setTimeout(() => {
             addCardFlip(newCard.querySelector('.card'), newCard.querySelector('.frontCard'), newCard.querySelector('.backCard'))
-          }, 400)           
+          }, 300)           
         }
       }
 
