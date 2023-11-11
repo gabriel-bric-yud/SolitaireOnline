@@ -529,7 +529,7 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, cardDivArray, f
     newCard = createCard(deck, cardWidth,cardHeight, parent, cardArray, cardDivArray)
     setTimeout(() => {
       fadeIn(newCard, .05, 20)
-      if (parent == drawnCard) {
+      if (parent == drawnCard ) {
         slideIn(newCard, 50, 0, 'right', -2.5)
       }
       else {
@@ -537,8 +537,16 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, cardDivArray, f
       }
     }, 300)
 
-    if (flipBool) {
-      addCardFlip(newCard.querySelector('.card'), newCard.querySelector('.frontCard'), newCard.querySelector('.backCard'))
+    if (flipBool)  {
+        if (drawnsCardArray.length!= 1) {
+          addCardFlip(newCard.querySelector('.card'), newCard.querySelector('.frontCard'), newCard.querySelector('.backCard'))
+        }
+        else {
+          setTimeout(() => {
+            addCardFlip(newCard.querySelector('.card'), newCard.querySelector('.frontCard'), newCard.querySelector('.backCard'))
+          }, 400)           
+        }
+      }  
     }
 
     setTimeout(() => {
