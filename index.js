@@ -537,11 +537,13 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, cardDivArray, f
     dealCount++
     newCard = createCard(deck, cardWidth,cardHeight, parent, cardArray, cardDivArray)
     setTimeout(() => {
-      fadeIn(newCard, .05, 20)
+      //fadeIn(newCard, .05, 20)
       if (parent == drawnCard) {
-        slideIn(newCard, 50, 0, 'right', -2.5)
+        //slideIn(newCard, 50, 0, 'right', -2.5)
+         fadeIn(newCard, .05, 20)
       }
       else {
+         fadeIn(newCard, .05, 20)
         positionCardsBottom(cardDivArray, i)
       }
       if (flipBool) {
