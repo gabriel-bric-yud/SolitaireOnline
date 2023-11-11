@@ -3,8 +3,6 @@ let suitArray = ['hearts', 'diamonds', 'spades', 'clubs']
 let deck = []
 let playerCardArray = []
 let playerCardDivArray = []
-
-
 let stack1Array = []
 let stack2Array = []
 let stack3Array = []
@@ -12,7 +10,6 @@ let stack4Array = []
 let stack5Array = []
 let stack6Array = []
 let stack7Array = []
-
 let stack1DivArray = []
 let stack2DivArray = []
 let stack3DivArray = []
@@ -20,18 +17,14 @@ let stack4DivArray = []
 let stack5DivArray = []
 let stack6DivArray = []
 let stack7DivArray = []
-
 let foundationClubsArray = []
 let foundationDiamondsArray = []
 let foundationHeartsArray = []
 let foundationSpadesArray = []
-
 let foundationClubsDivArray = []
 let foundationDiamondsDivArray = []
 let foundationHeartsDivArray = []
 let foundationSpadesDivArray = []
-
-
 let currentDrawnCards = []
 let drawnCardsArray = []
 let drawnCardsDivArray = []
@@ -39,14 +32,11 @@ let currentDivArray
 let extraCardsArray
 let drawnCount = 0
 let dealCount = 0
-
 let stacks = [stack1Array, stack2Array, stack3Array, stack4Array, stack5Array, stack6Array, stack7Array]
 let stackDivs=  [stack1DivArray, stack2DivArray, stack3DivArray, stack4DivArray, stack5DivArray, stack6DivArray, stack7DivArray]
-
 let cardCount = 0
 let cardIndex = 1000
 let currentIndex
-
 let dragTarget
 let dropSpots
 let dropSpot = ''
@@ -54,37 +44,26 @@ let foundationSpots
 let foundationSpot = ''
 let targetTop
 let targetRight
-
 let clicked = false
 let clickable = false
 let playerTurn = true
 let extraCards = false
-
 const boardWidth = 252
 const cardWidth = boardWidth/7
 const cardHeight = (cardWidth/2) + cardWidth
-
 const board = document.getElementById('board')
 const deckDiv = document.getElementById('deck')
 const tableau = document.querySelector('#tableau')
 const foundationDiv = document.querySelector('#foundation')
 const playerPlaceHolder = deckDiv.querySelector('.cardPlaceHolder')
-
-
 const foundationClubs = document.querySelector('.clubs')
 const foundationDiamonds = document.querySelector('.diamonds')
 const foundationHearts = document.querySelector('.hearts')
 const foundationSpades = document.querySelector('.spades')
-
 const drawnCard = document.getElementById('drawnCard')
 const drawBtn = document.getElementById('drawBtn')
-
 const resetButton = document.getElementById('reset')
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 function turnNotification(msgText, parent, acceptText, rejectText, colorData) {
   const messageDiv = document.createElement('div')
   messageDiv.classList.add('turnMessage')
@@ -94,10 +73,8 @@ function turnNotification(msgText, parent, acceptText, rejectText, colorData) {
   messageText.textContent = msgText
   messageText.classList.add('turnMessageText')
   messageDiv.appendChild(messageText)
-
   const btnDiv = document.createElement('div')
   btnDiv.setAttribute('class', 'btnDiv')
-
     const acceptBtn = document.createElement('button')
     acceptBtn.classList.add('matchButton')
     acceptBtn.innerHTML = `${acceptText} &#10004;`
@@ -107,38 +84,27 @@ function turnNotification(msgText, parent, acceptText, rejectText, colorData) {
       startGame()
     })
     btnDiv.appendChild(acceptBtn)
-
-
   const closeBtn = document.createElement('button')
   closeBtn.classList.add('matchButton')
   closeBtn.innerHTML = `${rejectText} &#10006;`
   btnDiv.appendChild(closeBtn)
   
   messageDiv.appendChild(btnDiv)
-
   parent.appendChild(messageDiv)
-
-
   closeBtn.addEventListener('click', (e) => {
     fadeOut(messageDiv, 200, position, position - 20, true)
     reset()
-
     setTimeout(() => {
       startGameButton()
     },200)
     
   })
-
   const position = getComputedStyle(messageDiv).bottom.replace('px', '')
-
   setTimeout(() => {
     fadeIn(messageDiv, .05, 20)
     slideIn(messageDiv, position - 20, position, 'bottom', 1)
   },1000)
-
 }
-
-
 function notification(msg, parent, colorData, speed) {
   const messageDiv = document.createElement('div')
   messageDiv.classList.add('message')
@@ -149,23 +115,16 @@ function notification(msg, parent, colorData, speed) {
   messageText.classList.add('messageText')
   messageDiv.appendChild(messageText)
   parent.appendChild(messageDiv)
-
   fadeIn(messageDiv, .05, 20)
   slideIn(messageDiv, 0, 5, 'bottom', 1)
   fadeOut(messageDiv, speed, 5, -10, true)
 }
-
-
 function removeAllMessages() {
   document.querySelectorAll('.message').forEach(elem => {
     fadeOut(elem, 0, 20, 0, true)
   })
 }
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 function slideIn(elem, startPosition, endPosition, direction, increment) {
   let position = startPosition
   let directionOption = direction.toString()
@@ -177,9 +136,6 @@ function slideIn(elem, startPosition, endPosition, direction, increment) {
     }
   }, 20)
 }
-
-
-
 function fadeIn(elem, increment, interval) {
   let opacity = 0
   let fadeI = setInterval(() => {
@@ -190,7 +146,6 @@ function fadeIn(elem, increment, interval) {
     } 
   }, interval) //20
 }
-
 function fadeInMultiple(array, increment, interval) {
   let opacity = 0
   let fadeI = setInterval(() => {
@@ -201,7 +156,6 @@ function fadeInMultiple(array, increment, interval) {
     } 
   }, interval) //20
 }
-
 function fadeOut(elem, speed, startPosition, endPosition, bool) {
   setTimeout(() => {
     let opacity = 1
@@ -210,12 +164,10 @@ function fadeOut(elem, speed, startPosition, endPosition, bool) {
     let fadeO = setInterval(() => {
       opacity -= .05
       elem.style.opacity = opacity
-
       if (bottom >= endPosition) {
         bottom -= 1
         elem.style.bottom = `${bottom}px`
       }
-
       if (elem.style.opacity <= 0) {
         if (bool === true) {
           elem.remove()
@@ -225,9 +177,6 @@ function fadeOut(elem, speed, startPosition, endPosition, bool) {
     }, 20)
   }, speed)
 }
-
-
-
 function fadeOutMultiple(array, speed, startPosition, endPosition, bool) {
   setTimeout(() => {
     let opacity = 1
@@ -235,18 +184,15 @@ function fadeOutMultiple(array, speed, startPosition, endPosition, bool) {
     
     let fadeO = setInterval(() => {
       opacity -= .05
-
       for (const elem of array) {
       elem.style.opacity = opacity
       }
-
       if (bottom >= endPosition) {
         bottom -= 1
         for (const elem of array) {
           elem.style.bottom = `${bottom}px`
           }
       }
-
       if (opacity <= 0) {
         if (bool === true) {
           for (const elem of array) {
@@ -258,7 +204,6 @@ function fadeOutMultiple(array, speed, startPosition, endPosition, bool) {
     }, 20)
   }, speed)
 }
-
 function flashingButton(btn) {
   if (btn.classList.contains('flash')) {
     btn.classList.remove('flash')
@@ -267,7 +212,6 @@ function flashingButton(btn) {
     btn.classList.add('flash')
   }
 }
-
 function flashingButton2(btn) {
   if (btn.classList.contains('flash2')) {
     btn.classList.remove('flash2')
@@ -276,7 +220,6 @@ function flashingButton2(btn) {
     btn.classList.add('flash1')
   }
 }
-
 function flashingButton3(btn) {
   if (btn.classList.contains('flash3')) {
     btn.classList.remove('flash3')
@@ -285,7 +228,6 @@ function flashingButton3(btn) {
     btn.classList.add('flash3')
   }
 }
-
 function flashingButton4(btn) {
   if (btn.classList.contains('flash4')) {
     btn.classList.remove('flash4')
@@ -294,10 +236,7 @@ function flashingButton4(btn) {
     btn.classList.add('flash4')
   }
 }
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 function showHide(elem) {
   if (elem.classList.contains('show')) {
     elem.classList.remove('show')
@@ -308,7 +247,6 @@ function showHide(elem) {
     elem.classList.add('show')
   }
 }
-
 function createDeck() {
   for (const suit of suitArray) {
     for (const rank of rankArray) {
@@ -320,23 +258,19 @@ function createDeck() {
   }
   console.log(deck)
 }
-
 function removeFromDeck(elem, array) {
   array.splice(array.indexOf(elem), 1)
 }
-
 function chooseRandomCard(array) {
   let randomIndex = Math.floor(Math.random() * array.length)
   return randomIndex
 }
-
 function changeCardLabel(textData, colorData, cardLabelsArray) {
   cardLabelsArray.forEach(label => {
     label.innerHTML = textData;
     label.style.color = colorData;
   })
 }
-
 function topCardShadow(array, parent) {
   array = parent.querySelectorAll('.cardDiv')
   array.forEach(element => {
@@ -346,7 +280,6 @@ function topCardShadow(array, parent) {
     }
   })
 }
-
 function loadCardRank(deckArray, cardDiv, cardArray, cardDivArray) {
   const cardLabels = cardDiv.querySelectorAll('.cardLabel')
   if (deck.length > 0) {
@@ -384,6 +317,23 @@ function loadCardRank(deckArray, cardDiv, cardArray, cardDivArray) {
         break;
       case 'clubs':
         changeCardLabel(`${drawnCardsArray[drawnCount].rank}&#9827;`, 'black', cardLabels);
+
+    
+          
+            
+    
+
+          
+          Expand Down
+          
+            
+    
+
+          
+          Expand Up
+    
+    @@ -542,7 +542,7 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, cardDivArray, f
+  
         break;
       case 'hearts':
         changeCardLabel(`${drawnCardsArray[drawnCount].rank}&#9829;`, 'red', cardLabels);
@@ -395,7 +345,6 @@ function loadCardRank(deckArray, cardDiv, cardArray, cardDivArray) {
     
     
     drawnCount++
-
     if (drawnCount >= drawnCardsArray.length) {
       drawnCount = 0
     }
@@ -404,9 +353,6 @@ function loadCardRank(deckArray, cardDiv, cardArray, cardDivArray) {
   currentDrawnCards = drawnCard.querySelectorAll('.cardDiv')
   topCardShadow(currentDrawnCards, drawnCard)
 }
-
-
-
 function createCardLabel(className, frontDiv, labelFrame) {
   const labelDiv = document.createElement('div')
   const label = document.createElement('p')
@@ -417,17 +363,14 @@ function createCardLabel(className, frontDiv, labelFrame) {
   labelFrame.appendChild(labelDiv)
   frontDiv.appendChild(labelFrame)
 }
-
 function createCard(deckArray, width, height, parent, cardArray, cardDivArray) {
   const card = document.createElement('div');
   card.classList.add('card');
-
   const frontOfCard = document.createElement('div')
   frontOfCard.classList.add('frontCard')
   frontOfCard.classList.add('hide')
   const labelFrame = document.createElement('div')
   labelFrame.classList.add('labelFrame')
-
   if (width > 40) {
     createCardLabel('top', frontOfCard, labelFrame)
     createCardLabel('center', frontOfCard, labelFrame)
@@ -441,7 +384,6 @@ function createCard(deckArray, width, height, parent, cardArray, cardDivArray) {
   const backOfCard = document.createElement('div')
   backOfCard.classList.add('backCard')
   backOfCard.classList.add('show')
-
   //frontOfCard.style.width = `${width}px`;
   //frontOfCard.style.height = `${height}px`;
   //backOfCard.style.width = `${width}px`;
@@ -451,7 +393,6 @@ function createCard(deckArray, width, height, parent, cardArray, cardDivArray) {
   card.appendChild(backOfCard)
   
   cardCount++
-
   cardIndex++
   const cardDiv = document.createElement('div')
   cardDiv.style.zIndex = cardIndex
@@ -460,19 +401,14 @@ function createCard(deckArray, width, height, parent, cardArray, cardDivArray) {
   cardDiv.appendChild(card)
   cardDiv.style.pointerEvents = 'none'
   parent.appendChild(cardDiv)
-
   loadCardRank(deckArray, card, cardArray, cardDivArray)
-
   //if (deck.length > 0 && drawnCount <= 0) {
     //cardDivArray.push(card)
   //}
   
   return cardDiv
 }
-
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 function addCardFlip(card, front, back) {
   card.parentNode.style.pointerEvents = 'all'
   card.classList.contains('flip') ? card.classList.remove('flip') :  card.classList.add('flip')
@@ -482,8 +418,6 @@ function addCardFlip(card, front, back) {
   }, 300)
    
 }
-
-
 function positionCardsLeft(cardDivArray, i) {
   let cardSpace
   if (i < 4 ){
@@ -504,8 +438,6 @@ function positionCardsLeft(cardDivArray, i) {
     })
   }
 }
-
-
 function positionCardsBottom(cardDivArray, i) {
   cardDivArray.forEach(elem => {
     if (i > 0) {
@@ -519,17 +451,11 @@ function positionCardsBottom(cardDivArray, i) {
     }
   })
 }
-
-
 function positionCard(cardDiv, cardDivArray) {
     let endPosition1 = (cardHeight/1.6 * cardDivArray.indexOf(cardDiv.querySelector('.card')))
     slideIn(cardDiv, endPosition1 + .1, endPosition1, 'top', -.1)
 }
-
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 function dealCards(numberOfCards, cardNumber, parent, cardArray, cardDivArray, flipBool) {
   numberOfCards += dealCount
   let newCard
@@ -537,26 +463,43 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, cardDivArray, f
     dealCount++
     newCard = createCard(deck, cardWidth,cardHeight, parent, cardArray, cardDivArray)
     setTimeout(() => {
-      //fadeIn(newCard, .05, 20)
+      fadeIn(newCard, .05, 20)
       if (parent == drawnCard) {
-        //slideIn(newCard, 50, 0, 'right', -2.5)
-         fadeIn(newCard, .05, 20)
+        slideIn(newCard, 50, 0, 'right', -2.5)
       }
       else {
-         fadeIn(newCard, .05, 20)
         positionCardsBottom(cardDivArray, i)
       }
+    }, 100)
+
+
+    
+          
+            
+    
+
+          
+          Expand Down
+          
+            
+    
+
+          
+          Expand Up
+    
+    @@ -1146,7 +1146,10 @@ function checkHitbox3(target, touchCoord, container) {
+  
+    setTimeout(() => {
       if (flipBool) {
-          addCardFlip(newCard.querySelector('.card'), newCard.querySelector('.frontCard'), newCard.querySelector('.backCard'))
-          setTimeout(() => {
-            createDraggable(newCard, cardArray, cardDivArray, i)
-          }, 1099)
+        addCardFlip(newCard.querySelector('.card'), newCard.querySelector('.frontCard'), newCard.querySelector('.backCard'))
       }
-    }, 100)    
+    }, 100)
+    setTimeout(() => {
+      createDraggable(newCard, cardArray, cardDivArray, i)
+    }, 1099)
   
   }
 }
-
 function dealSolitaire() {
   setTimeout(() => {
     for (let i = 1; i <= 7; i++) {
@@ -572,8 +515,6 @@ function dealSolitaire() {
     }
   }, 10)
 }
-
-
 function deal() { 
   console.log(deck.length)
   console.log(drawnCount)
@@ -594,7 +535,6 @@ function deal() {
       dealCards(1, 0, drawnCard, drawnCardsArray, drawnCardsDivArray, true)
       console.log(drawnCardsDivArray)
     }, 100)
-
   }
   else {
     setTimeout(() => {
@@ -604,11 +544,7 @@ function deal() {
     }, 100)
   }
 }
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 function checkStackOrder(card, array) {
   let dragRank = card.rank
   let dragSuit = card.suit
@@ -618,14 +554,12 @@ function checkStackOrder(card, array) {
   //console.log(`dragRank is ${dragRank}`)
   //console.log(`dragSuit is ${dragSuit}`)
   
-
   if (array.length > 0) {
     dropRank = array[array.length - 1].rank
     dropSuit = array[array.length - 1].suit
     //console.log(`drop rank is ${dropRank}`)
     //console.log(`drop suit is ${dropSuit}`)
   }
-
   if (dragRank == 'K') {
     if (array.length == 0) {
       return true
@@ -660,8 +594,6 @@ function checkStackOrder(card, array) {
     return false
   }
 }
-
-
 function checkFoundationOrder(card, array, suit, current) {
   let dragRank = card.rank
   let dragSuit = card.suit
@@ -676,7 +608,6 @@ function checkFoundationOrder(card, array, suit, current) {
     console.log(`dropRank is ${dropRank}`)
     console.log(`dropSuit is ${dropSuit}`)
   }
-
   if (dragSuit == foundationSuit) {
     if (dragRank == 'A') {
       if (array.length == 0) {
@@ -686,21 +617,17 @@ function checkFoundationOrder(card, array, suit, current) {
         return false
       }
     }
-
     else if (rankArray[rankArray.indexOf(dragRank) - 1] == rankArray[rankArray.indexOf(dropRank)]) {
       return true
     }
-
     else {
       return false
     }
-
   }
   else {
     return false
   }
 }
-
 function getRankAndSuit(elemDiv) {
   let elemId = elemDiv.querySelector('.card').id
   let rankSuit = elemId.split('of')
@@ -709,8 +636,6 @@ function getRankAndSuit(elemDiv) {
     suit: rankSuit[1]
   }
 }
-
-
 function removeFromStackArray(elem, elemDiv, cardArray, cardDivArray) {
   console.log(elemDiv)
   console.log(elemDiv.dataset.stack)
@@ -784,7 +709,6 @@ function removeFromStackArray(elem, elemDiv, cardArray, cardDivArray) {
     }
   }
 }
-
 function changeArrays(elem, elemDiv, stackArray, stackDivArray, num) {
   elemDiv.dataset.stack = num
   elemDiv.style.removeProperty('right')
@@ -801,7 +725,6 @@ function changeArrays(elem, elemDiv, stackArray, stackDivArray, num) {
   }
   
 }
-
 function getCurrentArray(elemDiv, cardArray, cardDivArray) {
     console.log('current arrays: ')
     console.log(cardArray)
@@ -848,8 +771,6 @@ function getCurrentArray(elemDiv, cardArray, cardDivArray) {
         break;
     }
 }
-
-
 function getCurrentArray2(elemDiv) {
   switch(elemDiv.parentNode.id) {
     case 'stack1':
@@ -893,15 +814,11 @@ function getCurrentArray2(elemDiv) {
       break;
   }
 }
-
-
 function moveCards(elem, elemDiv, parent, cardArray, divArray, newCardArray, newDivArray, num) { 
   let card
   let cardDiv
   let moveArray = []
   let moveDivArray = []
-
-
   if (divArray == drawnCardsDivArray) {
     card = cardArray[divArray.indexOf(elemDiv.querySelector('.card'))]
     cardDiv = divArray[divArray.indexOf(elemDiv.querySelector('.card'))]
@@ -933,11 +850,8 @@ function moveCards(elem, elemDiv, parent, cardArray, divArray, newCardArray, new
         checkWin() 
       }, 100)
     }
-
-
   dropSpot = ''
 }
-
 function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
   let elem = getRankAndSuit(elemDiv)
   let currentArray = getCurrentArray(elemDiv, cardArray, cardDivArray)[0]
@@ -1062,7 +976,6 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
         return false
       }
       break; 
-
     case 'spades':
       if (checkFoundationOrder(elem, foundationSpadesArray, 'spades', currentArray)) {
         if (currentDivArray.indexOf(elemDiv.querySelector('.card')) == currentLength || elemDiv.parentNode == drawnCard) {
@@ -1081,9 +994,6 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
       break; 
   }
 }
-
-
-
 function flipNextCard(cardDivArray, i) {
   let nextCard = cardDivArray[i-1]
   if (nextCard != undefined) {
@@ -1092,10 +1002,7 @@ function flipNextCard(cardDivArray, i) {
     }
   }
 }
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 function preventDrop() {
   let cards = document.querySelectorAll('.cardDiv')
   cards.forEach(elem => {
@@ -1104,7 +1011,6 @@ function preventDrop() {
     })
   })  
 }
-
 function checkHitbox(target, touchCoord, container) {
   if (touchCoord.x <= container.getBoundingClientRect().x + container.getBoundingClientRect().width && touchCoord.x >= container.getBoundingClientRect().x) {
     
@@ -1112,7 +1018,6 @@ function checkHitbox(target, touchCoord, container) {
       dropSpot = container
       return true
     }
-
     else if ((touchCoord.x >= container.getBoundingClientRect().x) && (touchCoord.y >= container.getBoundingClientRect().y) || (touchCoord.y >= container.getBoundingClientRect().y + container.getBoundingClientRect().height)) {
       dropSpot = container
       return true
@@ -1122,7 +1027,6 @@ function checkHitbox(target, touchCoord, container) {
     }  
   }
 }
-
 function checkHitbox2(target, touchCoord, container) {
   if (touchCoord.x <= container.getBoundingClientRect().x + container.getBoundingClientRect().width && touchCoord.x >= container.getBoundingClientRect().x) {
     
@@ -1135,24 +1039,37 @@ function checkHitbox2(target, touchCoord, container) {
     return false
   }
 }
-
-
 function checkHitbox3(target, touchCoord, container) {
   if (touchCoord.x <= container.getBoundingClientRect().x + container.getBoundingClientRect().width && touchCoord.x >= container.getBoundingClientRect().x) {
-    if ((touchCoord.y >= container.getBoundingClientRect().y) && (touchCoord.y <= container.getBoundingClientRect().y + container.getBoundingClientRect().height)) { 
+    if ((touchCoord.y >= container.getBoundingClientRect().y) && (touchCoord.y <= container.getBoundingClientRect().y + container.getBoundingClientRect().height)) {
+      document.querySelectorAll('.stack').forEach(item => {
+        item.classList.remove('flash')
+        dropSpot = container
+      })
       if (!(container.classList.contains('flash'))) {
-        document.querySelectorAll('.stack').forEach(item => {
-          item.classList.remove('flash')
-          dropSpot = container
-        })
         container.classList.add('flash')
       }
-      
+
     }
   }
 }
 
+    
+          
+            
+    
 
+          
+          Expand Down
+          
+            
+    
+
+          
+          Expand Up
+    
+    @@ -1243,15 +1246,7 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
+  
 function createDropSpot() {
   dropSpots = document.querySelectorAll('.cardStack')
   dropSpots.forEach(elem => {
@@ -1177,7 +1094,6 @@ function createDropSpot() {
       })
     }) 
   })
-
   foundationSpots = document.querySelectorAll('.foundationSpot')
   foundationSpots.forEach(elem => {
     elem.addEventListener('dragenter', (e) => {
@@ -1202,15 +1118,12 @@ function createDropSpot() {
     }) 
   })
 }
-
-
 function createDraggable(elem, cardArray, cardDivArray, i ) {
   elem.setAttribute('draggable', true)
   elem.addEventListener('dragstart', (e) => {
     dragTarget = e.target
     e.target.querySelector('.card').classList.add('noShadow')
   })
-
   elem.addEventListener('dragend', (e) => {
     if (dropSpot != e.target.parentNode && dropSpot != '') {
       console.log(e.target.querySelector('.card'))
@@ -1224,8 +1137,6 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
     foundationSpots.forEach(elem => {elem.classList.remove('flash4')})
     dragTarget  = ''
   })
-
-
   elem.addEventListener('touchstart', (e) => {
     e.preventDefault()
     dragTarget = e.target;
@@ -1239,22 +1150,37 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
     offSet = [dragTarget.offsetLeft - e.touches[0].clientX, dragTarget.offsetTop - e.touches[0].clientY]
     
     clicked = true 
-
     console.log('offset is:')
     console.log(offSet)
     console.log('dragTarget is:')
     console.log(dragTarget)
-    
+
   })
-  
+
   elem.addEventListener('touchend', (e) => { 
+
+    
+          
+            
+    
+
+          
+          Expand Down
+          
+            
+    
+
+          
+          Expand Up
+    
+    @@ -1321,18 +1316,6 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
+  
     clicked = false;
     currentTouch = {
         x : e.changedTouches[0].clientX,
         y : e.changedTouches[0].clientY
     };
     console.log(currentTouch)
-
     foundationSpots.forEach(spot => {
       if (checkHitbox2(dragTarget, currentTouch, spot)) {
         if (dropSpot != dragTarget.parentNode && dropSpot != '') {
@@ -1277,7 +1203,6 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
         dragTarget.style.zIndex = currentIndex
       } 
     })
-
     dropSpots.forEach(spot => {
       if (checkHitbox2(dragTarget, currentTouch, spot)) {
         if (getNewStackArray(dropSpot, dragTarget, cardArray, cardDivArray)) {
@@ -1304,7 +1229,6 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
       item.classList.remove('flash')
     })
   })
-
   
   document.addEventListener('touchmove', (e) => {
     if (clicked == true) {
@@ -1314,21 +1238,27 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
         x : e.changedTouches[0].clientX,
         y : e.changedTouches[0].clientY  
       }
-
-      
       foundationSpots.forEach(spot => {
         checkHitbox3(dragTarget, currentTouch, spot)
       })
+
+    
+          
+            
+    
+
+          
+          Expand Down
+    
+    
+  
   
       dropSpots.forEach(spot => {
         checkHitbox3(dragTarget, currentTouch, spot)
       })
-      
     } 
-
   })
 }
-
 function checkWin() {
   let foundationArrays = [foundationClubsArray, foundationDiamondsArray, foundationHeartsArray, foundationSpadesArray]
   //console.log(foundationArrays[0])
@@ -1343,28 +1273,20 @@ function checkWin() {
     return false
   }
 }
-
-
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 function startGame() {
   createDeck()
   playerTurn = true
   createDropSpot()
-
   setTimeout(() => {
     dealSolitaire() 
     console.log(stacks)
     console.log(stackDivs)
   }, 100)
-
   setTimeout(() => {
     drawBtn.classList.add('flash4')
   }, 1200)
-
 }
-
 function startGameButton() {
   const startGameBtn = document.createElement('button')
   startGameBtn.classList.add('startGame')
@@ -1377,29 +1299,22 @@ function startGameButton() {
   setTimeout(() => {
     fadeIn(startGameBtn, .03, 20)
   
-
     startGameBtn.addEventListener('click', (e) => {
       startGame()
       startGameBtn.remove()
       resetButton.style.display = 'grid'
     })
-
   }, 600 )
 }
-
-
-
 function reset() {
   cardCount = 0
   dealCount = 0
   clickable = false
   cardIndex = 1000;
   playerTurn = false
-
   deck = []
   playerCardArray = []
   playerCardDivArray = []
-
   stack1Array = []
   stack2Array = []
   stack3Array = []
@@ -1411,8 +1326,6 @@ function reset() {
   dropSpot = ''
   foundationSpots = []
   foundationSpot = ''
-
-
   stack1DivArray = []
   stack2DivArray = []
   stack3DivArray = []
@@ -1420,22 +1333,18 @@ function reset() {
   stack5DivArray = []
   stack6DivArray = []
   stack7DivArray = []
-
   drawnCardsArray = []
   drawnCardsDivArray = []
   currentDrawnCards = []
   drawnCount = 0
-
   foundationClubsArray = []
   foundationDiamondsArray = []
   foundationHeartsArray = []
   foundationSpadesArray = []
-
   foundationClubsDivArray = []
   foundationDiamondsDivArray = []
   foundationHeartsDivArray = []
   foundationSpadesDivArray = []
-
   stacks = [stack1Array, stack2Array, stack3Array, stack4Array, stack5Array, stack6Array, stack7Array]
   stackDivs =  [stack1DivArray, stack2DivArray, stack3DivArray, stack4DivArray, stack5DivArray, stack6DivArray, stack7DivArray]
   
@@ -1450,50 +1359,33 @@ function reset() {
     const positionD = getComputedStyle(cardTempDeck).bottom.replace('px', '')
     fadeOutMultiple(deckDiv.querySelectorAll('.cardDiv'), 200, positionD, positionD - 50, true)
   }
-
   if (cardTempFoundation != undefined) {
     const positionF = getComputedStyle(cardTempFoundation).bottom.replace('px', '')
     fadeOutMultiple(foundationDiv.querySelectorAll('.cardDiv'), 200, positionF, positionF - 50, true)
   }
-
   document.querySelectorAll('.turnMessage').forEach(elem => {
     elem.remove()
   })
-
   document.querySelectorAll('.message').forEach(elem => {
     elem.remove()
   })
 }
-
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 drawBtn.addEventListener('click', (e) => {
   if (playerTurn == true){
     deal()
   }
 })
-
 window.addEventListener('load', (e) => {
   startGameButton()
 }) 
-
 window.addEventListener('selectstart', (e) => {
   e.preventDefault();
 })
-
-
 resetButton.addEventListener('click', (e) => {
   if (playerTurn == true) {
     reset()
     startGameButton()
   }
 })
-
-
