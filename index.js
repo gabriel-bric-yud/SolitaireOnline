@@ -546,12 +546,12 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, cardDivArray, f
             addCardFlip(newCard.querySelector('.card'), newCard.querySelector('.frontCard'), newCard.querySelector('.backCard'))
           }, 400)           
         }
-      }  
-    }
+      }
 
-    setTimeout(() => {
-      createDraggable(newCard, cardArray, cardDivArray, i)
-    }, 1099)
+      setTimeout(() => {
+        createDraggable(newCard, cardArray, cardDivArray, i)
+      }, 1099)
+    }  
 }
 
 function dealSolitaire() {
