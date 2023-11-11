@@ -538,7 +538,7 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, cardDivArray, f
     newCard = createCard(deck, cardWidth,cardHeight, parent, cardArray, cardDivArray)
     setTimeout(() => {     
       if (parent == drawnCard) {
-        newCard.stlye.opacity = 1;
+        newCard.style.opacity = 1;
         slideIn(newCard, 50, 0, 'right', -2.5)
       }
       else {
