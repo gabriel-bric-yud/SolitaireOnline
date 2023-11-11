@@ -535,7 +535,7 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, cardDivArray, f
       else {
         positionCardsBottom(cardDivArray, i)
       }
-    }, 300)
+    }, 3000)
     
     setTimeout(() => {
       if (flipBool) {
