@@ -536,13 +536,13 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, cardDivArray, f
   for (let i = cardNumber; i < numberOfCards; i++) {
     dealCount++
     newCard = createCard(deck, cardWidth,cardHeight, parent, cardArray, cardDivArray)
-    setTimeout(() => {     
+    setTimeout(() => {
+      fadeIn(newCard, .05, 20)
       if (parent == drawnCard) {
         newCard.style.opacity = 1;
-        slideIn(newCard, 50, 0, 'right', -2.5)
+        slideIn(newCard, -50, 0, 'bottom', 2.5)
       }
       else {
-        fadeIn(newCard, .05, 20)
         positionCardsBottom(cardDivArray, i)
       }
     }, 100)
