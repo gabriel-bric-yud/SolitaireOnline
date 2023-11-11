@@ -46,6 +46,7 @@ let stackDivs=  [stack1DivArray, stack2DivArray, stack3DivArray, stack4DivArray,
 let cardCount = 0
 let cardIndex = 1000
 let currentIndex
+let offSet
 
 let dragTarget
 let dropSpots
@@ -1225,17 +1226,19 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
 
   elem.addEventListener('touchstart', (e) => {
     e.preventDefault()
-    dragTarget = e.target;
-    currentIndex = dragTarget.style.zIndex
-    dragTarget.style.zIndex = 9999
-    targetTop = dragTarget.style.top
-    targetRight = dragTarget.style.right
-    dragTarget.style.removeProperty('right')
-    console.log(targetTop)
-  
-    offSet = [dragTarget.offsetLeft - e.touches[0].clientX, dragTarget.offsetTop - e.touches[0].clientY]
+    if !(clicked) {
+      dragTarget = e.target;
+      currentIndex = dragTarget.style.zIndex
+      dragTarget.style.zIndex = 9999
+      targetTop = dragTarget.style.top
+      targetRight = dragTarget.style.right
+      dragTarget.style.removeProperty('right')
+      console.log(targetTop)
     
-    clicked = true 
+      offSet = [dragTarget.offsetLeft - e.touches[0].clientX, dragTarget.offsetTop - e.touches[0].clientY]
+      
+      clicked = true 
+    }
 
     console.log('offset is:')
     console.log(offSet)
@@ -1303,24 +1306,7 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
   })
 
   
-  document.addEventListener('touchmove', (e) => {
-    if (clicked == true) {
-      dragTarget.style.left = (e.touches[0].clientX + offSet[0]) + 'px'
-      dragTarget.style.top = (e.touches[0].clientY+ offSet[1]) + 'px' 
-      currentTouch = {
-        x : e.changedTouches[0].clientX,
-        y : e.changedTouches[0].clientY  
-      }
-      foundationSpots.forEach(spot => {
-        checkHitbox3(dragTarget, currentTouch, spot)
-      })
   
-      dropSpots.forEach(spot => {
-        checkHitbox3(dragTarget, currentTouch, spot)
-      })
-    } 
-
-  })
 }
 
 function checkWin() {
@@ -1472,6 +1458,25 @@ drawBtn.addEventListener('click', (e) => {
   if (playerTurn == true){
     deal()
   }
+})
+
+document.addEventListener('touchmove', (e) => {
+      if (clicked == true) {
+        dragTarget.style.left = (e.touches[0].clientX + offSet[0]) + 'px'
+        dragTarget.style.top = (e.touches[0].clientY+ offSet[1]) + 'px' 
+        currentTouch = {
+          x : e.changedTouches[0].clientX,
+          y : e.changedTouches[0].clientY  
+        }
+        
+        foundationSpots.forEach(spot => {
+          checkHitbox3(dragTarget, currentTouch, spot)
+        })
+        
+        dropSpots.forEach(spot => {
+          checkHitbox3(dragTarget, currentTouch, spot)
+        })
+      } 
 })
 
 window.addEventListener('load', (e) => {
