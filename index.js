@@ -538,7 +538,7 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, cardDivArray, f
     }, 300)
 
     if (flipBool)  {
-        if (drawnsCardArray.length!= 1) {
+        if (drawnCardsArray.length == 1) {
           addCardFlip(newCard.querySelector('.card'), newCard.querySelector('.frontCard'), newCard.querySelector('.backCard'))
         }
         else {
