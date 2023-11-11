@@ -539,8 +539,7 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, cardDivArray, f
     setTimeout(() => {
       fadeIn(newCard, .05, 20)
       if (parent == drawnCard) {
-        slideIn(newCard, 50, 0, 'top', -2.5)
-        
+        slideIn(newCard, 50, 0, 'right', -2.5)
       }
       else {
         positionCardsBottom(cardDivArray, i)
@@ -553,7 +552,9 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, cardDivArray, f
       }
     }, 100)
 
-    createDraggable(newCard, cardArray, cardDivArray, i)
+    setTimeout(() => {
+      createDraggable(newCard, cardArray, cardDivArray, i)
+    }, 1099)
   
   }
 }
@@ -1144,8 +1145,8 @@ function checkHitbox3(target, touchCoord, container) {
       if (!(container.classList.contains('flash'))) {
         document.querySelectorAll('.stack').forEach(item => {
           item.classList.remove('flash')
+          dropSpot = container
         })
-        dropSpot = container
         container.classList.add('flash')
       }
       
