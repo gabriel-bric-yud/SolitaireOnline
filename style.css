@@ -70,7 +70,7 @@ button {
   position: relative;
   display: grid;
   width: 90vw; /**320*/
-  height: 600px;
+  height: 575px;
   justify-self: center;
   background-color: green;
   margin: 0 auto;
@@ -170,7 +170,8 @@ button {
   display: grid;
   position: relative;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  height: 540px;
+  height: fit-content;
+  min-height: 490px;
   margin-bottom: 0;
 }
 
