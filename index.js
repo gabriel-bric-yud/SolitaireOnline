@@ -540,7 +540,7 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, cardDivArray, f
       fadeIn(newCard, .05, 20)
       if (parent == drawnCard) {
         newCard.style.opacity = 1;
-        slideIn(newCard, -50, 0, 'bottom', 2.5)
+        slideIn(newCard, -50, 0, 'top', 2.5)
       }
       else {
         positionCardsBottom(cardDivArray, i)
