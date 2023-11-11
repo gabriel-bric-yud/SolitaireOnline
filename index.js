@@ -552,8 +552,6 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, cardDivArray, f
     setTimeout(() => {
       createDraggable(newCard, cardArray, cardDivArray, i)
     }, 1099)
-  
-  }
 }
 
 function dealSolitaire() {
