@@ -1226,7 +1226,7 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
 
   elem.addEventListener('touchstart', (e) => {
     e.preventDefault()
-    if !(clicked) {
+    if (!clicked) {
       dragTarget = e.target;
       currentIndex = dragTarget.style.zIndex
       dragTarget.style.zIndex = 9999
