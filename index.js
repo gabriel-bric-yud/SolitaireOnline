@@ -535,13 +535,11 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, cardDivArray, f
       else {
         positionCardsBottom(cardDivArray, i)
       }
-    }, 3000)
-    
-    setTimeout(() => {
-      if (flipBool) {
-        addCardFlip(newCard.querySelector('.card'), newCard.querySelector('.frontCard'), newCard.querySelector('.backCard'))
-      }
-    }, 100)
+    }, 300)
+
+    if (flipBool) {
+      addCardFlip(newCard.querySelector('.card'), newCard.querySelector('.frontCard'), newCard.querySelector('.backCard'))
+    }
 
     setTimeout(() => {
       createDraggable(newCard, cardArray, cardDivArray, i)
