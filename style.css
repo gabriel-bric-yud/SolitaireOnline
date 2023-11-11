@@ -5,6 +5,7 @@ body {
   justify-items: center;
   height: 100%;
   width: 100%;
+  margin: 0 auto;
   /**
   overflow: hidden;
   */
@@ -67,7 +68,8 @@ button {
   position: relative;
   display: grid;
   width: 90vw; /**320*/
-  height: 700px;
+  height: 600px;
+  justify-self: center;
   background-color: green;
   margin: 0 auto;
   border-radius: 20px;
@@ -166,7 +168,7 @@ button {
   display: grid;
   position: relative;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  height: 570px;
+  height: 540px;
   margin-bottom: 0;
 }
 
