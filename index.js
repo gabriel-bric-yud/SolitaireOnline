@@ -1141,12 +1141,12 @@ function checkHitbox2(target, touchCoord, container) {
 
 function checkHitbox3(target, touchCoord, container) {
   if (touchCoord.x <= container.getBoundingClientRect().x + container.getBoundingClientRect().width && touchCoord.x >= container.getBoundingClientRect().x) {
-    if ((touchCoord.y >= container.getBoundingClientRect().y) && (touchCoord.y <= container.getBoundingClientRect().y + container.getBoundingClientRect().height)) {
-      document.querySelectorAll('.stack').forEach(item => {
-        item.classList.remove('flash')
-        dropSpot = container
-      })
+    if ((touchCoord.y >= container.getBoundingClientRect().y) && (touchCoord.y <= container.getBoundingClientRect().y + container.getBoundingClientRect().height)) { 
       if (!(container.classList.contains('flash'))) {
+        document.querySelectorAll('.stack').forEach(item => {
+          item.classList.remove('flash')
+        })
+        dropSpot = container
         container.classList.add('flash')
       }
       
@@ -1308,7 +1308,7 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
   })
 
   
-  document.addEventListener('touchmove', (e) => {
+  document.addEventListener('touchmove', (e) => 
     if (clicked == true) {
       dragTarget.style.left = (e.touches[0].clientX + offSet[0]) + 'px'
       dragTarget.style.top = (e.touches[0].clientY+ offSet[1]) + 'px' 
