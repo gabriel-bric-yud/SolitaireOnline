@@ -1252,6 +1252,13 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
       clicked = true 
       
     }
+
+    console.log('offset is:')
+    console.log(offSet)
+    console.log('dragTarget is:')
+    console.log(dragTarget)
+    
+  })
   
   elem.addEventListener('touchend', (e) => { 
     clicked = false;
@@ -1277,10 +1284,12 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
         }
       }
       else {
+        currentStack.appendChild(dragTarget)
         dragTarget.style.removeProperty('left')
         dragTarget.style.right = targetRight
         dragTarget.style.top = targetTop
         dragTarget.style.zIndex = currentIndex
+        
       } 
     })
 
@@ -1297,7 +1306,9 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
         }
       }
       else {
+        currentStack.appendChild(dragTarget)
         dragTarget.style.removeProperty('left')
+        dragTarget.style.right = targetRight
         dragTarget.style.top = targetTop
         dragTarget.style.zIndex = currentIndex
       } 
@@ -1309,10 +1320,7 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
     document.querySelectorAll('.stack').forEach(item => {
       item.classList.remove('flash')
     })
-  })
-
-  
-  
+  }) 
 }
 
 function checkWin() {
