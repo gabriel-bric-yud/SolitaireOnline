@@ -1232,7 +1232,7 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
       dragTarget.style.zIndex = 9999
       targetTop = dragTarget.style.top
       targetRight = dragTarget.style.right
-      dragTarget.style.removeProperty('right')
+      //dragTarget.style.removeProperty('right')
       console.log(targetTop)
     
       offSet = [dragTarget.offsetLeft - e.touches[0].clientX, dragTarget.offsetTop - e.touches[0].clientY]
