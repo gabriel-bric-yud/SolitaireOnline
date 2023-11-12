@@ -509,6 +509,11 @@ button {
     font-size: 11px;
   }
 
+  .bigger {
+  height: 50px !important;
+  width: 75px !important;
+}
+
 }
 
 
@@ -640,6 +645,6 @@ button {
 }
 
 .bigger {
-  height: 90px;
-  width: 60px;
+  height: 90px !important;
+  width: 60px !important;
 }
