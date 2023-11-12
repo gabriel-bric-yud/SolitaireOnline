@@ -478,42 +478,9 @@ button {
 
 
 
-@media (max-width: 700px) { 
-  #board {
-    width: 370px
-  }
-  #topBoard {
-    width: 370px;
-  }
-  .cardPlaceHolder {
-    width: 40px;
-    height: 60px;
-  }
-
-  .frontCard {
-    width: 40px;
-    height: 60px;
-  }
-
-  .backCard {
-    width: 40px;
-    height: 60px;
-  }
-
-  .labelDiv {
-    width: 15px;
-    height: 15px;
-    padding: 5px;
-  }
-    
-  .cardLabel {
-    font-size: 11px;
-  }
-
-}
 
 
-@media (min-width: 420px) {
+@media (max-width: 420px) {
   #board {
     width: 680px
   }
