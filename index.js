@@ -1272,7 +1272,7 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
     console.log(offSet)
     console.log('dragTarget is:')
     console.log(dragTarget)
-  })
+  }, { passive: false})
 
   elem.addEventListener('touchend', (e) => { 
     clicked = false;
@@ -1510,7 +1510,7 @@ document.addEventListener('touchmove', (e) => {
           checkHitbox3(dragTarget, currentTouch, spot)
         })
       } 
-})
+}, { passive: false})
 
 window.addEventListener('load', (e) => {
   startGameButton()
