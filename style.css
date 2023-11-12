@@ -3,10 +3,10 @@ body {
   background-color: rgb(0, 0, 35);
   justify-content: center;
   justify-items: center;
-  height: 100%;
-  width: 100%;
   margin: 0 auto;
   /**
+  height: 100%;
+  width: 100%;
   overflow: hidden;
   */
 }
@@ -477,10 +477,43 @@ button {
 }
 
 
+@media (max-width: 420px) { 
+  #board {
+    width: 370px
+  }
+  #topBoard {
+    width: 370px;
+  }
+  .cardPlaceHolder {
+    width: 40px;
+    height: 60px;
+  }
+
+  .frontCard {
+    width: 40px;
+    height: 60px;
+  }
+
+  .backCard {
+    width: 40px;
+    height: 60px;
+  }
+
+  .labelDiv {
+    width: 15px;
+    height: 15px;
+    padding: 5px;
+  }
+    
+  .cardLabel {
+    font-size: 11px;
+  }
+
+}
 
 
 
-@media (max-width: 420px) {
+@media (min-width: 700px) {
   #board {
     width: 680px
   }
