@@ -1228,38 +1228,21 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
     e.preventDefault()
     if (!clicked) {
       dragTarget = e.target;
-      currentStack = dragTarget.parentNode  
       currentIndex = dragTarget.style.zIndex
       dragTarget.style.zIndex = 9999
       targetTop = dragTarget.style.top
-      targetRight = dragTarget.style.right 
-      dragTarget.style.removeProperty('left')
-      dragTarget.style.removeProperty('top')
+      targetRight = dragTarget.style.right
       dragTarget.style.removeProperty('right')
-       
-      console.log(dragTarget.offsetLeft)
-      console.log(e.touches[0].clientX)
-      console.log(dragTarget.style.height)
-      //offSet = [dragTarget.offsetLeft - e.touches[0].clientX, dragTarget.offsetTop - e.touches[0].clientY]  #offSet in cardStack
-      offSet = [e.touches[0].clientX - (dragTarget.offsetWidth/2), e.touches[0].clientY - (dragTarget.offsetHeight/2)]
-
-      dragTarget.style.left = offSet[0] + 'px'
-      dragTarget.style.top = offSet[1] + 'px'
-      document.body.appendChild(dragTarget)
-    
+      console.log(targetTop)
       offSet = [dragTarget.offsetLeft - e.touches[0].clientX, dragTarget.offsetTop - e.touches[0].clientY]
-      
       clicked = true 
-      
     }
-
     console.log('offset is:')
     console.log(offSet)
     console.log('dragTarget is:')
     console.log(dragTarget)
-    
   })
-  
+
   elem.addEventListener('touchend', (e) => { 
     clicked = false;
     currentTouch = {
