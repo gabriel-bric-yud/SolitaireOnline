@@ -1468,6 +1468,8 @@ document.addEventListener('touchmove', (e) => {
           x : e.changedTouches[0].clientX,
           y : e.changedTouches[0].clientY  
         }
+
+        console.log(`${offSet[0]},${offSet[1]}`)
         
         foundationSpots.forEach(spot => {
           checkHitbox3(dragTarget, currentTouch, spot)
