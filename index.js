@@ -1240,9 +1240,8 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
       dragTarget.style.removeProperty('top')
       dragTarget.style.removeProperty('right')
        
-      console.log(dragTarget.offsetLeft)
-      console.log(e.touches[0].clientX)
-      console.log(dragTarget.style.height)
+      console.log(window.screenY)
+      console.log(window.screenTop)
       //offSet = [dragTarget.offsetLeft - e.touches[0].clientX, dragTarget.offsetTop - e.touches[0].clientY]  //#offSet in cardStack
       //dragTarget.style.left = e.touches[0].clientX - (dragTarget.offsetWidth/2) + 'px'
       //dragTarget.style.top = e.touches[0].clientY  - (dragTarget.offsetHeight/2) + 'px'
@@ -1251,7 +1250,7 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
       dragTarget.style.top = (e.touches[0].clientY) - (dragTarget.offsetHeight/1.2) + 'px'
       document.body.appendChild(dragTarget)
     
-      offSet = [dragTarget.offsetLeft - e.touches[0].clientX - window.screenX, dragTarget.offsetTop - e.touches[0].clientY - window.screenY]
+      offSet = [dragTarget.offsetLeft - e.touches[0].clientX, dragTarget.offsetTop - e.touches[0].clientY]
       
       clicked = true 
     
