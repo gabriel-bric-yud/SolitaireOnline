@@ -1246,7 +1246,7 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
       //offSet = [dragTarget.offsetLeft - e.touches[0].clientX, dragTarget.offsetTop - e.touches[0].clientY]  //#offSet in cardStack
       //dragTarget.style.left = e.touches[0].clientX - (dragTarget.offsetWidth/2) + 'px'
       //dragTarget.style.top = e.touches[0].clientY  - (dragTarget.offsetHeight/2) + 'px'
-      offSet = [(e.touches[0].clientX - window.screenLeft) - (dragTarget.offsetWidth/2), (e.touches[0].clientY - window.screenTop) - (dragTarget.offsetHeight/1.2)]
+      offSet = [(e.touches[0].clientX - window.screenX) - (dragTarget.offsetWidth/2), (e.touches[0].clientY - window.screenY) - (dragTarget.offsetHeight/1.2)]
   
       dragTarget.style.left = offSet[0] + 'px'
       dragTarget.style.top = offSet[1] + 'px'
