@@ -485,8 +485,8 @@ button {
     width: 370px;
   }
   .cardPlaceHolder {
-    width: 40px;
-    height: 60px;
+    width: 46px;
+    height: 69px;
   }
 
   .frontCard {
@@ -510,8 +510,8 @@ button {
   }
 
   .bigger {
-  height: 50px !important;
-  width: 75px !important;
+  height: 44px !important;
+  width: 66px !important;
 }
 
 }
@@ -589,6 +589,11 @@ button {
     background-color: red;
   }
   
+  .bigger {
+    height: 90px !important;
+    width: 60px !important;
+  }
+  
 }
 
 .noLandscape {
@@ -644,7 +649,4 @@ button {
   height: 2ch !important;
 }
 
-.bigger {
-  height: 90px !important;
-  width: 60px !important;
-}
+
