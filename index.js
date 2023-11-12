@@ -1248,8 +1248,6 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
   
       dragTarget.style.left = (e.touches[0].clientX) - (dragTarget.offsetWidth/2) + window.scrollX + 'px'
       dragTarget.style.top = (e.touches[0].clientY) - (dragTarget.offsetHeight/1.2) + window.scrollY + 'px'
-      dragTarget.style.width = '10px'
-      dragTarget.style.height = '10px'
       document.body.appendChild(dragTarget)
     
       offSet = [dragTarget.offsetLeft - e.touches[0].clientX, dragTarget.offsetTop - e.touches[0].clientY]
