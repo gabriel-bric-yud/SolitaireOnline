@@ -1488,6 +1488,9 @@ drawBtn.addEventListener('click', (e) => {
 })
 
 document.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 1) {  
+         e.preventDefault();
+      }
       if (clicked == true) {
         dragTarget.style.left = (e.touches[0].clientX + offSet[0]) + 'px'
         dragTarget.style.top = (e.touches[0].clientY+ offSet[1]) + 'px' 
