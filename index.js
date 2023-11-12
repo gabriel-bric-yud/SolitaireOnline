@@ -1239,7 +1239,8 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
       dragTarget.style.removeProperty('left')
       dragTarget.style.removeProperty('top')
       dragTarget.style.removeProperty('right')
-       
+
+      dragTarget.querySelector('frontCard').classList.add('bigger')
       console.log(window.screenY)
       console.log(window.screenTop)
       //offSet = [dragTarget.offsetLeft - e.touches[0].clientX, dragTarget.offsetTop - e.touches[0].clientY]  //#offSet in cardStack
@@ -1281,6 +1282,7 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
         y : e.changedTouches[0].clientY
     };
     console.log(currentTouch)
+    dragTarget.querySelector('frontCard').classList.remove('bigger')
 
     foundationSpots.forEach(spot => {
       if (checkHitbox2(dragTarget, currentTouch, spot)) {
