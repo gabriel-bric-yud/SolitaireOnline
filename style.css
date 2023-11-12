@@ -485,6 +485,11 @@ button {
     width: 370px;
   }
   .cardPlaceHolder {
+    width: 40px;
+    height: 60px;
+  }
+
+  .foundationSpot {
     width: 46px;
     height: 69px;
   }
