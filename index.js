@@ -135,7 +135,7 @@ function turnNotification(msgText, parent, acceptText, rejectText, colorData) {
   setTimeout(() => {
     fadeIn(messageDiv, .05, 20)
     slideIn(messageDiv, position - 20, position, 'bottom', 1)
-  },1000)
+  },300)
 
 }
 
