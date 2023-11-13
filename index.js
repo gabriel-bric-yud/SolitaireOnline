@@ -1,65 +1,8 @@
-let rankArray = ['A','2','3','4','5','6','7','8','9','10', 'J', 'Q', 'K']
-let suitArray = ['hearts', 'diamonds', 'spades', 'clubs']
-let deck = []
-let playerCardArray = []
-let playerCardDivArray = []
+//////////////////////  GLOBAL CONSTANTS  //////////////////////
 
 
-let stack1Array = []
-let stack2Array = []
-let stack3Array = []
-let stack4Array = []
-let stack5Array = []
-let stack6Array = []
-let stack7Array = []
-
-let stack1DivArray = []
-let stack2DivArray = []
-let stack3DivArray = []
-let stack4DivArray = []
-let stack5DivArray = []
-let stack6DivArray = []
-let stack7DivArray = []
-
-let foundationClubsArray = []
-let foundationDiamondsArray = []
-let foundationHeartsArray = []
-let foundationSpadesArray = []
-
-let foundationClubsDivArray = []
-let foundationDiamondsDivArray = []
-let foundationHeartsDivArray = []
-let foundationSpadesDivArray = []
-
-
-let currentDrawnCards = []
-let drawnCardsArray = []
-let drawnCardsDivArray = []
-let currentDivArray
-let extraCardsArray
-let drawnCount = 0
-let dealCount = 0
-
-let stacks = [stack1Array, stack2Array, stack3Array, stack4Array, stack5Array, stack6Array, stack7Array]
-let stackDivs=  [stack1DivArray, stack2DivArray, stack3DivArray, stack4DivArray, stack5DivArray, stack6DivArray, stack7DivArray]
-
-let cardCount = 0
-let cardIndex = 1000
-let currentIndex
-let offSet
-
-let dragTarget
-let dropSpots
-let dropSpot = ''
-let foundationSpots 
-let foundationSpot = ''
-let targetTop
-let targetRight
-
-let clicked = false
-let clickable = false
-let playerTurn = true
-let extraCards = false
+const rankArray = ['A','2','3','4','5','6','7','8','9','10', 'J', 'Q', 'K']
+const suitArray = ['hearts', 'diamonds', 'spades', 'clubs']
 
 const boardWidth = 252
 const cardWidth = boardWidth/7
@@ -70,20 +13,77 @@ const deckDiv = document.getElementById('deck')
 const tableau = document.querySelector('#tableau')
 const foundationDiv = document.querySelector('#foundation')
 const playerPlaceHolder = deckDiv.querySelector('.cardPlaceHolder')
-
-
-const foundationClubs = document.querySelector('.clubs')
-const foundationDiamonds = document.querySelector('.diamonds')
-const foundationHearts = document.querySelector('.hearts')
-const foundationSpades = document.querySelector('.spades')
-
 const drawnCard = document.getElementById('drawnCard')
 const drawBtn = document.getElementById('drawBtn')
-
 const resetButton = document.getElementById('reset')
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////  GLOBAL VARIABLES  //////////////////////
+
+
+let deck = []
+let playerCardArray = []
+let playerCardDivArray = []
+
+
+let stack1 = []
+let stack2 = []
+let stack3 = []
+let stack4 = []
+let stack5 = []
+let stack6 = []
+let stack7 = []
+
+let stack1Divs = []
+let stack2Divs = []
+let stack3Divs = []
+let stack4Divs = []
+let stack5Divs = []
+let stack6Divs = []
+let stack7Divs = []
+
+let foundationClubs = []
+let foundationDiamonds = []
+let foundationHearts = []
+let foundationSpades = []
+
+let foundationClubsDivs = []
+let foundationDiamondsDivs = []
+let foundationHeartsDivs = []
+let foundationSpadesDivs = []
+
+
+let currentDrawnCards = []
+let drawnCardsArray = []
+let drawnCardsDivArray = []
+
+let allStacksArray = [stack1, stack2, stack3, stack4, stack5, stack6, stack7]
+let allStackDivsArray=  [stack1Divs, stack2Divs, stack3Divs, stack4Divs, stack5Divs, stack6Divs, stack7Divs]
+
+let cardCount = 0
+let cardIndex = 1000
+let currentIndex
+let drawnCount = 0
+let dealCount = 0
+
+
+let clicked = false
+let clickable = false
+let playerTurn = true
+let extraCards = false
+
+let offSet
+let dragTarget
+let dropSpot = ''
+let dropSpotArray
+let foundationSpot = ''
+let foundationSpotArray 
+let targetTop
+let targetRight
+
+
+
+//////////////////////  NOTIFICATION FUNCTIONS //////////////////////
 
 
 function turnNotification(msgText, parent, acceptText, rejectText, colorData) {
@@ -164,8 +164,7 @@ function removeAllMessages() {
 }
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+//////////////////////  SLIDE AND FADE ANIMATION FUNCTIONS  //////////////////////
 
 function slideIn(elem, startPosition, endPosition, direction, increment) {
   let position = startPosition
@@ -296,7 +295,8 @@ function flashingButton4(btn) {
   }
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////  CREATING DECK AND CARDS FUNCTIONS  //////////////////////
 
 
 function showHide(elem) {
@@ -463,7 +463,8 @@ function createCard(deckArray, width, height, parent, cardArray, cardDivArray) {
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////  POSITION AND FLIP CARD FUNCTIONS  //////////////////////
+
 
 function addCardFlip(card, front, back) {
   card.parentNode.style.pointerEvents = 'all'
@@ -471,8 +472,18 @@ function addCardFlip(card, front, back) {
   setTimeout(() => {
     showHide(front)
     showHide(back)
-  }, 300)
-   
+  }, 300) 
+}
+
+
+
+function flipNextCard(cardDivArray, i) {
+  let nextCard = cardDivArray[i-1]
+  if (nextCard != undefined) {
+    if (nextCard.querySelector('.frontCard').classList.contains('hide')) {
+      addCardFlip(nextCard,nextCard.querySelector('.frontCard'), nextCard.querySelector('.backCard') )
+    }
+  }
 }
 
 
@@ -520,7 +531,8 @@ function positionCard(cardDiv, cardDivArray) {
 
 
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////  DEAL CARDS FUNCTIONS  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 function dealCards(numberOfCards, cardNumber, parent, cardArray, cardDivArray, flipBool) {
   numberOfCards += dealCount
@@ -560,10 +572,10 @@ function dealSolitaire() {
     for (let i = 1; i <= 7; i++) {
       for (let x = 0; x < i; x++) {
         if (x < i - 1) {
-          dealCards(1, x, document.getElementById(`stack${i}`), stacks[i-1], stackDivs[i-1], false);
+          dealCards(1, x, document.getElementById(`stack${i}`), allStacksArray[i-1], allStackDivsArray[i-1], false);
         }
         else {
-          dealCards(1, x, document.getElementById(`stack${i}`), stacks[i-1], stackDivs[i-1], true);
+          dealCards(1, x, document.getElementById(`stack${i}`), allStacksArray[i-1], allStackDivsArray[i-1], true);
         }
       }
       dealCount = 0
@@ -604,7 +616,7 @@ function deal() {
 }
 
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////  GAME LOGIC + CHECK STACKS AND ARRAY MANIPULATION FUNCTIONS   //////////////////////
 
 
 function checkStackOrder(card, array) {
@@ -726,48 +738,48 @@ function removeFromStackArray(elem, elemDiv, cardArray, cardDivArray) {
   else {
     switch(elemDiv.dataset.stack) {
       case '1':
-        stack1Array.splice(stack1Array.indexOf(elem), 1);
-        stack1DivArray.splice(stack1DivArray.indexOf(elemDiv), 1);
+        stack1.splice(stack1.indexOf(elem), 1);
+        stack1Divs.splice(stack1Divs.indexOf(elemDiv), 1);
         break;
       case '2':
-        stack2Array.splice(stack2Array.indexOf(elem), 1);
-        stack2DivArray.splice(stack2DivArray.indexOf(elemDiv), 1);
+        stack2.splice(stack2.indexOf(elem), 1);
+        stack2Divs.splice(stack2Divs.indexOf(elemDiv), 1);
         break;
       case '3':
-        stack3Array.splice(stack3Array.indexOf(elem), 1);
-        stack3DivArray.splice(stack3DivArray.indexOf(elemDiv), 1);
+        stack3.splice(stack3.indexOf(elem), 1);
+        stack3Divs.splice(stack3Divs.indexOf(elemDiv), 1);
         break;
       case '4':
-        stack4Array.splice(stack4Array.indexOf(elem), 1);
-        stack4DivArray.splice(stack4DivArray.indexOf(elemDiv), 1);
+        stack4.splice(stack4.indexOf(elem), 1);
+        stack4Divs.splice(stack4Divs.indexOf(elemDiv), 1);
         break;
       case '5':
-        stack5Array.splice(stack5Array.indexOf(elem), 1);
-        stack5DivArray.splice(stack5DivArray.indexOf(elemDiv), 1);
+        stack5.splice(stack5.indexOf(elem), 1);
+        stack5Divs.splice(stack5Divs.indexOf(elemDiv), 1);
         break;
       case '6':
-        stack6Array.splice(stack6Array.indexOf(elem), 1);
-        stack6DivArray.splice(stack6DivArray.indexOf(elemDiv), 1);
+        stack6.splice(stack6.indexOf(elem), 1);
+        stack6Divs.splice(stack6Divs.indexOf(elemDiv), 1);
         break;
       case '7':
-        stack7Array.splice(stack7Array.indexOf(elem), 1);
-        stack7DivArray.splice(stack7DivArray.indexOf(elemDiv), 1);
+        stack7.splice(stack7.indexOf(elem), 1);
+        stack7Divs.splice(stack7Divs.indexOf(elemDiv), 1);
         break;
       case 'clubs':
-        foundationClubsArray.splice(foundationClubsArray.indexOf(elem), 1);
-        foundationClubsDivArray.splice(foundationClubsDivArray.indexOf(elemDiv), 1);
+        foundationClubs.splice(foundationClubs.indexOf(elem), 1);
+        foundationClubsDivs.splice(foundationClubsDivs.indexOf(elemDiv), 1);
         break;
       case 'diamonds':
-        foundationDiamondsArray.splice(foundationDiamondsArray.indexOf(elem), 1);
-        foundationDiamondsDivArray.splice(foundationDiamondsDivArray.indexOf(elemDiv), 1);
+        foundationDiamonds.splice(foundationDiamonds.indexOf(elem), 1);
+        foundationDiamondsDivs.splice(foundationDiamondsDivs.indexOf(elemDiv), 1);
         break;
       case 'hearts':
-        foundationHeartsArray.splice(foundationHeartsArray.indexOf(elem), 1);
-        foundationHeartsDivArray.splice(foundationHeartsDivArray.indexOf(elemDiv), 1);
+        foundationHearts.splice(foundationHearts.indexOf(elem), 1);
+        foundationHeartsDivs.splice(foundationHeartsDivs.indexOf(elemDiv), 1);
         break;
       case 'spades':
-        foundationSpadesArray.splice(foundationSpadesArray.indexOf(elem), 1);
-        foundationSpadesDivArray.splice(foundationSpadesDivArray.indexOf(elemDiv), 1);
+        foundationSpades.splice(foundationSpades.indexOf(elem), 1);
+        foundationSpadesDivs.splice(foundationSpadesDivs.indexOf(elemDiv), 1);
         break;
         
       case 'drawnCard':
@@ -806,37 +818,37 @@ function getCurrentArray(elemDiv, cardArray, cardDivArray) {
     console.log(cardDivArray)
     switch(elemDiv.dataset.stack) {
       case '1':
-        return [stack1Array, stack1DivArray]
+        return [stack1, stack1Divs]
         break;
       case '2':
-        return [stack2Array, stack2DivArray]
+        return [stack2, stack2Divs]
         break;
       case '3':
-        return [stack3Array, stack3DivArray]
+        return [stack3, stack3Divs]
         break;
       case '4':
-        return [stack4Array, stack4DivArray]
+        return [stack4, stack4Divs]
         break;
       case '5':
-        return [stack5Array, stack5DivArray]
+        return [stack5, stack5Divs]
         break;
       case '6':
-        return [stack6Array, stack6DivArray]
+        return [stack6, stack6Divs]
         break;
       case '7':
-        return [stack7Array, stack7DivArray]
+        return [stack7, stack7Divs]
         break;
       case 'clubs':
-        return [foundationClubsArray, foundationClubsDivArray]
+        return [foundationClubs, foundationClubsDivs]
         break;
       case 'diamonds':
-        return [foundationDiamondsArray, foundationDiamondsDivArray]
+        return [foundationDiamonds, foundationDiamondsDivs]
         break; 
       case 'hearts':
-        return [foundationHeartsArray, foundationHeartsDivArray]
+        return [foundationHearts, foundationHeartsDivs]
         break;
       case 'spades':
-        return [foundationSpadesArray, foundationSpadesDivArray]
+        return [foundationSpades, foundationSpadesDivs]
         break;
       case 'drawnCard':
         return [drawnCardsArray, drawnCardsDivArray]
@@ -851,37 +863,37 @@ function getCurrentArray(elemDiv, cardArray, cardDivArray) {
 function getCurrentArray2(elemDiv) {
   switch(elemDiv.parentNode.id) {
     case 'stack1':
-      return [stack1Array, stack1DivArray]
+      return [stack1, stack1Divs]
       break;
     case 'stack2':
-      return [stack2Array, stack2DivArray]
+      return [stack2, stack2Divs]
       break;
     case 'stack3':
-      return [stack3Array, stack3DivArray]
+      return [stack3, stack3Divs]
       break;
     case 'stack4':
-      return [stack4Array, stack4DivArray]
+      return [stack4, stack4Divs]
       break;
     case 'stack5':
-      return [stack5Array, stack5DivArray]
+      return [stack5, stack5Divs]
       break;
     case 'stack6':
-      return [stack6Array, stack6DivArray]
+      return [stack6, stack6Divs]
       break;
     case 'stack7':
-      return [stack7Array, stack7DivArray]
+      return [stack7, stack7Divs]
       break;
     case 'clubs':
-      return [foundationClubsArray, foundationClubsDivArray]
+      return [foundationClubs, foundationClubsDivs]
       break;
     case 'diamonds':
-      return [foundationDiamondsArray, foundationDiamondsDivArray]
+      return [foundationDiamonds, foundationDiamondsDivs]
       break; 
     case 'hearts':
-      return [foundationHeartsArray, foundationHeartsDivArray]
+      return [foundationHearts, foundationHeartsDivs]
       break;
     case 'spades':
-      return [foundationSpadesArray, foundationSpadesDivArray]
+      return [foundationSpades, foundationSpadesDivs]
       break;
     case 'drawnCard':
       return [drawnCardsArray, drawnCardsDivArray]
@@ -943,8 +955,8 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
   let currentLength = currentDivArray.length - 1
   switch(parent.id) {
     case 'stack1':
-      if (checkStackOrder(elem, stack1Array)) {
-        moveCards(elem, elemDiv, parent, currentArray, currentDivArray, stack1Array, stack1DivArray, 1)
+      if (checkStackOrder(elem, stack1)) {
+        moveCards(elem, elemDiv, parent, currentArray, currentDivArray, stack1, stack1Divs, 1)
         console.log('stack1')
         return true
       }
@@ -953,8 +965,8 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
       }
       break;
     case 'stack2':
-      if (checkStackOrder(elem, stack2Array)) {
-        moveCards(elem, elemDiv, parent, currentArray, currentDivArray, stack2Array, stack2DivArray, 2)
+      if (checkStackOrder(elem, stack2)) {
+        moveCards(elem, elemDiv, parent, currentArray, currentDivArray, stack2, stack2Divs, 2)
         console.log('stack2')
         return true
       }
@@ -963,8 +975,8 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
       }
       break;
     case 'stack3':
-      if (checkStackOrder(elem, stack3Array)) {
-        moveCards(elem, elemDiv, parent, currentArray, currentDivArray, stack3Array, stack3DivArray, 3)
+      if (checkStackOrder(elem, stack3)) {
+        moveCards(elem, elemDiv, parent, currentArray, currentDivArray, stack3, stack3Divs, 3)
         console.log('stack3')
         return true
       }
@@ -973,8 +985,8 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
       }
       break;
     case 'stack4':
-      if (checkStackOrder(elem, stack4Array)) {
-        moveCards(elem, elemDiv, parent, currentArray, currentDivArray, stack4Array, stack4DivArray, 4)
+      if (checkStackOrder(elem, stack4)) {
+        moveCards(elem, elemDiv, parent, currentArray, currentDivArray, stack4, stack4Divs, 4)
         console.log('stack4')
         return true
       }
@@ -983,8 +995,8 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
       }
       break;
     case 'stack5':
-      if (checkStackOrder(elem, stack5Array)) {
-        moveCards(elem, elemDiv, parent, currentArray, currentDivArray, stack5Array, stack5DivArray, 5)
+      if (checkStackOrder(elem, stack5)) {
+        moveCards(elem, elemDiv, parent, currentArray, currentDivArray, stack5, stack5Divs, 5)
         console.log('stack5')
         return true
       }
@@ -993,8 +1005,8 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
       }
       break;
     case 'stack6':
-      if (checkStackOrder(elem, stack6Array)) {
-        moveCards(elem, elemDiv, parent, currentArray, currentDivArray, stack6Array, stack6DivArray, 6)
+      if (checkStackOrder(elem, stack6)) {
+        moveCards(elem, elemDiv, parent, currentArray, currentDivArray, stack6, stack6Divs, 6)
         console.log('stack6')
         return true
       }
@@ -1003,8 +1015,8 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
       }
       break;
     case 'stack7':
-      if (checkStackOrder(elem, stack7Array)) {
-        moveCards(elem, elemDiv, parent, currentArray, currentDivArray, stack7Array, stack7DivArray, 7)
+      if (checkStackOrder(elem, stack7)) {
+        moveCards(elem, elemDiv, parent, currentArray, currentDivArray, stack7, stack7Divs, 7)
         console.log('stack7')
         return true
       }
@@ -1013,9 +1025,9 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
       }
       break; 
     case 'clubs':
-      if (checkFoundationOrder(elem, foundationClubsArray, 'clubs', currentArray)) {
+      if (checkFoundationOrder(elem, foundationClubs, 'clubs', currentArray)) {
         if (currentDivArray.indexOf(elemDiv.querySelector('.card')) == currentLength || elemDiv.parentNode == drawnCard) {
-          moveCards(elem, elemDiv, parent, currentArray, currentDivArray, foundationClubsArray, foundationClubsDivArray, 'clubs')
+          moveCards(elem, elemDiv, parent, currentArray, currentDivArray, foundationClubs, foundationClubsDivs, 'clubs')
           topCardShadow(parent.querySelectorAll('.cardDiv'), parent)
           console.log('clubStack')
           return true
@@ -1029,9 +1041,9 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
       }
       break; 
     case 'diamonds':
-      if (checkFoundationOrder(elem, foundationDiamondsArray, 'diamonds', currentArray)) {
+      if (checkFoundationOrder(elem, foundationDiamonds, 'diamonds', currentArray)) {
         if (currentDivArray.indexOf(elemDiv.querySelector('.card')) == currentLength || elemDiv.parentNode == drawnCard) {
-          moveCards(elem, elemDiv, parent, currentArray, currentDivArray, foundationDiamondsArray, foundationDiamondsDivArray, 'diamonds')
+          moveCards(elem, elemDiv, parent, currentArray, currentDivArray, foundationDiamonds, foundationDiamondsDivs, 'diamonds')
           topCardShadow(parent.querySelectorAll('.cardDiv'), parent)
           console.log('diamondStack')
           return true
@@ -1045,9 +1057,9 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
       }
       break; 
     case 'hearts':
-      if (checkFoundationOrder(elem, foundationHeartsArray, 'hearts', currentArray)) {
+      if (checkFoundationOrder(elem, foundationHearts, 'hearts', currentArray)) {
         if (currentDivArray.indexOf(elemDiv.querySelector('.card')) == currentLength || elemDiv.parentNode == drawnCard) {
-          moveCards(elem, elemDiv, parent, currentArray, currentDivArray, foundationHeartsArray, foundationHeartsDivArray, 'hearts')
+          moveCards(elem, elemDiv, parent, currentArray, currentDivArray, foundationHearts, foundationHeartsDivs, 'hearts')
           topCardShadow(parent.querySelectorAll('.cardDiv'), parent)
           console.log('clubHearts')
           return true
@@ -1062,9 +1074,9 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
       break; 
 
     case 'spades':
-      if (checkFoundationOrder(elem, foundationSpadesArray, 'spades', currentArray)) {
+      if (checkFoundationOrder(elem, foundationSpades, 'spades', currentArray)) {
         if (currentDivArray.indexOf(elemDiv.querySelector('.card')) == currentLength || elemDiv.parentNode == drawnCard) {
-          moveCards(elem, elemDiv, parent, currentArray, currentDivArray, foundationSpadesArray, foundationSpadesDivArray, 'spades')
+          moveCards(elem, elemDiv, parent, currentArray, currentDivArray, foundationSpades, foundationSpadesDivs, 'spades')
           topCardShadow(parent.querySelectorAll('.cardDiv'), parent)
           console.log('clubSpades')
           return true
@@ -1082,46 +1094,27 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
 
 
 
-function flipNextCard(cardDivArray, i) {
-  let nextCard = cardDivArray[i-1]
-  if (nextCard != undefined) {
-    if (nextCard.querySelector('.frontCard').classList.contains('hide')) {
-      addCardFlip(nextCard,nextCard.querySelector('.frontCard'), nextCard.querySelector('.backCard') )
-    }
+
+function checkWin() {
+  let foundationArrays = [foundationClubs, foundationDiamonds, foundationHearts, foundationSpades]
+  //console.log(foundationArrays[0])
+  //console.log(foundationArrays[1])
+  //console.log(foundationArrays[2])
+  //console.log(foundationArrays[3])
+  if (foundationArrays[0].length == 13 && foundationArrays[1].length == 13 && foundationArrays[2].length == 13 && foundationArrays[3].length == 13) {
+    turnNotification(`You Win! Congratulations!`, tableau, 'Play Again', 'Reset')
+    return true
+  }
+  else {
+    return false
   }
 }
 
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////  DRAG AND DROP FUNCTIONALITY (TOUCH INCLUDED)  //////////////////////
 
-function preventDrop() {
-  let cards = document.querySelectorAll('.cardDiv')
-  cards.forEach(elem => {
-    elem.addEventListener('dragover', (e) => {
-      e.preventDefault()
-    })
-  })  
-}
 
-function checkHitbox(target, touchCoord, container) {
-  if (touchCoord.x <= container.getBoundingClientRect().x + container.getBoundingClientRect().width && touchCoord.x >= container.getBoundingClientRect().x) {
-    
-    if ((touchCoord.x <= container.getBoundingClientRect().x + container.getBoundingClientRect().width) &&(touchCoord.y >= container.getBoundingClientRect().y) || (touchCoord.y >= container.getBoundingClientRect().y + container.getBoundingClientRect().height)) {
-      dropSpot = container
-      return true
-    }
-
-    else if ((touchCoord.x >= container.getBoundingClientRect().x) && (touchCoord.y >= container.getBoundingClientRect().y) || (touchCoord.y >= container.getBoundingClientRect().y + container.getBoundingClientRect().height)) {
-      dropSpot = container
-      return true
-    }
-    else {
-      return false
-    }  
-  }
-}
-
-function checkHitbox2(target, touchCoord, container) {
+function checkDropTouch(target, touchCoord, container) {
   if (touchCoord.x <= container.getBoundingClientRect().x + container.getBoundingClientRect().width && touchCoord.x >= container.getBoundingClientRect().x) {
     
     if ((touchCoord.y >= container.getBoundingClientRect().y) && (touchCoord.y <= container.getBoundingClientRect().y + container.getBoundingClientRect().height)) {
@@ -1135,7 +1128,7 @@ function checkHitbox2(target, touchCoord, container) {
 }
 
 
-function checkHitbox3(target, touchCoord, container) {
+function checkFlashTouch(target, touchCoord, container) {
   if (touchCoord.x <= container.getBoundingClientRect().x + container.getBoundingClientRect().width && touchCoord.x >= container.getBoundingClientRect().x) {
     if ((touchCoord.y >= container.getBoundingClientRect().y) && (touchCoord.y <= container.getBoundingClientRect().y + container.getBoundingClientRect().height)) { 
       if (!(container.classList.contains('flash'))) {
@@ -1152,18 +1145,18 @@ function checkHitbox3(target, touchCoord, container) {
 
 
 function createDropSpot() {
-  dropSpots = document.querySelectorAll('.cardStack')
-  dropSpots.forEach(elem => {
+  dropSpotArray = document.querySelectorAll('.cardStack')
+  dropSpotArray.forEach(elem => {
     elem.addEventListener('dragenter', (e) => {
       if (!e.target.classList.contains('cardStack')) {
-        foundationSpots.forEach(elem => {elem.classList.remove('flash4')})
-        dropSpots.forEach(elem => {elem.classList.remove('flash4')})
+        foundationSpotArray.forEach(elem => {elem.classList.remove('flash4')})
+        dropSpotArray.forEach(elem => {elem.classList.remove('flash4')})
         dropSpot = e.target.parentNode
         dropSpot.classList.add('flash4')
       }
       else{        
-          foundationSpots.forEach(elem => {elem.classList.remove('flash4')})
-          dropSpots.forEach(elem => {elem.classList.remove('flash4')})
+          foundationSpotArray.forEach(elem => {elem.classList.remove('flash4')})
+          dropSpotArray.forEach(elem => {elem.classList.remove('flash4')})
           dropSpot = e.target
           dropSpot.classList.add('flash4')
       }
@@ -1176,18 +1169,18 @@ function createDropSpot() {
     }) 
   })
 
-  foundationSpots = document.querySelectorAll('.foundationSpot')
-  foundationSpots.forEach(elem => {
+  foundationSpotArray = document.querySelectorAll('.foundationSpot')
+  foundationSpotArray.forEach(elem => {
     elem.addEventListener('dragenter', (e) => {
       if (!e.target.classList.contains('foundationSpot')) {
-        dropSpots.forEach(elem => {elem.classList.remove('flash4')})
-        foundationSpots.forEach(elem => {elem.classList.remove('flash4')})
+        dropSpotArray.forEach(elem => {elem.classList.remove('flash4')})
+        foundationSpotArray.forEach(elem => {elem.classList.remove('flash4')})
         dropSpot = e.target.parentNode
         dropSpot.classList.add('flash4')
       }
       else {  
-        dropSpots.forEach(elem => {elem.classList.remove('flash4')})
-        foundationSpots.forEach(elem => {elem.classList.remove('flash4')})
+        dropSpotArray.forEach(elem => {elem.classList.remove('flash4')})
+        foundationSpotArray.forEach(elem => {elem.classList.remove('flash4')})
         dropSpot = e.target
         dropSpot.classList.add('flash4')
       }
@@ -1218,8 +1211,8 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
       }
     }
     e.target.querySelector('.card').classList.remove('noShadow')
-    dropSpots.forEach(elem => {elem.classList.remove('flash4')})
-    foundationSpots.forEach(elem => {elem.classList.remove('flash4')})
+    dropSpotArray.forEach(elem => {elem.classList.remove('flash4')})
+    foundationSpotArray.forEach(elem => {elem.classList.remove('flash4')})
     dragTarget  = ''
   })
 
@@ -1284,8 +1277,8 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
     console.log(currentTouch)
     dragTarget.querySelector('.frontCard').classList.remove('bigger')
 
-    foundationSpots.forEach(spot => {
-      if (checkHitbox2(dragTarget, currentTouch, spot)) {
+    foundationSpotArray.forEach(spot => {
+      if (checkDropTouch(dragTarget, currentTouch, spot)) {
         if (dropSpot != dragTarget.parentNode && dropSpot != '') {
           if (getNewStackArray(dropSpot, dragTarget, cardArray, cardDivArray)) {
             dragTarget.style.opacity = 0
@@ -1309,8 +1302,8 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
       } 
     })
 
-    dropSpots.forEach(spot => {
-      if (checkHitbox2(dragTarget, currentTouch, spot)) {
+    dropSpotArray.forEach(spot => {
+      if (checkDropTouch(dragTarget, currentTouch, spot)) {
         if (getNewStackArray(dropSpot, dragTarget, cardArray, cardDivArray)) {
           dragTarget.style.opacity = 0
           dragTarget.parentNode.removeChild(dragTarget)
@@ -1339,24 +1332,35 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
   }) 
 }
 
-function checkWin() {
-  let foundationArrays = [foundationClubsArray, foundationDiamondsArray, foundationHeartsArray, foundationSpadesArray]
-  //console.log(foundationArrays[0])
-  //console.log(foundationArrays[1])
-  //console.log(foundationArrays[2])
-  //console.log(foundationArrays[3])
-  if (foundationArrays[0].length == 13 && foundationArrays[1].length == 13 && foundationArrays[2].length == 13 && foundationArrays[3].length == 13) {
-    turnNotification(`You Win! Congratulations!`, tableau, 'Play Again', 'Reset')
-    return true
+document.addEventListener('touchmove', (e) => {
+  if (e.touches.length > 1) {  
+     e.preventDefault();
   }
-  else {
-    return false
-  }
-}
+  if (clicked == true) {
+    dragTarget.style.left = (e.touches[0].clientX + offSet[0]) + 'px'
+    dragTarget.style.top = (e.touches[0].clientY+ offSet[1]) + 'px' 
+    currentTouch = {
+      x : e.changedTouches[0].clientX,
+      y : e.changedTouches[0].clientY  
+    }
+
+    //console.log(`${offSet[0]},${offSet[1]}`)
+    
+    foundationSpotArray.forEach(spot => {
+      checkFlashTouch(dragTarget, currentTouch, spot)
+    })
+    
+    dropSpotArray.forEach(spot => {
+      checkFlashTouch(dragTarget, currentTouch, spot)
+    })
+  } 
+}, { passive: false})
 
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//////////////////////  START AND RESET GAME FUNCTIONS  //////////////////////
 
 function startGame() {
   createDeck()
@@ -1365,8 +1369,8 @@ function startGame() {
 
   setTimeout(() => {
     dealSolitaire() 
-    console.log(stacks)
-    console.log(stackDivs)
+    console.log(allStacksArray)
+    console.log(allStackDivsArray)
   }, 100)
 
   setTimeout(() => {
@@ -1410,44 +1414,44 @@ function reset() {
   playerCardArray = []
   playerCardDivArray = []
 
-  stack1Array = []
-  stack2Array = []
-  stack3Array = []
-  stack4Array = []
-  stack5Array = []
-  stack6Array = []
-  stack7Array = []
-  dropSpots = []
+  stack1 = []
+  stack2 = []
+  stack3 = []
+  stack4 = []
+  stack5 = []
+  stack6 = []
+  stack7 = []
+  dropSpotArray = []
   dropSpot = ''
-  foundationSpots = []
+  foundationSpotArray = []
   foundationSpot = ''
 
 
-  stack1DivArray = []
-  stack2DivArray = []
-  stack3DivArray = []
-  stack4DivArray = []
-  stack5DivArray = []
-  stack6DivArray = []
-  stack7DivArray = []
+  stack1Divs = []
+  stack2Divs = []
+  stack3Divs = []
+  stack4Divs = []
+  stack5Divs = []
+  stack6Divs = []
+  stack7Divs = []
 
   drawnCardsArray = []
   drawnCardsDivArray = []
   currentDrawnCards = []
   drawnCount = 0
 
-  foundationClubsArray = []
-  foundationDiamondsArray = []
-  foundationHeartsArray = []
-  foundationSpadesArray = []
+  foundationClubs = []
+  foundationDiamonds = []
+  foundationHearts = []
+  foundationSpades = []
 
-  foundationClubsDivArray = []
-  foundationDiamondsDivArray = []
-  foundationHeartsDivArray = []
-  foundationSpadesDivArray = []
+  foundationClubsDivs = []
+  foundationDiamondsDivs = []
+  foundationHeartsDivs = []
+  foundationSpadesDivs = []
 
-  stacks = [stack1Array, stack2Array, stack3Array, stack4Array, stack5Array, stack6Array, stack7Array]
-  stackDivs =  [stack1DivArray, stack2DivArray, stack3DivArray, stack4DivArray, stack5DivArray, stack6DivArray, stack7DivArray]
+  allStacksArray = [stack1, stack2, stack3, stack4, stack5, stack6, stack7]
+  allStackDivsArray =  [stack1Divs, stack2Divs, stack3Divs, stack4Divs, stack5Divs, stack6Divs, stack7Divs]
   
   const cardTempTableau = tableau.querySelector('.cardDiv')
   const cardTempDeck= deckDiv.querySelector('.cardDiv')
@@ -1476,13 +1480,9 @@ function reset() {
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//////////////////////  BUTTON AND WINDOW EVENTS //////////////////////
 
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 drawBtn.addEventListener('click', (e) => {
   if (playerTurn == true){
@@ -1490,29 +1490,6 @@ drawBtn.addEventListener('click', (e) => {
   }
 })
 
-document.addEventListener('touchmove', (e) => {
-      if (e.touches.length > 1) {  
-         e.preventDefault();
-      }
-      if (clicked == true) {
-        dragTarget.style.left = (e.touches[0].clientX + offSet[0]) + 'px'
-        dragTarget.style.top = (e.touches[0].clientY+ offSet[1]) + 'px' 
-        currentTouch = {
-          x : e.changedTouches[0].clientX,
-          y : e.changedTouches[0].clientY  
-        }
-
-        //console.log(`${offSet[0]},${offSet[1]}`)
-        
-        foundationSpots.forEach(spot => {
-          checkHitbox3(dragTarget, currentTouch, spot)
-        })
-        
-        dropSpots.forEach(spot => {
-          checkHitbox3(dragTarget, currentTouch, spot)
-        })
-      } 
-}, { passive: false})
 
 window.addEventListener('load', (e) => {
   startGameButton()
@@ -1521,7 +1498,6 @@ window.addEventListener('load', (e) => {
 window.addEventListener('selectstart', (e) => {
   e.preventDefault();
 })
-
 
 resetButton.addEventListener('click', (e) => {
   if (playerTurn == true) {
