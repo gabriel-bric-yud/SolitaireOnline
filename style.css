@@ -1,3 +1,6 @@
+/****************  BASIC ELEMENTS ****************/  
+
+
 body {
   display: grid;
   background-color: rgb(0, 0, 35);
@@ -16,14 +19,7 @@ body {
 }
 
 
-button {
-  padding: 10px;
-  border-radius: 5px;
-  width: 7ch;
-  margin: 3px;
-  font-size: 30px;
-  background-color: #f0f0f0;
-}
+
 
 
 .hide {
@@ -35,15 +31,25 @@ button {
 }
 
 
+/****************  TITLE AND BUTTON ELEMENTS  ****************/  
 
-/********************************************************************************************************************************/
+
+button {
+  padding: 10px;
+  border-radius: 5px;
+  width: 7ch;
+  margin: 3px;
+  font-size: 30px;
+  background-color: #f0f0f0;
+}
 
 .titleDiv {
   display: grid;
   width: fit-content;
   height: fit-content;
-  min-height: 70px;
+  min-height: 60px;
   margin: 0 auto;
+  margin-top: 10px;
   padding: 0px;
   color: white;
   text-align: center;
@@ -58,25 +64,12 @@ button {
 .titleDiv span {
   margin: 0 auto;
   font-family: 'Bungee Spice', cursive;
-  font-size: 2em;
+  font-size: 35px;
   height: 2ch;
   display: inline-block;
   transition: transform .5s;
   /**transform-style: preserve-3d;*/
-}
-  
-
-#board {
-  position: relative;
-  display: grid;
-  width: 90vw; /**320*/
-  height: 575px;
-  justify-self: center;
-  background-color: green;
-  margin: 0 auto;
-  border-radius: 20px;
-  border: 10px ridge burlywood;
-}
+} 
 
 
 .startGame {
@@ -105,7 +98,22 @@ button {
   top: -11%;
 }
 
-/********************************************************************************************************************************/
+
+/****************  BOARD ELEMENTS  ****************/  
+
+
+#board {
+  position: relative;
+  display: grid;
+  width: 90vw; /**320*/
+  height: 575px;
+  justify-self: center;
+  background-color: green;
+  margin: 0 auto;
+  border-radius: 20px;
+  border: 10px ridge burlywood;
+}
+
 #topBoard {
   display: grid;
   grid-template-columns: 2fr 4fr;
@@ -187,7 +195,8 @@ button {
 }
 
 
-/********************************************************************************************************************************/
+/****************  CARD ELEMENTS  ****************/  
+
 
 .cardPlaceHolder {
   display: grid;
@@ -203,6 +212,12 @@ button {
   align-content: center;
   align-items: center;
 }
+
+.foundationSpot {
+  width: 56px;
+  height: 80px;
+}
+
 
 .cardDiv {
   position: absolute;
@@ -265,7 +280,10 @@ button {
   background-color: rgb(2,0,36);
   background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%,     rgba(0,212,255,1) 100%); 
 }
-  
+
+
+/****************  CARD ROTATION ELEMENTS  ****************/  
+
 
 @keyframes rotateY {
   100% {rotate: y 180deg }
@@ -288,7 +306,9 @@ button {
   box-shadow: none;
 }
 
-/***********************************************************************************************************/
+
+
+/****************  LABEL ELEMENTS  ****************/  
 
 
 .top {
@@ -355,8 +375,7 @@ button {
 }
 
 
-/********************************************************************************************************************************/
-
+/****************  NOTIFICATTION ELEMENTS  ****************/  
 
 
 .message, .turnMessage {
@@ -433,7 +452,10 @@ button {
   transform:none;
 }
 
-/********************************************************************************************************************************/
+
+/****************  GLOWING ANIMATIONS ****************/  
+
+
 
 @keyframes glowing1 {
   0% {  box-shadow: 0 0 3px white; }
@@ -477,6 +499,8 @@ button {
 }
 
 
+/****************  MEDIA QUERIES ****************/  
+
 @media (max-width: 420px) { 
   #board {
     width: 370px
@@ -493,7 +517,7 @@ button {
   }
 
   .foundationSpot {
-    width: 46px;
+    width: 50px;
     height: 69px;
   }
 
@@ -525,7 +549,6 @@ button {
 }
 
 
-
 @media (min-width: 700px) {
   #board {
     width: 680px
@@ -542,7 +565,7 @@ button {
   }
 
   .foundationSpot {
-    width: 69px;
+    width: 73px;
     height: 103.5px;
   }
 
@@ -574,7 +597,7 @@ button {
   }
 
   #reset {
-    top: -11%;
+    top: -12%;
   }
 
   .titleDiv span {
@@ -608,6 +631,10 @@ button {
   }
   
 }
+
+
+/****************  NO LANDSCAPE MODE  ****************/  
+
 
 .noLandscape {
   transform: rotate(-90deg) !important;
@@ -661,5 +688,4 @@ button {
   font-size: 2em !important;
   height: 2ch !important;
 }
-
 
