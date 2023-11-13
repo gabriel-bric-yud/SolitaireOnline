@@ -22,9 +22,6 @@ const resetButton = document.getElementById('reset')
 
 
 let deck = []
-let playerCardArray = []
-let playerCardDivArray = []
-
 
 let stack1 = []
 let stack2 = []
@@ -54,8 +51,8 @@ let foundationSpadesDivs = []
 
 
 let currentDrawnCards = []
-let drawnCardsArray = []
-let drawnCardsDivArray = []
+let drawnCards = []
+let drawnCardDivs = []
 
 let allStacksArray = [stack1, stack2, stack3, stack4, stack5, stack6, stack7]
 let allStackDivsArray=  [stack1Divs, stack2Divs, stack3Divs, stack4Divs, stack5Divs, stack6Divs, stack7Divs]
@@ -374,30 +371,30 @@ function loadCardRank(deckArray, cardDiv, cardArray, cardDivArray) {
     removeFromDeck(randomCard, deckArray)
   }
   else {
-    cardDiv.setAttribute('id', `${drawnCardsArray[drawnCount].rank}of${drawnCardsArray[drawnCount].suit}`)
-    cardDiv.dataset.rank = drawnCardsArray[drawnCount].rank
-    cardDiv.dataset.suit = drawnCardsArray[drawnCount].suit
-    drawnCardsArray.splice(drawnCount, 1, {rank: drawnCardsArray[drawnCount].rank, suit: drawnCardsArray[drawnCount].suit })
-    drawnCardsDivArray.splice(drawnCount, 1, cardDiv)
-    switch(drawnCardsArray[drawnCount].suit) {
+    cardDiv.setAttribute('id', `${drawnCards[drawnCount].rank}of${drawnCards[drawnCount].suit}`)
+    cardDiv.dataset.rank = drawnCards[drawnCount].rank
+    cardDiv.dataset.suit = drawnCards[drawnCount].suit
+    drawnCards.splice(drawnCount, 1, {rank: drawnCards[drawnCount].rank, suit: drawnCards[drawnCount].suit })
+    drawnCardDivs.splice(drawnCount, 1, cardDiv)
+    switch(drawnCards[drawnCount].suit) {
       case 'spades':
-        changeCardLabel(`${drawnCardsArray[drawnCount].rank}&#9824`, 'black', cardLabels);
+        changeCardLabel(`${drawnCards[drawnCount].rank}&#9824`, 'black', cardLabels);
         break;
       case 'clubs':
-        changeCardLabel(`${drawnCardsArray[drawnCount].rank}&#9827;`, 'black', cardLabels);
+        changeCardLabel(`${drawnCards[drawnCount].rank}&#9827;`, 'black', cardLabels);
         break;
       case 'hearts':
-        changeCardLabel(`${drawnCardsArray[drawnCount].rank}&#9829;`, 'red', cardLabels);
+        changeCardLabel(`${drawnCards[drawnCount].rank}&#9829;`, 'red', cardLabels);
         break;
       case 'diamonds':
-        changeCardLabel(`${drawnCardsArray[drawnCount].rank}&#9830;`, 'red', cardLabels);
+        changeCardLabel(`${drawnCards[drawnCount].rank}&#9830;`, 'red', cardLabels);
         break;
     }
     
     
     drawnCount++
 
-    if (drawnCount >= drawnCardsArray.length) {
+    if (drawnCount >= drawnCards.length) {
       drawnCount = 0
     }
     console.log(drawnCount)
@@ -551,7 +548,7 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, cardDivArray, f
     }, 200)
 
     if (flipBool)  {
-        if (drawnCardsArray.length == 1 || (deck.length == 0 && drawnCount == 1)) {
+        if (drawnCards.length == 1 || (deck.length == 0 && drawnCount == 1)) {
           addCardFlip(newCard.querySelector('.card'), newCard.querySelector('.frontCard'), newCard.querySelector('.backCard'))
         }
         else {
@@ -590,7 +587,7 @@ function deal() {
   if (deck.length > 0) {
     setTimeout(() => {
       dealCount = 0
-      dealCards(1, 0, drawnCard, drawnCardsArray, drawnCardsDivArray, true)
+      dealCards(1, 0, drawnCard, drawnCards, drawnCardDivs, true)
       console.log(deck.length)
     }, 100)  
   }
@@ -601,16 +598,16 @@ function deal() {
     }
     setTimeout(() => {
       dealCount = 0
-      dealCards(1, 0, drawnCard, drawnCardsArray, drawnCardsDivArray, true)
-      console.log(drawnCardsDivArray)
+      dealCards(1, 0, drawnCard, drawnCards, drawnCardDivs, true)
+      console.log(drawnCardDivs)
     }, 100)
 
   }
   else {
     setTimeout(() => {
       dealCount = 0
-      dealCards(1, 0, drawnCard, drawnCardsArray, drawnCardsDivArray, true)
-      console.log(drawnCardsDivArray)
+      dealCards(1, 0, drawnCard, drawnCards, drawnCardDivs, true)
+      console.log(drawnCardDivs)
     }, 100)
   }
 }
@@ -727,7 +724,7 @@ function removeFromStackArray(elem, elemDiv, cardArray, cardDivArray) {
   if (elemDiv.dataset.stack == undefined) {
     cardArray.splice(cardArray.indexOf(elem), 1);
     cardDivArray.splice(cardDivArray.indexOf(elemDiv), 1);
-    if (cardDivArray == drawnCardsDivArray) {
+    if (cardDivArray == drawnCardDivs) {
       drawnCount--
       console.log(`drawncount minus 1 = ${drawnCount}`)
       if (drawnCount < 0) {
@@ -783,8 +780,8 @@ function removeFromStackArray(elem, elemDiv, cardArray, cardDivArray) {
         break;
         
       case 'drawnCard':
-        drawnCardsArray.splice(drawnCardsArray.indexOf(elem), 1);
-        drawnCardsDivArray.splice(drawnCardsDivArray.indexOf(elemDiv), 1);
+        drawnCards.splice(drawnCards.indexOf(elem), 1);
+        drawnCardDivs.splice(drawnCardDivs.indexOf(elemDiv), 1);
         drawnCount--
         console.log(`drawncount minus 1 = ${drawnCount}`)
         if (drawnCount < 0) {
@@ -851,7 +848,7 @@ function getCurrentArray(elemDiv, cardArray, cardDivArray) {
         return [foundationSpades, foundationSpadesDivs]
         break;
       case 'drawnCard':
-        return [drawnCardsArray, drawnCardsDivArray]
+        return [drawnCards, drawnCardDivs]
         break;
       case undefined:
         return [cardArray, cardDivArray]
@@ -896,7 +893,7 @@ function getCurrentArray2(elemDiv) {
       return [foundationSpades, foundationSpadesDivs]
       break;
     case 'drawnCard':
-      return [drawnCardsArray, drawnCardsDivArray]
+      return [drawnCards, drawnCardDivs]
       break;
     case undefined:
       return [cardArray, cardDivArray]
@@ -912,7 +909,7 @@ function moveCards(elem, elemDiv, parent, cardArray, divArray, newCardArray, new
   let moveDivArray = []
 
 
-  if (divArray == drawnCardsDivArray) {
+  if (divArray == drawnCardDivs) {
     card = cardArray[divArray.indexOf(elemDiv.querySelector('.card'))]
     cardDiv = divArray[divArray.indexOf(elemDiv.querySelector('.card'))]
     moveArray.push(cardArray[divArray.indexOf(elemDiv.querySelector('.card'))])
@@ -1411,8 +1408,6 @@ function reset() {
   playerTurn = false
 
   deck = []
-  playerCardArray = []
-  playerCardDivArray = []
 
   stack1 = []
   stack2 = []
@@ -1421,11 +1416,6 @@ function reset() {
   stack5 = []
   stack6 = []
   stack7 = []
-  dropSpotArray = []
-  dropSpot = ''
-  foundationSpotArray = []
-  foundationSpot = ''
-
 
   stack1Divs = []
   stack2Divs = []
@@ -1434,11 +1424,6 @@ function reset() {
   stack5Divs = []
   stack6Divs = []
   stack7Divs = []
-
-  drawnCardsArray = []
-  drawnCardsDivArray = []
-  currentDrawnCards = []
-  drawnCount = 0
 
   foundationClubs = []
   foundationDiamonds = []
@@ -1449,6 +1434,16 @@ function reset() {
   foundationDiamondsDivs = []
   foundationHeartsDivs = []
   foundationSpadesDivs = []
+
+  drawnCards = []
+  drawnCardDivs = []
+  currentDrawnCards = []
+  drawnCount = 0
+
+  dropSpotArray = []
+  dropSpot = ''
+  foundationSpotArray = []
+  foundationSpot = ''
 
   allStacksArray = [stack1, stack2, stack3, stack4, stack5, stack6, stack7]
   allStackDivsArray =  [stack1Divs, stack2Divs, stack3Divs, stack4Divs, stack5Divs, stack6Divs, stack7Divs]
