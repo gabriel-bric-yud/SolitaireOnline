@@ -49,7 +49,6 @@ let foundationDiamondsDivs = []
 let foundationHeartsDivs = []
 let foundationSpadesDivs = []
 
-
 let currentDrawnCards = []
 let drawnCards = []
 let drawnCardDivs = []
@@ -62,7 +61,6 @@ let cardIndex = 1000
 let currentIndex
 let drawnCount = 0
 let dealCount = 0
-
 
 let clicked = false
 let clickable = false
@@ -77,7 +75,6 @@ let foundationSpot = ''
 let foundationSpotArray 
 let targetTop
 let targetRight
-
 
 
 //////////////////////  NOTIFICATION FUNCTIONS //////////////////////
