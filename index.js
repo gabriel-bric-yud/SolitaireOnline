@@ -35,6 +35,8 @@ let foundationSpadesDivArray = []
 let currentDrawnCards = []
 let drawnCardsArray = []
 let drawnCardsDivArray = []
+let currentDivArray
+let extraCardsArray
 let drawnCount = 0
 let dealCount = 0
 
@@ -44,6 +46,7 @@ let stackDivs=  [stack1DivArray, stack2DivArray, stack3DivArray, stack4DivArray,
 let cardCount = 0
 let cardIndex = 1000
 let currentIndex
+let offSet
 
 let dragTarget
 let dropSpots
@@ -56,6 +59,7 @@ let targetRight
 let clicked = false
 let clickable = false
 let playerTurn = true
+let extraCards = false
 
 const boardWidth = 252
 const cardWidth = boardWidth/7
@@ -131,7 +135,7 @@ function turnNotification(msgText, parent, acceptText, rejectText, colorData) {
   setTimeout(() => {
     fadeIn(messageDiv, .05, 20)
     slideIn(messageDiv, position - 20, position, 'bottom', 1)
-  },1000)
+  },300)
 
 }
 
@@ -377,7 +381,7 @@ function loadCardRank(deckArray, cardDiv, cardArray, cardDivArray) {
     drawnCardsDivArray.splice(drawnCount, 1, cardDiv)
     switch(drawnCardsArray[drawnCount].suit) {
       case 'spades':
-      changeCardLabel(`${drawnCardsArray[drawnCount].rank}&#9824`, 'black', cardLabels);
+        changeCardLabel(`${drawnCardsArray[drawnCount].rank}&#9824`, 'black', cardLabels);
         break;
       case 'clubs':
         changeCardLabel(`${drawnCardsArray[drawnCount].rank}&#9827;`, 'black', cardLabels);
@@ -420,29 +424,20 @@ function createCard(deckArray, width, height, parent, cardArray, cardDivArray) {
   card.classList.add('card');
 
   const frontOfCard = document.createElement('div')
-  frontOfCard.classList.add('frontCard')
-  frontOfCard.classList.add('hide')
+  
   const labelFrame = document.createElement('div')
   labelFrame.classList.add('labelFrame')
 
-  if (width > 40) {
-    createCardLabel('top', frontOfCard, labelFrame)
-    createCardLabel('center', frontOfCard, labelFrame)
-    createCardLabel('bottom', frontOfCard, labelFrame)
-  }
-  else {
-    createCardLabel('top', frontOfCard, labelFrame)
-    createCardLabel('bottom', frontOfCard, labelFrame)
-  }
+  createCardLabel('top', frontOfCard, labelFrame)
+  createCardLabel('bottom', frontOfCard, labelFrame)
   
   const backOfCard = document.createElement('div')
-  backOfCard.classList.add('backCard')
-  backOfCard.classList.add('show')
+  
 
-  frontOfCard.style.width = `${width}px`;
-  frontOfCard.style.height = `${height}px`;
-  backOfCard.style.width = `${width}px`;
-  backOfCard.style.height = `${height}px`;
+  //frontOfCard.style.width = `${width}px`;
+  //frontOfCard.style.height = `${height}px`;
+  //backOfCard.style.width = `${width}px`;
+  //backOfCard.style.height = `${height}px`;
   card.classList.add(`c${cardCount}`)
   card.appendChild(frontOfCard)
   card.appendChild(backOfCard)
@@ -455,14 +450,14 @@ function createCard(deckArray, width, height, parent, cardArray, cardDivArray) {
   cardDiv.classList.add('cardDiv')
   cardDiv.style.opacity = 0
   cardDiv.appendChild(card)
+  frontOfCard.classList.add('frontCard')
+  frontOfCard.classList.add('hide')
+  backOfCard.classList.add('backCard')
+  backOfCard.classList.add('show')
   cardDiv.style.pointerEvents = 'none'
   parent.appendChild(cardDiv)
 
   loadCardRank(deckArray, card, cardArray, cardDivArray)
-
-  //if (deck.length > 0 && drawnCount <= 0) {
-    //cardDivArray.push(card)
-  //}
   
   return cardDiv
 }
@@ -507,7 +502,7 @@ function positionCardsBottom(cardDivArray, i) {
   cardDivArray.forEach(elem => {
     if (i > 0) {
       //let position = getComputedStyle(elem.parentNode).left.replace('px', '')   
-      let endPosition1 = (cardHeight/2 * cardDivArray.indexOf(elem))
+      let endPosition1 = (cardHeight/1.6 * cardDivArray.indexOf(elem))
       slideIn(elem.parentNode, endPosition1 + 150, endPosition1, 'top', -10)
     }
     else {
@@ -519,7 +514,7 @@ function positionCardsBottom(cardDivArray, i) {
 
 
 function positionCard(cardDiv, cardDivArray) {
-    let endPosition1 = (cardHeight/2 * cardDivArray.indexOf(cardDiv.querySelector('.card')))
+    let endPosition1 = (cardHeight/1.6 * cardDivArray.indexOf(cardDiv.querySelector('.card')))
     slideIn(cardDiv, endPosition1 + .1, endPosition1, 'top', -.1)
 }
 
@@ -535,25 +530,29 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, cardDivArray, f
     newCard = createCard(deck, cardWidth,cardHeight, parent, cardArray, cardDivArray)
     setTimeout(() => {
       fadeIn(newCard, .05, 20)
-      if (parent == drawnCard) {
-        slideIn(newCard, 50, 5, 'right', -2.5)
+      if (parent == drawnCard ) {
+        slideIn(newCard, 50, 0, 'right', -2.5)
       }
       else {
-      positionCardsBottom(cardDivArray, i)
+        positionCardsBottom(cardDivArray, i)
       }
-    }, 100)
-    
-    setTimeout(() => {
-      if (flipBool) {
-        addCardFlip(newCard.querySelector('.card'), newCard.querySelector('.frontCard'), newCard.querySelector('.backCard'))
-      }
-    }, 100)
+    }, 200)
 
-    setTimeout(() => {
-      createDraggable(newCard, cardArray, cardDivArray, i)
-    }, 1099)
-  
-  }
+    if (flipBool)  {
+        if (drawnCardsArray.length == 1 || (deck.length == 0 && drawnCount == 1)) {
+          addCardFlip(newCard.querySelector('.card'), newCard.querySelector('.frontCard'), newCard.querySelector('.backCard'))
+        }
+        else {
+          setTimeout(() => {
+            addCardFlip(newCard.querySelector('.card'), newCard.querySelector('.frontCard'), newCard.querySelector('.backCard'))
+          }, 300)           
+        }
+      }
+
+      setTimeout(() => {
+        createDraggable(newCard, cardArray, cardDivArray, i)
+      }, 1099)
+    }  
 }
 
 function dealSolitaire() {
@@ -802,9 +801,9 @@ function changeArrays(elem, elemDiv, stackArray, stackDivArray, num) {
 }
 
 function getCurrentArray(elemDiv, cardArray, cardDivArray) {
-    //console.log('current arrays: ')
-    //console.log(cardArray)
-    //console.log(cardDivArray)
+    console.log('current arrays: ')
+    console.log(cardArray)
+    console.log(cardDivArray)
     switch(elemDiv.dataset.stack) {
       case '1':
         return [stack1Array, stack1DivArray]
@@ -846,6 +845,51 @@ function getCurrentArray(elemDiv, cardArray, cardDivArray) {
         return [cardArray, cardDivArray]
         break;
     }
+}
+
+
+function getCurrentArray2(elemDiv) {
+  switch(elemDiv.parentNode.id) {
+    case 'stack1':
+      return [stack1Array, stack1DivArray]
+      break;
+    case 'stack2':
+      return [stack2Array, stack2DivArray]
+      break;
+    case 'stack3':
+      return [stack3Array, stack3DivArray]
+      break;
+    case 'stack4':
+      return [stack4Array, stack4DivArray]
+      break;
+    case 'stack5':
+      return [stack5Array, stack5DivArray]
+      break;
+    case 'stack6':
+      return [stack6Array, stack6DivArray]
+      break;
+    case 'stack7':
+      return [stack7Array, stack7DivArray]
+      break;
+    case 'clubs':
+      return [foundationClubsArray, foundationClubsDivArray]
+      break;
+    case 'diamonds':
+      return [foundationDiamondsArray, foundationDiamondsDivArray]
+      break; 
+    case 'hearts':
+      return [foundationHeartsArray, foundationHeartsDivArray]
+      break;
+    case 'spades':
+      return [foundationSpadesArray, foundationSpadesDivArray]
+      break;
+    case 'drawnCard':
+      return [drawnCardsArray, drawnCardsDivArray]
+      break;
+    case undefined:
+      return [cardArray, cardDivArray]
+      break;
+  }
 }
 
 
@@ -1093,12 +1137,15 @@ function checkHitbox2(target, touchCoord, container) {
 
 function checkHitbox3(target, touchCoord, container) {
   if (touchCoord.x <= container.getBoundingClientRect().x + container.getBoundingClientRect().width && touchCoord.x >= container.getBoundingClientRect().x) {
-    if ((touchCoord.y >= container.getBoundingClientRect().y) && (touchCoord.y <= container.getBoundingClientRect().y + container.getBoundingClientRect().height)) {
-      document.querySelectorAll('.stack').forEach(item => {
-        item.classList.remove('flash')
+    if ((touchCoord.y >= container.getBoundingClientRect().y) && (touchCoord.y <= container.getBoundingClientRect().y + container.getBoundingClientRect().height)) { 
+      if (!(container.classList.contains('flash'))) {
+        document.querySelectorAll('.stack').forEach(item => {
+          item.classList.remove('flash')
+        })
         dropSpot = container
-      })
-      container.classList.add('flash')
+        container.classList.add('flash')
+      }
+      
     }
   }
 }
@@ -1178,22 +1225,56 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
 
 
   elem.addEventListener('touchstart', (e) => {
-    dragTarget = e.target;
-    currentIndex = dragTarget.style.zIndex
-    dragTarget.style.zIndex = 9999
-    targetTop = dragTarget.style.top
-    targetRight = dragTarget.style.right
-    dragTarget.style.removeProperty('right')
-    console.log(targetTop)
-    offSet = [dragTarget.offsetLeft - e.touches[0].clientX, dragTarget.offsetTop - e.touches[0].clientY]
-    clicked = true  
+    e.preventDefault()
+    if (e.touches.length > 1) {  
+      e.preventDefault();
+    }
+    if (!clicked) {
+      dragTarget = e.target;
+      currentStack = dragTarget.parentNode  
+      currentIndex = dragTarget.style.zIndex
+      dragTarget.style.zIndex = 9999
+      targetTop = dragTarget.style.top
+      targetRight = dragTarget.style.right 
+      dragTarget.style.removeProperty('left')
+      dragTarget.style.removeProperty('top')
+      dragTarget.style.removeProperty('right')
 
+      dragTarget.querySelector('frontCard').classList.add('bigger')
+      console.log(window.screenY)
+      console.log(window.screenTop)
+      //offSet = [dragTarget.offsetLeft - e.touches[0].clientX, dragTarget.offsetTop - e.touches[0].clientY]  //#offSet in cardStack
+      //dragTarget.style.left = e.touches[0].clientX - (dragTarget.offsetWidth/2) + 'px'
+      //dragTarget.style.top = e.touches[0].clientY  - (dragTarget.offsetHeight/2) + 'px'
+  
+      dragTarget.style.left = (e.touches[0].clientX) - (dragTarget.offsetWidth/2) + window.scrollX + 'px'
+      dragTarget.style.top = (e.touches[0].clientY) - (dragTarget.offsetHeight/1.2) + window.scrollY + 'px'
+      document.body.appendChild(dragTarget)
+    
+      offSet = [dragTarget.offsetLeft - e.touches[0].clientX, dragTarget.offsetTop - e.touches[0].clientY]
+      
+      clicked = true 
+    
+    }
+    /**
+    if (!clicked) {
+      dragTarget = e.target;
+      currentIndex = dragTarget.style.zIndex
+      dragTarget.style.zIndex = 9999
+      targetTop = dragTarget.style.top
+      targetRight = dragTarget.style.right
+      dragTarget.style.removeProperty('right')
+      console.log(targetTop)
+      offSet = [dragTarget.offsetLeft - e.touches[0].clientX, dragTarget.offsetTop - e.touches[0].clientY]
+      clicked = true 
+    }
+    */
     console.log('offset is:')
     console.log(offSet)
     console.log('dragTarget is:')
     console.log(dragTarget)
-  })
-  
+  }, { passive: false})
+
   elem.addEventListener('touchend', (e) => { 
     clicked = false;
     currentTouch = {
@@ -1201,6 +1282,7 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
         y : e.changedTouches[0].clientY
     };
     console.log(currentTouch)
+    dragTarget.querySelector('frontCard').classList.remove('bigger')
 
     foundationSpots.forEach(spot => {
       if (checkHitbox2(dragTarget, currentTouch, spot)) {
@@ -1218,10 +1300,12 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
         }
       }
       else {
+        currentStack.appendChild(dragTarget)
         dragTarget.style.removeProperty('left')
         dragTarget.style.right = targetRight
         dragTarget.style.top = targetTop
         dragTarget.style.zIndex = currentIndex
+        
       } 
     })
 
@@ -1238,7 +1322,9 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
         }
       }
       else {
+        currentStack.appendChild(dragTarget)
         dragTarget.style.removeProperty('left')
+        dragTarget.style.right = targetRight
         dragTarget.style.top = targetTop
         dragTarget.style.zIndex = currentIndex
       } 
@@ -1250,28 +1336,7 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
     document.querySelectorAll('.stack').forEach(item => {
       item.classList.remove('flash')
     })
-  })
-
-  
-  document.addEventListener('touchmove', (e) => {
-    if (clicked == true) {
-      dragTarget.style.left = (e.touches[0].clientX + offSet[0]) + 'px'
-      dragTarget.style.top = (e.touches[0].clientY+ offSet[1]) + 'px' 
-      currentTouch = {
-        x : e.changedTouches[0].clientX,
-        y : e.changedTouches[0].clientY
-      }
-    }
-
-    foundationSpots.forEach(spot => {
-      checkHitbox3(dragTarget, currentTouch, spot)
-    })
-
-    dropSpots.forEach(spot => {
-      checkHitbox3(dragTarget, currentTouch, spot)
-    })
-
-  })
+  }) 
 }
 
 function checkWin() {
@@ -1316,6 +1381,7 @@ function startGameButton() {
   startGameBtn.innerHTML = 'Start New Game?'
   startGameBtn.style.opacity = 0
   board.appendChild(startGameBtn)
+  resetButton.style.display = 'none'
   playerTurn = false
   
   setTimeout(() => {
@@ -1325,6 +1391,7 @@ function startGameButton() {
     startGameBtn.addEventListener('click', (e) => {
       startGame()
       startGameBtn.remove()
+      resetButton.style.display = 'grid'
     })
 
   }, 600 )
@@ -1423,6 +1490,30 @@ drawBtn.addEventListener('click', (e) => {
   }
 })
 
+document.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 1) {  
+         e.preventDefault();
+      }
+      if (clicked == true) {
+        dragTarget.style.left = (e.touches[0].clientX + offSet[0]) + 'px'
+        dragTarget.style.top = (e.touches[0].clientY+ offSet[1]) + 'px' 
+        currentTouch = {
+          x : e.changedTouches[0].clientX,
+          y : e.changedTouches[0].clientY  
+        }
+
+        //console.log(`${offSet[0]},${offSet[1]}`)
+        
+        foundationSpots.forEach(spot => {
+          checkHitbox3(dragTarget, currentTouch, spot)
+        })
+        
+        dropSpots.forEach(spot => {
+          checkHitbox3(dragTarget, currentTouch, spot)
+        })
+      } 
+}, { passive: false})
+
 window.addEventListener('load', (e) => {
   startGameButton()
 }) 
@@ -1438,10 +1529,3 @@ resetButton.addEventListener('click', (e) => {
     startGameButton()
   }
 })
-
-
-
-// heart = &#9829
-// diamond = &#9830
-// spade = &#9824
-// club = &#9827 !!
