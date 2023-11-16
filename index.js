@@ -1226,7 +1226,7 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
       console.log(currentDragtargetArray)
       console.log(currentDragtargetArray.length)
       console.log(dragInfo[0])
-      if (currentDragtargetArray.indexOf(dragTarget.querySelector('.card')) != currentDragtargetArray.length - 1) {
+      if (currentDragtargetArray.indexOf(dragTarget.querySelector('.card')) != currentDragtargetArray.length - 1 && dragTarget.parentNode != drawnCard) {
         console.log(true)
         for (let i = currentDragtargetArray.indexOf(dragTarget.querySelector('.card')) + 1; i < currentDragtargetArray.length; i++) {
           indexCounter++
