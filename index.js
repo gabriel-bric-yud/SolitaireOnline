@@ -54,7 +54,7 @@ let drawnCards = []
 let drawnCardDivs = []
 
 let allStacksArray = [stack1, stack2, stack3, stack4, stack5, stack6, stack7]
-let allStackDivsArray=  [stack1Divs, stack2Divs, stack3Divs, stack4Divs, stack5Divs, stack6Divs, stack7Divs]
+let allStackDivsArray=  [stack1Divs, stack2Divs, stack3Divs, stack4Divs, stack5Divs, stack6Divs, stack7Divs] 
 
 let cardCount = 0
 let cardIndex = 1000
@@ -69,10 +69,12 @@ let extraCards = false
 
 let offSet
 let dragTarget
+let dragArray = []
 let dropSpot = ''
 let dropSpotArray
 let foundationSpot = ''
-let foundationSpotArray 
+let foundationSpotArray
+let allDropSpots = []
 let targetTop
 let targetRight
 
@@ -497,7 +499,7 @@ function positionCardsLeft(cardDivArray, i) {
       let endPosition = ((cardSpace) * cardDivArray.indexOf(elem))
       slideIn(elem.parentNode, endPosition + 5, endPosition, 'left', -1)
       const labels = elem.querySelectorAll('.cardLabel')
-      labels.forEach(label => label.style.fontSize = '1.5cqb')
+      
     })
   }
 }
@@ -507,7 +509,7 @@ function positionCardsBottom(cardDivArray, i) {
   cardDivArray.forEach(elem => {
     if (i > 0) {
       //let position = getComputedStyle(elem.parentNode).left.replace('px', '')   
-      let endPosition1 = (cardHeight/1.6 * cardDivArray.indexOf(elem))
+      let endPosition1 = (cardHeight/1.45 * cardDivArray.indexOf(elem))
       slideIn(elem.parentNode, endPosition1 + 150, endPosition1, 'top', -10)
     }
     else {
@@ -519,7 +521,7 @@ function positionCardsBottom(cardDivArray, i) {
 
 
 function positionCard(cardDiv, cardDivArray) {
-    let endPosition1 = (cardHeight/1.6 * cardDivArray.indexOf(cardDiv.querySelector('.card')))
+    let endPosition1 = (cardHeight/1.45 * cardDivArray.indexOf(cardDiv.querySelector('.card')))
     slideIn(cardDiv, endPosition1 + .1, endPosition1, 'top', -.1)
 }
 
@@ -795,8 +797,8 @@ function changeArrays(elem, elemDiv, stackArray, stackDivArray, num) {
   stackArray.push(elem);
   stackDivArray.push(elemDiv.querySelector('.card'));
   console.log('new arrays: ')
-    console.log(stackArray)
-    console.log(stackDivArray)
+  console.log(stackArray)
+  console.log(stackDivArray)
   if (typeof num == 'number') {
     positionCard(elemDiv, stackDivArray)
   }
@@ -932,6 +934,8 @@ function moveCards(elem, elemDiv, parent, cardArray, divArray, newCardArray, new
         cardIndex++
         cardDiv.parentNode.style.zIndex = cardIndex
         cardDiv.parentNode.style.opacity = 0
+        cardDiv.parentNode.style.removeProperty('left')
+        cardDiv.querySelector('.frontCard').classList.remove('bigger')
         parent.appendChild(cardDiv.parentNode)
         fadeIn(cardDiv.parentNode, .05, 10)
         checkWin() 
@@ -1140,52 +1144,29 @@ function checkFlashTouch(target, touchCoord, container) {
 
 function createDropSpot() {
   dropSpotArray = document.querySelectorAll('.cardStack')
-  dropSpotArray.forEach(elem => {
+  foundationSpotArray = document.querySelectorAll('.foundationSpot')
+  allDropSpots = document.querySelectorAll('.foundationSpot, .cardStack')
+
+  allDropSpots.forEach(elem => {
     elem.addEventListener('dragenter', (e) => {
-      if (!e.target.classList.contains('cardStack')) {
-        foundationSpotArray.forEach(elem => {elem.classList.remove('flash4')})
-        dropSpotArray.forEach(elem => {elem.classList.remove('flash4')})
+      if (!e.target.classList.contains('cardStack') && !e.target.classList.contains('foundationSpot')) {
+        allDropSpots.forEach(elem => {elem.classList.remove('flash4')})
         dropSpot = e.target.parentNode
         dropSpot.classList.add('flash4')
       }
       else{        
-          foundationSpotArray.forEach(elem => {elem.classList.remove('flash4')})
-          dropSpotArray.forEach(elem => {elem.classList.remove('flash4')})
-          dropSpot = e.target
-          dropSpot.classList.add('flash4')
-      }
-      elem.addEventListener('dragleave', (e) => {  
-        if (e.target != dropSpot && e.target.parentNode != dropSpot) {
-          e.target.classList.remove('flash4')
-          e.target.parentNode.classList.remove('flash4')
-        }
-      })
-    }) 
-  })
-
-  foundationSpotArray = document.querySelectorAll('.foundationSpot')
-  foundationSpotArray.forEach(elem => {
-    elem.addEventListener('dragenter', (e) => {
-      if (!e.target.classList.contains('foundationSpot')) {
-        dropSpotArray.forEach(elem => {elem.classList.remove('flash4')})
-        foundationSpotArray.forEach(elem => {elem.classList.remove('flash4')})
-        dropSpot = e.target.parentNode
-        dropSpot.classList.add('flash4')
-      }
-      else {  
-        dropSpotArray.forEach(elem => {elem.classList.remove('flash4')})
-        foundationSpotArray.forEach(elem => {elem.classList.remove('flash4')})
+        allDropSpots.forEach(elem => {elem.classList.remove('flash4')})
         dropSpot = e.target
         dropSpot.classList.add('flash4')
       }
-      elem.addEventListener('dragleave', (e) => {  
-        if (e.target != foundationSpot && e.target.parentNode != foundationSpot) {
-          e.target.classList.remove('flash4')
-          e.target.parentNode.classList.remove('flash4')
-        }
-      })
     }) 
-  })
+    elem.addEventListener('dragleave', (e) => {  
+      if (e.target != dropSpot && e.target.parentNode != dropSpot) {
+        e.target.classList.remove('flash4')
+        e.target.parentNode.classList.remove('flash4')
+      }
+    }) 
+  }) 
 }
 
 
@@ -1223,13 +1204,15 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
       dragTarget.style.zIndex = 9999
       targetTop = dragTarget.style.top
       targetRight = dragTarget.style.right 
+      let currentParent = dragTarget.parentNode.id
       dragTarget.style.removeProperty('left')
       dragTarget.style.removeProperty('top')
       dragTarget.style.removeProperty('right')
-
+      let dragInfo = [dragTarget, targetTop, targetRight, currentIndex, dragTarget, currentParent]
+      let currentDragtargetArray = getCurrentArray(dragTarget, cardArray, cardDivArray)[1]
+      
       dragTarget.querySelector('.frontCard').classList.add('bigger')
-      console.log(window.screenY)
-      console.log(window.screenTop)
+
       //offSet = [dragTarget.offsetLeft - e.touches[0].clientX, dragTarget.offsetTop - e.touches[0].clientY]  //#offSet in cardStack
       //dragTarget.style.left = e.touches[0].clientX - (dragTarget.offsetWidth/2) + 'px'
       //dragTarget.style.top = e.touches[0].clientY  - (dragTarget.offsetHeight/2) + 'px'
@@ -1237,6 +1220,35 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
       dragTarget.style.left = (e.touches[0].clientX) - (dragTarget.offsetWidth/2) + window.scrollX + 'px'
       dragTarget.style.top = (e.touches[0].clientY) - (dragTarget.offsetHeight/1.2) + window.scrollY + 'px'
       document.body.appendChild(dragTarget)
+      dragArray.push(dragInfo)
+
+      let indexCounter = 9999
+      console.log(currentDragtargetArray)
+      console.log(currentDragtargetArray.length)
+      console.log(dragInfo[0])
+      if (currentDragtargetArray.indexOf(dragTarget.querySelector('.card')) != currentDragtargetArray.length - 1) {
+        console.log(true)
+        for (let i = currentDragtargetArray.indexOf(dragTarget.querySelector('.card')) + 1; i < currentDragtargetArray.length; i++) {
+          indexCounter++
+          currentCard = currentDragtargetArray[i].parentNode
+          let currentTop = currentDragtargetArray[i].parentNode.style.top
+          let currentRight = currentDragtargetArray[i].parentNode.style.right 
+          let cardIndex = currentDragtargetArray[i].parentNode.style.zIndex
+
+          currentCard.style.removeProperty('left')
+          currentCard.style.removeProperty('top')
+          currentCard.style.removeProperty('right')
+          currentCard.querySelector('.frontCard').classList.add('bigger')
+          currentCard.style.zIndex = indexCounter
+
+          let currentCardInfo = [currentCard, currentTop, currentRight, cardIndex, currentParent]
+          dragArray.push(currentCardInfo)
+          currentCard.style.left = (e.touches[0].clientX) - (dragTarget.offsetWidth/2) + window.scrollX + 'px'
+          currentCard.style.top = (e.touches[0].clientY) - (dragTarget.offsetHeight/1.2) + window.scrollY + (cardHeight/1.45 * (dragArray.indexOf(currentCardInfo))) + 'px'
+          document.body.appendChild(currentCard)
+        }
+      }
+      console.log(dragArray)
     
       offSet = [dragTarget.offsetLeft - e.touches[0].clientX, dragTarget.offsetTop - e.touches[0].clientY]
       
@@ -1264,66 +1276,63 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
 
   elem.addEventListener('touchend', (e) => { 
     clicked = false;
+    let dropped  = false;
     currentTouch = {
         x : e.changedTouches[0].clientX,
         y : e.changedTouches[0].clientY
     };
     console.log(currentTouch)
     dragTarget.querySelector('.frontCard').classList.remove('bigger')
+    console.log(allDropSpots)
 
-    foundationSpotArray.forEach(spot => {
-      if (checkDropTouch(dragTarget, currentTouch, spot)) {
-        if (dropSpot != dragTarget.parentNode && dropSpot != '') {
+    allDropSpots.forEach(spot => {
+      if (dropped  == false) {
+        if (checkDropTouch(dragTarget, currentTouch, spot)) {
           if (getNewStackArray(dropSpot, dragTarget, cardArray, cardDivArray)) {
             dragTarget.style.opacity = 0
-            dragTarget.parentNode.removeChild(dragTarget)
+            dragTarget.style.removeProperty('left')
+            dropped = true
+            //dragTarget.parentNode.removeChild(dragTarget)
             dragTarget.style.zIndex = cardIndex
             spot.appendChild(dragTarget)
             flipNextCard(cardDivArray, i)
             topCardShadow(currentDrawnCards, drawnCard)
-            console.log('foundation spot')
             
-          }   
+            console.log('cardSpot')
+          }
         }
       }
-      else {
-        currentStack.appendChild(dragTarget)
-        dragTarget.style.removeProperty('left')
-        dragTarget.style.right = targetRight
-        dragTarget.style.top = targetTop
-        dragTarget.style.zIndex = currentIndex
-        
-      } 
     })
 
-    dropSpotArray.forEach(spot => {
-      if (checkDropTouch(dragTarget, currentTouch, spot)) {
-        if (getNewStackArray(dropSpot, dragTarget, cardArray, cardDivArray)) {
-          dragTarget.style.opacity = 0
-          dragTarget.parentNode.removeChild(dragTarget)
-          dragTarget.style.zIndex = cardIndex
-          spot.appendChild(dragTarget)
-          flipNextCard(cardDivArray, i)
-          topCardShadow(currentDrawnCards, drawnCard)
-          console.log('cardSpot')
+    if (dropped == false) {
+      currentStack.appendChild(dragTarget)
+      dragTarget.style.removeProperty('left')
+      dragTarget.style.top = targetTop
+      dragTarget.style.right = targetRight      
+      dragTarget.style.zIndex = currentIndex
+
+      dragArray.forEach((item) => {
+        if (item[0] != dragTarget) {
+          item[0].querySelector('.frontCard').classList.remove('bigger')
+          currentStack.appendChild(item[0])
+          item[0].style.removeProperty('left')
+          item[0].style.top = item[1]
+          item[0].style.right = item[2]
+          item[0].style.zIndex = item[3]
         }
-      }
-      else {
-        currentStack.appendChild(dragTarget)
-        dragTarget.style.removeProperty('left')
-        dragTarget.style.right = targetRight
-        dragTarget.style.top = targetTop
-        dragTarget.style.zIndex = currentIndex
-      } 
-    })
-    console.log('dropspot is:')
-    console.log(dropSpot)
-    dragTarget = "";
-    dropSpot = ''
-    document.querySelectorAll('.stack').forEach(item => {
-      item.classList.remove('flash')
-    })
+      })
+    } 
+    clearDragInfo() 
   }) 
+}
+
+function clearDragInfo() {
+  dragArray = []
+  dragTarget = "";
+  dropSpot = ''
+  document.querySelectorAll('.stack').forEach(item => {
+    item.classList.remove('flash')
+  })
 }
 
 document.addEventListener('touchmove', (e) => {
@@ -1337,6 +1346,13 @@ document.addEventListener('touchmove', (e) => {
       x : e.changedTouches[0].clientX,
       y : e.changedTouches[0].clientY  
     }
+
+    dragArray.forEach((item) => {
+      if (item[0] != dragTarget) {
+        item[0].style.left = (e.touches[0].clientX + offSet[0]) + 'px'
+        item[0].style.top = (e.touches[0].clientY+ offSet[1]) + (cardHeight/1.45 * (dragArray.indexOf(item))) + 'px' 
+      }
+    })
 
     //console.log(`${offSet[0]},${offSet[1]}`)
     
@@ -1441,6 +1457,7 @@ function reset() {
   dropSpot = ''
   foundationSpotArray = []
   foundationSpot = ''
+  allDropSpots = []
 
   allStacksArray = [stack1, stack2, stack3, stack4, stack5, stack6, stack7]
   allStackDivsArray =  [stack1Divs, stack2Divs, stack3Divs, stack4Divs, stack5Divs, stack6Divs, stack7Divs]
