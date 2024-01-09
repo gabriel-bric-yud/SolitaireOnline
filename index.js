@@ -931,7 +931,7 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
       break; 
     case 'clubs':
       if (checkFoundationOrder(elem, foundationClubs, 'clubs', currentArray)) {
-        if (currentDivArray.indexOf(elemDiv.querySelector('.card')) == currentLength || currentArray == drawnCards)) {
+        if (currentDivArray.indexOf(elemDiv.querySelector('.card')) == currentLength || currentArray == drawnCards) {
           moveCards(elem, elemDiv, parent, currentArray, currentDivArray, foundationClubs, foundationClubsDivs, 'clubs')
           topCardShadow(parent.querySelectorAll('.cardDiv'), parent)
           return true
@@ -946,7 +946,7 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
       break; 
     case 'diamonds':
       if (checkFoundationOrder(elem, foundationDiamonds, 'diamonds', currentArray)) {
-        if (currentDivArray.indexOf(elemDiv.querySelector('.card')) == currentLength || currentArray == drawnCards)) {
+        if (currentDivArray.indexOf(elemDiv.querySelector('.card')) == currentLength || currentArray == drawnCards) {
           moveCards(elem, elemDiv, parent, currentArray, currentDivArray, foundationDiamonds, foundationDiamondsDivs, 'diamonds')
           topCardShadow(parent.querySelectorAll('.cardDiv'), parent)
           return true
@@ -961,7 +961,7 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
       break; 
     case 'hearts':
       if (checkFoundationOrder(elem, foundationHearts, 'hearts', currentArray)) {
-        if (currentDivArray.indexOf(elemDiv.querySelector('.card')) == currentLength || currentArray == drawnCards)) {
+        if (currentDivArray.indexOf(elemDiv.querySelector('.card')) == currentLength || currentArray == drawnCards) {
           moveCards(elem, elemDiv, parent, currentArray, currentDivArray, foundationHearts, foundationHeartsDivs, 'hearts')
           topCardShadow(parent.querySelectorAll('.cardDiv'), parent)
           return true
@@ -976,7 +976,7 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
       break; 
     case 'spades':
       if (checkFoundationOrder(elem, foundationSpades, 'spades', currentArray)) {
-        if (currentDivArray.indexOf(elemDiv.querySelector('.card')) == currentLength || currentArray == drawnCards)) {
+        if (currentDivArray.indexOf(elemDiv.querySelector('.card')) == currentLength || currentArray == drawnCards) {
           moveCards(elem, elemDiv, parent, currentArray, currentDivArray, foundationSpades, foundationSpadesDivs, 'spades')
           topCardShadow(parent.querySelectorAll('.cardDiv'), parent)
           return true
