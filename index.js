@@ -322,6 +322,7 @@ function createDeck() {
 }
 
 function removeFromDeck(elem, array) {
+  /**
   console.log('************* removeFromDeck Function *************')
   console.log('removing from deck...')
   console.log('elem is:')
@@ -329,6 +330,7 @@ function removeFromDeck(elem, array) {
   console.log('array is:')
   console.log(array)
   console.log('************* End *************')
+  **/
   array.splice(array.indexOf(elem), 1)
 }
 
@@ -378,12 +380,15 @@ function loadCardRank(deckArray, cardDiv, cardArray, cardDivArray) {
     cardArray.push(randomCard)
     cardDivArray.push(cardDiv)
 
+    /**
     console.log('************* loadCardRank Function *************')
     console.log(`random card is `)
     console.log(randomCard)
     console.log('cardDiv is:')
     console.log(cardDiv)
     console.log('************* End *************')
+
+    */
     removeFromDeck(randomCard, deckArray)
   }
 
@@ -463,9 +468,11 @@ function createCard(deckArray, width, height, parent, cardArray, cardDivArray, s
   loadCardRank(deckArray, card, cardArray, cardDivArray)
   cardDiv.dataset.stack = stack
 
+  /**
   console.log('************* createCard Function *************')
   console.log(cardDiv)
   console.log('************* End *************')
+  */
   return cardDiv
 }
 
@@ -706,18 +713,20 @@ function getRankAndSuit(elemDiv) {
 
 function removeFromStackArray(elem, elemDiv, cardArray, cardDivArray) {
 
+  /**
   console.log('************* removeFromStackArray Function *************')
   console.log(elemDiv.parentNode)
   console.log(elemDiv.parentNode.dataset.stack)
   console.log(cardArray)
   console.log(cardDivArray)
   console.log('************* end  *************')
+  */
+  
   if ((elemDiv.parentNode.dataset.stack == undefined) || elemDiv.parentNode.dataset.stack == "undefined") {
     cardArray.splice(cardArray.indexOf(elem), 1);
     cardDivArray.splice(cardDivArray.indexOf(elemDiv), 1);
     if (cardDivArray == drawnCardDivs) {
       drawnCount--
-      console.log(`drawncount minus 1 = ${drawnCount}`)
       if (drawnCount < 0) {
         drawnCount = 0;
       }
@@ -774,7 +783,6 @@ function removeFromStackArray(elem, elemDiv, cardArray, cardDivArray) {
         drawnCards.splice(drawnCards.indexOf(elem), 1);
         drawnCardDivs.splice(drawnCardDivs.indexOf(elemDiv), 1);
         drawnCount--
-        console.log(`drawncount minuss 1 = ${drawnCount}`)
         if (drawnCount < 0) {
           drawnCount = 0;
         }
@@ -796,18 +804,22 @@ function changeArrays(elem, elemDiv, stackArray, stackDivArray, num) {
     elemDiv.style.removeProperty('top')
   }
 
+  /**
   console.log('************* changeArrays Function *************')
   console.log(elemDiv)
   console.log(stackArray)
   console.log('************* End *************')
-  
+  */
 }
 
 function getCurrentArray(elemDiv, cardArray, cardDivArray) {
+  /**
   console.log('************* getCurrentArray Function *************')
   console.log(elemDiv)
   console.log(elemDiv.dataset.stack)
   console.log('************* End *************')
+  **/
+  
   switch(elemDiv.dataset.stack) {
     case '1':
       return [stack1, stack1Divs]
@@ -878,12 +890,14 @@ function moveCards(elemDiv, parent, cardArray, divArray, newCardArray, newDivArr
     }
   }
 
+  /**
   console.log('************* moveCards Function *************')
   console.log(elemDiv)
   console.log(cardDiv)
   console.log(card)
   console.log(parent)
   console.log('************* End *************')
+  */
     
   for (let y = moveDivArray.indexOf(elemDiv.querySelector('.card')); y < moveDivArray.length; y++) {
     setTimeout(() => {
@@ -906,12 +920,15 @@ function moveCards(elemDiv, parent, cardArray, divArray, newCardArray, newDivArr
 
 function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
   let elem = getRankAndSuit(elemDiv)
+
+  /**
   console.log('************* getNewStackArray Function *************')
   console.log(elemDiv)
   console.log(cardDivArray)
   console.log(elem)
   console.log(parent)
   console.log('************* end *************')
+  */
   let currentArray = getCurrentArray(elemDiv, cardArray, cardDivArray)[0]
   let currentDivArray = getCurrentArray(elemDiv, cardArray, cardDivArray)[1]
   let currentLength = currentDivArray.length - 1
@@ -1195,7 +1212,6 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
           currentCard.style.left = (e.clientX) - (dragTarget.offsetWidth/2) + window.scrollX + 'px'
           currentCard.style.top = (e.clientY) - (dragTarget.offsetHeight/1.2) + window.scrollY + (cardHeight/1.45 * (dragArray.indexOf(currentCardInfo))) + 'px'
           document.body.appendChild(currentCard)
-          console.log(dragArray)
         }
       }
     
@@ -1382,7 +1398,6 @@ document.addEventListener('mousemove', (e) => {
       x : e.clientX,
       y : e.clientY  
     }
-    console.log(currentMouse)
 
     dragArray.forEach((item) => {
       if (item[0] != dragTarget) {
