@@ -308,9 +308,11 @@ function showHide(elem) {
 }
 
 function createDeck() {
+  /**
   console.log("creating deck...")
   console.log("...")
   console.log("...")
+  */
   for (const suit of suitArray) {
     for (const rank of rankArray) {
       deck.push({
