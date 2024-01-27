@@ -30,6 +30,10 @@ let stack4 = []
 let stack5 = []
 let stack6 = []
 let stack7 = []
+let foundationClubs = []
+let foundationDiamonds = []
+let foundationHearts = []
+let foundationSpades = []
 
 let stack1Divs = []
 let stack2Divs = []
@@ -38,12 +42,6 @@ let stack4Divs = []
 let stack5Divs = []
 let stack6Divs = []
 let stack7Divs = []
-
-let foundationClubs = []
-let foundationDiamonds = []
-let foundationHearts = []
-let foundationSpades = []
-
 let foundationClubsDivs = []
 let foundationDiamondsDivs = []
 let foundationHeartsDivs = []
@@ -493,8 +491,8 @@ function addCardFlip(card, front, back) {
 
 
 
-function flipNextCard(cardDivArray, i) {
-  let nextCard = cardDivArray[i-1]
+function flipNextCard(cardDivArray, card) {
+  let nextCard = cardDivArray[cardDivArray.indexOf(card) - 1]
   if (nextCard != undefined) {
     if (nextCard.querySelector('.frontCard').classList.contains('hide')) {
       addCardFlip(nextCard,nextCard.querySelector('.frontCard'), nextCard.querySelector('.backCard') )
@@ -922,22 +920,26 @@ function moveCards(elemDiv, parent, cardArray, divArray, newCardArray, newDivArr
 
 function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
   let elem = getRankAndSuit(elemDiv)
+  let currentArray = getCurrentArray(elemDiv, cardArray, cardDivArray)[0]
+  let currentDivArray = getCurrentArray(elemDiv, cardArray, cardDivArray)[1]
+  let currentLength = currentDivArray.length - 1
 
-  /**
+  /** 
   console.log('************* getNewStackArray Function *************')
   console.log(elemDiv)
   console.log(cardDivArray)
   console.log(elem)
   console.log(parent)
+  console.log(currentDivArray)
   console.log('************* end *************')
   */
-  let currentArray = getCurrentArray(elemDiv, cardArray, cardDivArray)[0]
-  let currentDivArray = getCurrentArray(elemDiv, cardArray, cardDivArray)[1]
-  let currentLength = currentDivArray.length - 1
+ 
   switch(parent.id) {
     case 'stack1':
       if (checkStackOrder(elem, stack1)) {
         moveCards(elemDiv, parent, currentArray, currentDivArray, stack1, stack1Divs, 1)
+        console.log(elemDiv)
+        flipNextCard(currentDivArray, elemDiv.querySelector('.card'))
         return true
       }
       else {
@@ -947,6 +949,7 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
     case 'stack2':
       if (checkStackOrder(elem, stack2)) {
         moveCards(elemDiv, parent, currentArray, currentDivArray, stack2, stack2Divs, 2)
+        flipNextCard(currentDivArray, elemDiv.querySelector('.card'))
         return true
       }
       else {
@@ -956,6 +959,7 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
     case 'stack3':
       if (checkStackOrder(elem, stack3)) {
         moveCards(elemDiv, parent, currentArray, currentDivArray, stack3, stack3Divs, 3)
+        flipNextCard(currentDivArray, elemDiv.querySelector('.card'))
         return true
       }
       else {
@@ -965,6 +969,7 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
     case 'stack4':
       if (checkStackOrder(elem, stack4)) {
         moveCards(elemDiv, parent, currentArray, currentDivArray, stack4, stack4Divs, 4)
+        flipNextCard(currentDivArray, elemDiv.querySelector('.card'))
         return true
       }
       else {
@@ -974,6 +979,7 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
     case 'stack5':
       if (checkStackOrder(elem, stack5)) {
         moveCards(elemDiv, parent, currentArray, currentDivArray, stack5, stack5Divs, 5)
+        flipNextCard(currentDivArray, elemDiv.querySelector('.card'))
         return true
       }
       else {
@@ -983,6 +989,7 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
     case 'stack6':
       if (checkStackOrder(elem, stack6)) {
         moveCards(elemDiv, parent, currentArray, currentDivArray, stack6, stack6Divs, 6)
+        flipNextCard(currentDivArray, elemDiv.querySelector('.card'))
         return true
       }
       else {
@@ -992,6 +999,7 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
     case 'stack7':
       if (checkStackOrder(elem, stack7)) {
         moveCards(elemDiv, parent, currentArray, currentDivArray, stack7, stack7Divs, 7)
+        flipNextCard(currentDivArray, elemDiv.querySelector('.card'))
         return true
       }
       else {
@@ -1003,6 +1011,7 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
         if (currentDivArray.indexOf(elemDiv.querySelector('.card')) == currentLength || currentArray == drawnCards) {
           moveCards(elemDiv, parent, currentArray, currentDivArray, foundationClubs, foundationClubsDivs, 'clubs')
           topCardShadow(parent.querySelectorAll('.cardDiv'), parent)
+          flipNextCard(currentDivArray, elemDiv.querySelector('.card'))
           return true
         }
         else {
@@ -1018,6 +1027,7 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
         if (currentDivArray.indexOf(elemDiv.querySelector('.card')) == currentLength || currentArray == drawnCards) {
           moveCards(elemDiv, parent, currentArray, currentDivArray, foundationDiamonds, foundationDiamondsDivs, 'diamonds')
           topCardShadow(parent.querySelectorAll('.cardDiv'), parent)
+          flipNextCard(currentDivArray, elemDiv.querySelector('.card'))
           return true
         }
         else {
@@ -1033,6 +1043,7 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
         if (currentDivArray.indexOf(elemDiv.querySelector('.card')) == currentLength || currentArray == drawnCards) {
           moveCards(elemDiv, parent, currentArray, currentDivArray, foundationHearts, foundationHeartsDivs, 'hearts')
           topCardShadow(parent.querySelectorAll('.cardDiv'), parent)
+          flipNextCard(currentDivArray, elemDiv.querySelector('.card'))
           return true
         }
         else {
@@ -1048,6 +1059,7 @@ function getNewStackArray(parent, elemDiv, cardArray, cardDivArray ) {
         if (currentDivArray.indexOf(elemDiv.querySelector('.card')) == currentLength || currentArray == drawnCards) {
           moveCards(elemDiv, parent, currentArray, currentDivArray, foundationSpades, foundationSpadesDivs, 'spades')
           topCardShadow(parent.querySelectorAll('.cardDiv'), parent)
+          flipNextCard(currentDivArray, elemDiv.querySelector('.card'))
           return true
         }
         else {
@@ -1238,12 +1250,15 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
       if (dropped  == false) {
         if (checkDropTouch(dragTarget, currentMouse, spot)) {
           if (getNewStackArray(dropSpot, dragTarget, cardArray, cardDivArray)) {
+            //console.log(cardDivArray)
+            //console.log(i)
+            //console.log(currentStack)
             dropped = true
             dragTarget.style.opacity = 0
             dragTarget.style.removeProperty('left')  
             dragTarget.style.zIndex = cardIndex
             spot.appendChild(dragTarget)
-            flipNextCard(cardDivArray, i)
+            //flipNextCard(cardDivArray, i)
             topCardShadow(currentDrawnCards, drawnCard)
           }
         }
@@ -1357,12 +1372,14 @@ function createDraggable(elem, cardArray, cardDivArray, i ) {
       if (dropped  == false) {
         if (checkDropTouch(dragTarget, currentTouch, spot)) {
           if (getNewStackArray(dropSpot, dragTarget, cardArray, cardDivArray)) {
+            //console.log(currentStack)
+           // console.log(i)
             dropped = true
             dragTarget.style.opacity = 0
             dragTarget.style.removeProperty('left')  
             dragTarget.style.zIndex = cardIndex
             spot.appendChild(dragTarget)
-            flipNextCard(cardDivArray, i)
+            //flipNextCard(cardDivArray, i)
             topCardShadow(currentDrawnCards, drawnCard)
           }
         }
