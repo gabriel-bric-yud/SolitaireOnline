@@ -112,6 +112,8 @@ button {
   margin: 0 auto;
   border-radius: 20px;
   border: 10px ridge burlywood;
+  background: linear-gradient( darkgreen, green, darkgreen); 
+
 }
 
 #topBoard {
@@ -226,23 +228,24 @@ button {
   background-color: transparent;
   justify-self: center;
   align-self: center;
+  width: 46px;
+  height: 69px;
   z-index: 1000;
   border-radius: 16px;
+  transition: transform 1s;
+  transform-style: preserve-3d;
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
 }
 
 .card {
   display: grid;
-  position: relative;
-  
+  position: relative; 
   border-radius: 16px;
   padding: 0px;
   margin: 0;
   text-align: center;
   bottom: 0; 
   pointer-events: none;
-  transition: transform 1s;
-  transform-style: preserve-3d;
-  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
 }
 
 /**
@@ -258,8 +261,8 @@ button {
   justify-self: center;
   background-color: azure;
   align-self: center;
-  width: 46px;
-  height: 69px;
+  width: 100%;
+  height: 100%;
   border-radius: 16px;
   border: 3px solid azure;
   pointer-events: none;
@@ -273,8 +276,8 @@ button {
   display: grid;
   border-radius: 16px;
   border: 3px solid azure;
-  width: 46px;
-  height: 69px;
+  width: 100%;
+  height: 100%;
   align-self: center;
   justify-self: center;
   background-color: rgb(2,0,36);
@@ -521,12 +524,7 @@ button {
     height: 69px;
   }
 
-  .frontCard {
-    width: 40px;
-    height: 60px;
-  }
-
-  .backCard {
+  .cardDiv {
     width: 40px;
     height: 60px;
   }
@@ -569,12 +567,7 @@ button {
     height: 103.5px;
   }
 
-  .frontCard {
-    width: 60px;
-    height: 90px;
-  }
-
-  .backCard {
+  .cardDiv {
     width: 60px;
     height: 90px;
   }
