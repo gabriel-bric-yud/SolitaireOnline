@@ -20,7 +20,6 @@ const resetButton = document.getElementById('reset')
 
 //////////////////////  GLOBAL VARIABLES  //////////////////////
 
-let currentDRAWN_DECK = []
 let DRAWN_DECK = []
 let DECK = []
 
@@ -38,14 +37,10 @@ let HEARTS = []
 let SPADES = []
 let STACKS_ALL = [STACK_1, STACK_2, STACK_3, STACK_4, STACK_5, STACK_6, STACK_7]
 
-
-
-let cardCount = 0
 let cardIndex = 1000
-let currentIndex
 let drawnCount = 0
 let dealCount = 0
-let firstPass = false
+let firstPass = true
 
 let clicked = false
 let clickable = false
@@ -110,9 +105,9 @@ function topCardShadow(parent) {
   array = parent.querySelectorAll('.cardDiv')
   if (array.length > 0) {
     array.forEach(element => {
-      element.querySelector('.card').classList.add('noShadow')
+      element.classList.add('noShadow')
       if (array[array.length-1] == element) {
-        element.querySelector('.card').classList.remove('noShadow')
+        element.classList.remove('noShadow')
       }
     })
   }
@@ -181,18 +176,15 @@ function createCard(deckArray, cardArray, stack) {
   createCardLabel('top', frontOfCard, labelFrame)
   createCardLabel('bottom', frontOfCard, labelFrame)
   const backOfCard = document.createElement('div')
-  card.classList.add(`c${cardCount}`)
   frontOfCard.classList.add('frontCard')
   frontOfCard.classList.add('hide')
   backOfCard.classList.add('backCard')
   backOfCard.classList.add('show')
   card.appendChild(frontOfCard)
   card.appendChild(backOfCard)
-  
-  cardCount++
-  cardIndex++
 
   const cardDiv = document.createElement('div')
+  cardIndex++
   cardDiv.style.zIndex = cardIndex
   cardDiv.classList.add('cardDiv')
   cardDiv.style.opacity = 0
@@ -209,7 +201,9 @@ function createCard(deckArray, cardArray, stack) {
 //////////////////////  POSITION AND FLIP CARD FUNCTIONS  //////////////////////
 
 
-function addCardFlip(card, front, back) {
+function addCardFlip(card) {
+  let front = card.querySelector('.frontCard')
+  let back = card.querySelector('.backCard')
   card.style.pointerEvents = 'none' ? card.style.pointerEvents = 'all' : card.style.pointerEvents = 'none'
   card.classList.contains('flip') ? card.classList.remove('flip') :  card.classList.add('flip')
   setTimeout(() => {
@@ -219,14 +213,11 @@ function addCardFlip(card, front, back) {
 }
 
 
-
-function flipNextCard(cardArray) {
-  console.log(cardArray)
-  let nextCard = cardArray[cardArray.length - 2]
-  console.log(nextCard)
+function flipNextCard(card, cardDivArray) {
+  let nextCard = cardDivArray[cardDivArray.indexOf(card) - 1]
   if (nextCard != undefined) {
     if (nextCard[0].querySelector('.frontCard').classList.contains('hide')) {
-      addCardFlip(nextCard[0], nextCard[0].querySelector('.frontCard'), nextCard[0].querySelector('.backCard') )
+      addCardFlip(nextCard[0])
     }
   }
 }
@@ -269,11 +260,11 @@ function positionCardsBottom(cardArray, i) {
 function positionCardBottom(card, cardArray, i) {
   if (i > 0) {
     let endPosition1 = (cardHeight/1.45 * cardArray.indexOf(card))
-    slideIn(card[0], endPosition1 + 150, endPosition1, 'top', -10)
+    slideIn(card[0], endPosition1 + 50, endPosition1, 'top', -10)
   }
   else {
     let endPosition1 = 0
-    slideIn(card[0], endPosition1 + 150, endPosition1, 'top', -10)
+    slideIn(card[0], endPosition1 + 50, endPosition1, 'top', -10)
   }
 }
 
@@ -287,18 +278,26 @@ function positionCard(card, cardArray) {
 //////////////////////  DEAL CARDS FUNCTIONS  //////////////////////
 
 
-function dealNewCards(numberOfCards, cardNumber, parent, cardArray, flipBool, stack) {
+function dealCards(numberOfCards, cardNumber, parent, cardArray, flipBool, stack) {
   numberOfCards += dealCount
   let newCard
   for (let i = cardNumber; i < numberOfCards; i++) {
     dealCount++
-    newCard = createCard(DECK, cardArray, stack)
+    if (firstPass == true) {
+      newCard = createCard(DECK, cardArray, stack)
+    }
+    else {
+      newCard = DECK[0]
+      removeFromArray(newCard, DECK)
+      
+    }
     cardArray.push(newCard)
     parent.appendChild(newCard[0])
     setTimeout(() => {
       fadeIn(newCard[0], .05, 20)
       if (parent == drawnCard ) {
         slideIn(newCard[0], 50, 0, 'right', -2.5)
+        //newCard[0].style.removeProperty('right')     
       }
       else {
         positionCardBottom(newCard, cardArray, i)
@@ -307,11 +306,11 @@ function dealNewCards(numberOfCards, cardNumber, parent, cardArray, flipBool, st
 
     if (flipBool)  {
       if (drawnCard.querySelectorAll('.cardDiv').length == 1){
-        addCardFlip(newCard[0], newCard[0].querySelector('.frontCard'), newCard[0].querySelector('.backCard'))
+        addCardFlip(newCard[0])
       }
       else {
         setTimeout(() => {
-          addCardFlip(newCard[0], newCard[0].querySelector('.frontCard'), newCard[0].querySelector('.backCard'))
+          addCardFlip(newCard[0])
         }, 300)           
       }
     }
@@ -322,46 +321,15 @@ function dealNewCards(numberOfCards, cardNumber, parent, cardArray, flipBool, st
   }  
 }
 
-
-function dealOldCards(numberOfCards, cardNumber, parent, cardArray, flipBool, stack) {
-  numberOfCards += dealCount
-  let count = 0
-  for (let i = cardNumber; i < numberOfCards; i++) {
-    dealCount++
-    let oldCard = DECK[count]
-    oldCard[0].dataset.stack = stack
-    cardArray.push(oldCard)
-    removeFromArray(oldCard, DECK)
-    parent.appendChild(oldCard[0])
-
-    setTimeout(() => {
-      fadeIn(oldCard[0], .05, 20)
-      slideIn(oldCard[0], 50, 0, 'right', -2.5)
-    }, 200)
-
-    if (flipBool)  {
-      if (drawnCard.querySelectorAll('.cardDiv').length == 0) {
-        addCardFlip(oldCard[0], oldCard[0].querySelector('.frontCard'), oldCard[0].querySelector('.backCard'))
-      }
-      else {
-        setTimeout(() => {
-          addCardFlip(oldCard[0], oldCard[0].querySelector('.frontCard'), oldCard[0].querySelector('.backCard'))
-        }, 300)           
-      }
-    }
-  }
-    
-}
-
 function dealSolitaire() {
   setTimeout(() => {
     for (let i = 1; i <= 7; i++) {
       for (let x = 0; x < i; x++) {
         if (x < i - 1) {
-          dealNewCards(1, x, document.getElementById(`stack${i}`), STACKS_ALL[i-1], false, i);
+          dealCards(1, x, document.getElementById(`stack${i}`), STACKS_ALL[i-1], false, i);
         }
         else {
-          dealNewCards(1, x, document.getElementById(`stack${i}`), STACKS_ALL[i-1], true, i);
+          dealCards(1, x, document.getElementById(`stack${i}`), STACKS_ALL[i-1], true, i);
         }
       }
       dealCount = 0
@@ -372,24 +340,26 @@ function dealSolitaire() {
 
 function deal() { 
   if (DECK.length == 0) {
+    firstPass = false;
     DECK = DRAWN_DECK
-    currentDRAWN_DECK = drawnCard.querySelectorAll('.cardDiv')
-    if (drawnCard.querySelector('.cardDiv') != undefined) {
-      fadeOutMultiple(currentDRAWN_DECK, 1 , 0, 1, true)
+    currentDrawnCards= drawnCard.querySelectorAll('.cardDiv')
+    if (currentDrawnCards.length > 0) {
+      currentDrawnCards.forEach((elem) => {
+        addCardFlip(elem)
+      })
+      fadeOutMultiple(currentDrawnCards, 1 , 0, 1, true)
+      
     }
     DRAWN_DECK = []
-    setTimeout(() => {
-      dealCount = 0
-      dealOldCards(1, 0, drawnCard, DRAWN_DECK, true, "drawnCard")
-    }, 100)
-
   }
   else {
     setTimeout(() => {
       dealCount = 0
-      dealNewCards(1, 0, drawnCard, DRAWN_DECK, true, "drawnCard")
-    }, 100)
+      dealCards(1, 0, drawnCard, DRAWN_DECK, true, "drawnCard")
+    }, 100)  
   }
+
+
 }
 
 
@@ -446,9 +416,10 @@ function checkFoundationOrder(card, array, suit) {
   let dragSuit = card.dataset.suit
   let dropRank
   let foundationSuit = suit
+  console.log([array, card, suit])
 
   if (array.length > 0) {
-    dropRank = array[array.length - 1][0].rank
+    dropRank = array[array.length - 1][1].rank
   }
 
   if (dragSuit == foundationSuit) {
@@ -593,7 +564,7 @@ function getNewStackArray(elem, parent) {
     case 'stack1':
       if (checkStackOrder(elem, STACK_1)) {
         moveCards(elem, parent, currentArray, STACK_1, 1)
-        flipNextCard(currentArray)
+        flipNextCard(cardData, currentArray)
         return true
       }
       else {
@@ -603,7 +574,7 @@ function getNewStackArray(elem, parent) {
     case 'stack2':
       if (checkStackOrder(elem, STACK_2)) {
         moveCards(elem, parent, currentArray, STACK_2, 2)
-        flipNextCard(currentArray)
+        flipNextCard(cardData, currentArray)
         return true
       }
       else {
@@ -613,7 +584,7 @@ function getNewStackArray(elem, parent) {
     case 'stack3':
       if (checkStackOrder(elem, STACK_3)) {
         moveCards(elem, parent, currentArray, STACK_3, 3)
-        flipNextCard(currentArray)
+        flipNextCard(cardData, currentArray)
         return true
       }
       else {
@@ -623,7 +594,7 @@ function getNewStackArray(elem, parent) {
     case 'stack4':
       if (checkStackOrder(elem, STACK_4)) {
         moveCards(elem, parent, currentArray, STACK_4, 4)
-        flipNextCard(currentArray)
+        flipNextCard(cardData, currentArray)
         return true
       }
       else {
@@ -633,7 +604,7 @@ function getNewStackArray(elem, parent) {
     case 'stack5':
       if (checkStackOrder(elem, STACK_5)) {
         moveCards(elem, parent, currentArray, STACK_5, 5)
-        flipNextCard(currentArray)
+        flipNextCard(cardData, currentArray)
         return true
       }
       else {
@@ -643,7 +614,7 @@ function getNewStackArray(elem, parent) {
     case 'stack6':
       if (checkStackOrder(elem, STACK_6)) {
         moveCards(elem, parent, currentArray, STACK_6, 6)
-        flipNextCard(currentArray)
+        flipNextCard(cardData, currentArray)
         return true
       }
       else {
@@ -653,7 +624,7 @@ function getNewStackArray(elem, parent) {
     case 'stack7':
       if (checkStackOrder(elem, STACK_7)) {
         moveCards(elem, parent, currentArray, STACK_7, 7)
-        flipNextCard(currentArray)
+        flipNextCard(cardData, currentArray)
         return true
       }
       else {
@@ -665,7 +636,7 @@ function getNewStackArray(elem, parent) {
         if (currentArray.indexOf(cardData) == currentLength || currentArray == DRAWN_DECK) {
           moveCards(elem, parent, currentArray, CLUBS, 'clubs')
           topCardShadow(parent)
-          flipNextCard(currentArray)
+          flipNextCard(cardData, currentArray)
           return true
         }
         else {
@@ -681,7 +652,7 @@ function getNewStackArray(elem, parent) {
         if (currentArray.indexOf(cardData) == currentLength || currentArray == DRAWN_DECK) {
           moveCards(elem, parent, currentArray, DIAMONDS, 'diamonds')
           topCardShadow(parent)
-          flipNextCard(currentArray)
+          flipNextCard(cardData, currentArray)
           return true
         }
         else {
@@ -697,7 +668,7 @@ function getNewStackArray(elem, parent) {
         if (currentArray.indexOf(cardData) == currentLength || currentArray == DRAWN_DECK) {
           moveCards(elem, parent, currentArray, HEARTS, 'hearts')
           topCardShadow(parent)
-          flipNextCard(currentArray)
+          flipNextCard(cardData, currentArray)
           return true
         }
         else {
@@ -713,7 +684,7 @@ function getNewStackArray(elem, parent) {
         if (currentArray.indexOf(cardData) == currentLength || currentArray == DRAWN_DECK) {
           moveCards(elem, parent, currentArray, SPADES, 'spades')
           topCardShadow(parent)
-          flipNextCard(currentArray)
+          flipNextCard(cardData, currentArray)
           return true
         }
         else {
@@ -781,6 +752,7 @@ function createDropSpot() {
 
 
 function createDraggable(elem) {
+  let currentIndex
 
   elem.addEventListener('mousedown', (e) => {
     //e.preventDefault()
@@ -1102,7 +1074,6 @@ function startGameButton() {
 
 
 function reset() {
-  cardCount = 0
   dealCount = 0
   clickable = false
   cardIndex = 1000;
@@ -1125,8 +1096,9 @@ function reset() {
 
 
   DRAWN_DECK = []
-  currentDRAWN_DECK = []
   drawnCount = 0
+
+  firstPass = true
 
   dropSpotArray = []
   dropSpot = ''
@@ -1136,22 +1108,18 @@ function reset() {
 
   STACKS_ALL = [STACK_1, STACK_2, STACK_3, STACK_4, STACK_5, STACK_6, STACK_7]
   
-  const cardTempTableau = tableau.querySelector('.cardDiv')
-  const cardTempDeck= deckDiv.querySelector('.cardDiv')
-  const cardTempFoundation = foundationDiv.querySelector('.cardDiv')
-  if (cardTempTableau != undefined) {
-    const positionT = getComputedStyle(cardTempTableau).bottom.replace('px', '')
-    fadeOutMultiple(tableau.querySelectorAll('.cardDiv'), 200, positionT, positionT - 50, true)
-  }
-  if (cardTempDeck != undefined) {
-    const positionD = getComputedStyle(cardTempDeck).bottom.replace('px', '')
-    fadeOutMultiple(deckDiv.querySelectorAll('.cardDiv'), 200, positionD, positionD - 50, true)
-  }
 
-  if (cardTempFoundation != undefined) {
-    const positionF = getComputedStyle(cardTempFoundation).bottom.replace('px', '')
-    fadeOutMultiple(foundationDiv.querySelectorAll('.cardDiv'), 200, positionF, positionF - 50, true)
-  }
+  let allCards = document.querySelectorAll(".cardDiv")
+
+  allCards.forEach((elem) => {
+    if (!elem.classList.contains("flip")) {
+      elem.remove()
+    }
+    else {
+      let positionF = getComputedStyle(elem).bottom.replace('px', '')
+      fadeOut(elem, 50, positionF, positionF -50, true)
+    }
+  })
 
   document.querySelectorAll('.turnMessage').forEach(elem => {
     elem.remove()
@@ -1276,8 +1244,7 @@ function removeAllMessages() {
 
 
 //////////////////////  SLIDE AND FADE ANIMATION FUNCTIONS  //////////////////////
-
-function slideIn(elem, startPosition, endPosition, direction, increment) {
+async function slideIn(elem, startPosition, endPosition, direction, increment) {
   let position = startPosition
   let directionOption = direction.toString()
   let slideI = setInterval(() => {
