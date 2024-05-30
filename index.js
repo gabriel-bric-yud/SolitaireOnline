@@ -88,6 +88,7 @@ function createDeck() {
       })
     }
   }
+  document.querySelector('#deckPlaceholder').classList.add("cardBackground")
   return newDeck
 }
 
@@ -212,6 +213,15 @@ function addCardFlip(card) {
   }, 300) 
 }
 
+function addCardFlipNoAnimation(card) {
+  card.style.opacity = 0
+  let front = card.querySelector('.frontCard')
+  let back = card.querySelector('.backCard')
+  card.style.pointerEvents = 'none'
+  card.classList.remove('flip')
+  showHide(front)
+  showHide(back)
+}
 
 function flipNextCard(card, cardDivArray) {
   let nextCard = cardDivArray[cardDivArray.indexOf(card) - 1]
@@ -243,9 +253,10 @@ function positionCardsLeft(cardArray, i) {
 }
 
 
-function positionCardsBottom(cardArray, i) {
+function positionCardsBottom(cardArray) {
+  console.log(cardArray)
   cardArray.forEach(elem => {
-    if (i > 0) {
+    if (cardArray.indexOf(elem) > 0) {
       //let position = getComputedStyle(elem.parentNode).left.replace('px', '')   
       let endPosition1 = (cardHeight/1.45 * cardArray.indexOf(elem))
       slideIn(elem[0], endPosition1 + 150, endPosition1, 'top', -10)
@@ -289,19 +300,16 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, flipBool, stack
     else {
       newCard = DECK[0]
       removeFromArray(newCard, DECK)
-      
     }
     cardArray.push(newCard)
     parent.appendChild(newCard[0])
     setTimeout(() => {
       fadeIn(newCard[0], .05, 20)
       if (parent == drawnCard ) {
-        slideIn(newCard[0], 50, 0, 'right', -2.5)
+        slideIn(newCard[0], 50, 0, 'right', -5)
         //newCard[0].style.removeProperty('right')     
       }
-      else {
-        positionCardBottom(newCard, cardArray, i)
-      }
+
     }, 200)
 
     if (flipBool)  {
@@ -321,7 +329,7 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, flipBool, stack
   }  
 }
 
-function dealSolitaire() {
+async function dealSolitaire() {
   setTimeout(() => {
     for (let i = 1; i <= 7; i++) {
       for (let x = 0; x < i; x++) {
@@ -340,14 +348,25 @@ function dealSolitaire() {
 
 function deal() { 
   if (DECK.length == 0) {
+    if (DRAWN_DECK.length == 0) {
+      document.querySelector('#deckPlaceholder').classList.remove("cardBackground")
+    }
     firstPass = false;
     DECK = DRAWN_DECK
     currentDrawnCards= drawnCard.querySelectorAll('.cardDiv')
     if (currentDrawnCards.length > 0) {
+      console.log(currentDrawnCards)
       currentDrawnCards.forEach((elem) => {
-        addCardFlip(elem)
+        if (elem != currentDrawnCards[currentDrawnCards.length - 1]) {
+          addCardFlipNoAnimation(elem)
+          elem.remove()
+        }
+        else {
+          
+          fadeOut(elem, 1, 0, 1, true )
+          setTimeout(() => { addCardFlip(elem) }, 1000)
+        }
       })
-      fadeOutMultiple(currentDrawnCards, 1 , 0, 1, true)
       
     }
     DRAWN_DECK = []
@@ -1046,9 +1065,10 @@ function startGame() {
   }, 100)
 
   setTimeout(() => {
-    drawBtn.classList.add('flash4')
-  }, 1200)
-
+    STACKS_ALL.forEach((stack) => {
+      positionCardsBottom(stack)
+    })
+  }, 300)
 }
 
 function startGameButton() {
@@ -1138,6 +1158,10 @@ function reset() {
 drawBtn.addEventListener('click', (e) => {
   if (playerTurn == true){
     deal()
+    playerTurn = false
+    setTimeout(() => {
+      playerTurn = true
+    }, 800)
   }
 })
 
