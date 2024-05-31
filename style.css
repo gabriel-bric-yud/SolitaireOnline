@@ -19,9 +19,6 @@ body {
 }
 
 
-
-
-
 .hide {
   display: none !important
 }
@@ -63,7 +60,7 @@ button {
 
 .titleDiv span {
   margin: 0 auto;
-  font-family: 'Bungee Spice', cursive;
+  font-family: 'Bungee Spice';
   font-size: 35px;
   height: 2ch;
   display: inline-block;
@@ -174,8 +171,6 @@ button {
   color: red;
 }
 
-
-
 #tableau {
   display: grid;
   position: relative;
@@ -251,12 +246,6 @@ button {
   pointer-events: none;
 }
 
-/**
-.cardDiv:hover {
-  background-color: lightblue;
-  animation: glowing4 1500ms infinite;
-}
-*/
 
 .frontCard {
   position: relative;
@@ -286,32 +275,6 @@ button {
   background-color: rgb(2,0,36);
   background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%); 
 }
-
-
-/****************  CARD ROTATION ELEMENTS  ****************/  
-
-
-@keyframes rotateY {
-  100% {rotate: y 180deg }
-}
-  
-.rotated {
-  rotate: y 180deg
-}
-  
-.animate {
-  animation: rotateY 1s 1 linear forwards
-}
-
-.flip {
-  transform: rotateY(180deg);
-}
-
-
-.noShadow {
-  box-shadow: none;
-}
-
 
 
 /****************  LABEL ELEMENTS  ****************/  
@@ -457,6 +420,32 @@ button {
   -ms-transform:none;
   transform:none;
 }
+
+
+/****************  CARD ROTATION ELEMENTS  ****************/  
+
+
+@keyframes rotateY {
+  100% {rotate: y 180deg }
+}
+  
+.rotated {
+  rotate: y 180deg
+}
+  
+.animate {
+  animation: rotateY 1s 1 linear forwards
+}
+
+.flip {
+  transform: rotateY(180deg);
+}
+
+
+.noShadow {
+  box-shadow: none;
+}
+
 
 
 /****************  GLOWING ANIMATIONS ****************/  
@@ -628,60 +617,4 @@ button {
   
 }
 
-
-/****************  NO LANDSCAPE MODE  ****************/  
-
-
-.noLandscape {
-  transform: rotate(-90deg) !important;
-  transform-origin: left top !important;
-  width: 79vh !important;
-  overflow: hidden !important;
-  position: absolute !important;
-  top: 100% !important;
-  left: 0 !important;
-}
-
-
-.noLandscapeBoard {
-  width: 300px !important;
-}
-
-.noLandscapetopBoard {
-  width: 300px !important;
-}
-
-.noLandscapecardPlaceHolder {
-  width: 9vh !important;
-  height: 16.5vh !important;
-}
-
-.noLandscapelabelDiv {
-  width: 13px !important;
-  height: 13px !important;
-  padding: 3px !important;
-}
-  
-.noLandscapecardLabel {
-  font-size: 10px !important;
-}
-
-.noLandscapefrontCard {
-  width: 9vh !important;
-  height: 16.5vh !important;
-}
-
-.noLandscapebackCard {
-  width: 9vh !important;
-  height: 16.5vh !important;
-}
-
-.noLandscapeCardStack {
-  width: 7vh !important;
-}
-
-.noLandscapetitleDiv {
-  font-size: 2em !important;
-  height: 2ch !important;
-}
 

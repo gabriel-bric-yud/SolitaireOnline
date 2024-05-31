@@ -555,9 +555,9 @@ function moveCards(elem, parent, cardArray, newCardArray, num) {
       moveArray.push(cardArray[i])
     }
   }
-  for (let y = 0; y < moveArray.length; y++) {
+  for (let y = 1; y <= moveArray.length; y++) {
     setTimeout(() => {
-      let card = moveArray[y]
+      let card = moveArray[y-1]
       removeFromArray(card, cardArray)
       changeArrays(card, newCardArray, num)
       cardIndex++
@@ -779,6 +779,10 @@ function createDraggable(elem) {
       dragTarget = e.target;
       currentStack = dragTarget.parentNode  
       currentIndex = dragTarget.style.zIndex
+      console.log("****")
+      console.log(dragTarget)
+      console.log(currentIndex)
+      console.log("****")
       dragTarget.style.zIndex = 9999
       targetTop = dragTarget.style.top
       targetRight = dragTarget.style.right 
@@ -786,7 +790,7 @@ function createDraggable(elem) {
       dragTarget.style.removeProperty('left')
       dragTarget.style.removeProperty('top')
       dragTarget.style.removeProperty('right')
-      let dragInfo = [dragTarget, targetTop, targetRight, currentIndex, dragTarget, currentParent]
+      let dragInfo = [dragTarget, targetTop, targetRight, currentIndex, currentParent]
       let currentDragtargetArray = getCurrentArray(dragTarget)
       let elemData = getCardData(dragTarget, currentDragtargetArray)
 
@@ -797,6 +801,7 @@ function createDraggable(elem) {
       dragTarget.style.top = (e.clientY) - (dragTarget.offsetHeight/1.2) + window.scrollY + 'px'
       document.body.appendChild(dragTarget)
       dragArray.push(dragInfo)
+      console.log(dragArray)
       let indexCounter = 9999
 
       if (currentDragtargetArray.indexOf(elemData) != (currentDragtargetArray.length - 1) && currentStack != drawnCard ) {
@@ -805,21 +810,27 @@ function createDraggable(elem) {
           let currentCard = currentDragtargetArray[i][0]
           let currentTop = currentCard.style.top
           let currentRight = currentCard.style.right 
-          let cardIndex = currentCard.style.zIndex
-
+          let currentCardIndex = currentCard.style.zIndex
+          console.log("****")
+          console.log(currentCard)
+          console.log(currentCardIndex)
+          console.log("****")
           currentCard.style.removeProperty('left')
           currentCard.style.removeProperty('top')
           currentCard.style.removeProperty('right')
           currentCard.querySelector('.frontCard').classList.add('bigger')
           currentCard.style.zIndex = indexCounter
+          console.log(currentCard.style.zIndex)
 
-          let currentCardInfo = [currentCard, currentTop, currentRight, cardIndex, currentParent]
+          let currentCardInfo = [currentCard, currentTop, currentRight, currentCardIndex, currentParent]
+          console.log(currentCardInfo)
           dragArray.push(currentCardInfo)
           currentCard.style.left = (e.clientX) - (dragTarget.offsetWidth/2) + window.scrollX + 'px'
           currentCard.style.top = (e.clientY) - (dragTarget.offsetHeight/1.2) + window.scrollY + (cardHeight/1.45 * (dragArray.indexOf(currentCardInfo))) + 'px'
           document.body.appendChild(currentCard)
         }
       }
+      console.log(dragArray)
     
       offSet = [dragTarget.offsetLeft - e.clientX, dragTarget.offsetTop - e.clientY]
       
@@ -835,6 +846,10 @@ function createDraggable(elem) {
         x : e.clientX,
         y : e.clientY
     };
+    console.log("****")
+      console.log(dragTarget)
+      console.log(currentIndex)
+    console.log("****")
     
     dragTarget.querySelector('.frontCard').classList.remove('bigger')
 
@@ -846,6 +861,10 @@ function createDraggable(elem) {
             dragTarget.style.opacity = 0
             dragTarget.style.removeProperty('left')  
             dragTarget.style.zIndex = cardIndex
+            console.log("****")
+              console.log(dragTarget)
+              console.log(currentIndex)
+            console.log("****")
             spot.appendChild(dragTarget)
             topCardShadow(drawnCard)
           }
@@ -858,7 +877,11 @@ function createDraggable(elem) {
       dragTarget.style.removeProperty('left')
       dragTarget.style.top = targetTop
       dragTarget.style.right = targetRight      
-      dragTarget.style.zIndex = currentIndex
+      dragTarget.style.zIndex = dragArray[0][3]
+      console.log("****")
+        console.log(dragTarget)
+        console.log(dragTarget.style.zIndex)
+      console.log("****")
 
       dragArray.forEach((item) => {
         if (item[0] != dragTarget) {
@@ -868,6 +891,10 @@ function createDraggable(elem) {
           item[0].style.top = item[1]
           item[0].style.right = item[2]
           item[0].style.zIndex = item[3]
+          console.log("****")
+            console.log(item[0])
+            console.log( item[3])
+          console.log("****")
         }
       })
     } 
@@ -891,7 +918,7 @@ function createDraggable(elem) {
       dragTarget.style.removeProperty('left')
       dragTarget.style.removeProperty('top')
       dragTarget.style.removeProperty('right')
-      let dragInfo = [dragTarget, targetTop, targetRight, currentIndex, dragTarget, currentParent]
+      let dragInfo = [dragTarget, targetTop, targetRight, currentIndex, currentParent]
       let currentDragtargetArray = getCurrentArray(dragTarget)
       let elemData = getCardData(dragTarget, currentDragtargetArray)
       
@@ -909,7 +936,7 @@ function createDraggable(elem) {
           let currentCard = currentDragtargetArray[i][0]
           let currentTop = currentCard.style.top
           let currentRight = currentCard.parentNode.style.right 
-          let cardIndex = currentCard.parentNode.style.zIndex
+          let currentCardIndex = currentCard.parentNode.style.zIndex
 
           currentCard.style.removeProperty('left')
           currentCard.style.removeProperty('top')
@@ -917,7 +944,7 @@ function createDraggable(elem) {
           currentCard.querySelector('.frontCard').classList.add('bigger')
           currentCard.style.zIndex = indexCounter
 
-          let currentCardInfo = [currentCard, currentTop, currentRight, cardIndex, currentParent]
+          let currentCardInfo = [currentCard, currentTop, currentRight, currentCardIndex, currentParent]
           dragArray.push(currentCardInfo)
           currentCard.style.left = (e.touches[0].clientX) - (dragTarget.offsetWidth/2) + window.scrollX + 'px'
           currentCard.style.top = (e.touches[0].clientY) - (dragTarget.offsetHeight/1.2) + window.scrollY + (cardHeight/1.45 * (dragArray.indexOf(currentCardInfo))) + 'px'
@@ -970,11 +997,12 @@ function createDraggable(elem) {
       dragArray.forEach((item) => {
         if (item[0] != dragTarget) {
           item[0].querySelector('.frontCard').classList.remove('bigger')
-          currentStack.appendChild(item[0])
           item[0].style.removeProperty('left')
           item[0].style.top = item[1]
           item[0].style.right = item[2]
           item[0].style.zIndex = item[3]
+          currentStack.appendChild(item[0])
+          currentStack.appendChild(item[0])
         }
       })
     } 
@@ -1044,6 +1072,7 @@ document.addEventListener('touchmove', (e) => {
 
 function clearDragInfo() {
   dragArray = []
+  console.log(dragArray)
   dragTarget = "";
   dropSpot = ''
   document.querySelectorAll('.stack').forEach(item => {
