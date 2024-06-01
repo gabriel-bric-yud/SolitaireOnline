@@ -48,12 +48,9 @@ let offSet
 let dragTarget
 let dragArray = []
 let dropSpot = ''
-let dropSpotArray
 let foundationSpot = ''
-let foundationSpotArray
-let allDropSpots = []
-let targetTop
-let targetRight
+let dropSpotArrays
+
 
 
 
@@ -704,77 +701,89 @@ function toggleFlash(coordinate, container) {
         document.querySelectorAll('.stack').forEach(item => {
           item.classList.remove('flash')
         })
-        dropSpot = container
         container.classList.add('flash')
       }
-      
     }
   }
 }
 
 
 function createDropSpot() {
-  dropSpotArray = document.querySelectorAll('.cardStack')
-  foundationSpotArray = document.querySelectorAll('.foundationSpot')
-  allDropSpots = document.querySelectorAll('.foundationSpot, .cardStack')
+  return [
+    dropSpotArray = document.querySelectorAll('.cardStack'),
+    foundationSpotArray = document.querySelectorAll('.foundationSpot'),
+    allDropSpots = document.querySelectorAll('.foundationSpot, .cardStack')
+  ]
+}
+
+function resetCardPosition(elem, array) {
+  array[0][4].appendChild(elem)
+  elem.style.removeProperty('left')
+  elem.style.top = array[0][1]
+  elem.style.right = array[0][2]      
+  elem.style.zIndex = array[0][3]
+
+  array.forEach((item) => {
+    if (item[0] != elem) {
+      item[0].querySelector('.frontCard').classList.remove('bigger')
+      item[0].style.removeProperty('left')
+      item[0].style.top = item[1]
+      item[0].style.right = item[2]
+      item[0].style.zIndex = item[3]
+      array[0][4].appendChild(item[0])
+    }
+  })
 }
 
 
 function createDraggable(elem) {
-  let currentIndex
-
   elem.addEventListener('mousedown', (e) => {
     //e.preventDefault()
     if (!clicked) {
       dragTarget = e.target;
-      dragTarget.style.cursor = "grabbing"
-      currentStack = dragTarget.parentNode  
-      currentIndex = dragTarget.style.zIndex
-      dragTarget.style.zIndex = 9999
-      targetTop = dragTarget.style.top
-      targetRight = dragTarget.style.right 
-      let currentParent = dragTarget.parentNode.id
+      let currentDragArray = getCurrentArray(dragTarget)
+      let dragElemData = getCardData(dragTarget, currentDragArray)
+      let dragStack = dragTarget.parentNode
+      let dragIndex = dragTarget.style.zIndex
+      let dragTop = dragTarget.style.top
+      let dragRight = dragTarget.style.right 
+      let dragInfo = [dragTarget, dragTop, dragRight, dragIndex, dragStack]
+      dragArray.push(dragInfo)
+      
       dragTarget.style.removeProperty('left')
       dragTarget.style.removeProperty('top')
       dragTarget.style.removeProperty('right')
-      let dragInfo = [dragTarget, targetTop, targetRight, currentIndex, currentParent]
-      let currentDragtargetArray = getCurrentArray(dragTarget)
-      let elemData = getCardData(dragTarget, currentDragtargetArray)
-
-      
       dragTarget.querySelector('.frontCard').classList.add('bigger')
-  
+      dragTarget.style.cursor = "grabbing"
+      dragTarget.style.zIndex = 9999
       dragTarget.style.left = (e.clientX) - (dragTarget.offsetWidth/2) + window.scrollX + 'px'
       dragTarget.style.top = (e.clientY) - (dragTarget.offsetHeight/1.2) + window.scrollY + 'px'
       document.body.appendChild(dragTarget)
-      dragArray.push(dragInfo)
       let indexCounter = 9999
 
-      if (currentDragtargetArray.indexOf(elemData) != (currentDragtargetArray.length - 1) && currentStack != drawnCard ) {
-        for (let i = currentDragtargetArray.indexOf(elemData) + 1; i < currentDragtargetArray.length; i++) {
+      if (currentDragArray.indexOf(dragElemData) != (currentDragArray.length - 1) && dragStack != drawnCard ) {
+        for (let i = currentDragArray.indexOf(dragElemData) + 1; i < currentDragArray.length; i++) {
           indexCounter++
-          let currentCard = currentDragtargetArray[i][0]
+          let currentCard = currentDragArray[i][0]
           let currentTop = currentCard.style.top
           let currentRight = currentCard.style.right 
           let currentCardIndex = currentCard.style.zIndex
+          let currentCardInfo = [currentCard, currentTop, currentRight, currentCardIndex, dragStack]
+          dragArray.push(currentCardInfo)
+
           currentCard.style.removeProperty('left')
           currentCard.style.removeProperty('top')
           currentCard.style.removeProperty('right')
           currentCard.querySelector('.frontCard').classList.add('bigger')
           currentCard.style.zIndex = indexCounter
-
-          let currentCardInfo = [currentCard, currentTop, currentRight, currentCardIndex, currentParent]
-          dragArray.push(currentCardInfo)
           currentCard.style.left = (e.clientX) - (dragTarget.offsetWidth/2) + window.scrollX + 'px'
           currentCard.style.top = (e.clientY) - (dragTarget.offsetHeight/1.2) + window.scrollY + (cardHeight/1.45 * (dragArray.indexOf(currentCardInfo))) + 'px'
+
           document.body.appendChild(currentCard)
         }
       }
-
       offSet = [dragTarget.offsetLeft - e.clientX, dragTarget.offsetTop - e.clientY]
-      
       clicked = true 
-    
     }
   })
 
@@ -782,14 +791,14 @@ function createDraggable(elem) {
     clicked = false;
     let dropped  = false;
     dragTarget.style.cursor = "grab"
-    currentMouse = {
-        x : e.clientX,
-        y : e.clientY
+    let currentMouse = {
+      x : e.clientX,
+      y : e.clientY
     };
     
     dragTarget.querySelector('.frontCard').classList.remove('bigger')
 
-    allDropSpots.forEach(spot => {
+    dropSpotArrays[2].forEach(spot => {
       if (dropped  == false) {
         if (checkDrop(currentMouse, spot)) {
           if (getNewStackArray(dragTarget, dropSpot)) {
@@ -805,26 +814,10 @@ function createDraggable(elem) {
     })
 
     if (dropped == false) {
-      currentStack.appendChild(dragTarget)
-      dragTarget.style.removeProperty('left')
-      dragTarget.style.top = targetTop
-      dragTarget.style.right = targetRight      
-      dragTarget.style.zIndex = dragArray[0][3]
-
-      dragArray.forEach((item) => {
-        if (item[0] != dragTarget) {
-          item[0].querySelector('.frontCard').classList.remove('bigger')
-          item[0].style.removeProperty('left')
-          item[0].style.top = item[1]
-          item[0].style.right = item[2]
-          item[0].style.zIndex = item[3]
-          currentStack.appendChild(item[0])
-        }
-      })
+      resetCardPosition(dragTarget, dragArray) 
     } 
     clearDragInfo() 
   })
-
 
   elem.addEventListener('touchstart', (e) => {
     e.preventDefault()
@@ -833,55 +826,49 @@ function createDraggable(elem) {
     }
     if (!clicked) {
       dragTarget = e.target;
-      currentStack = dragTarget.parentNode  
-      currentIndex = dragTarget.style.zIndex
-      dragTarget.style.zIndex = 9999
-      targetTop = dragTarget.style.top
-      targetRight = dragTarget.style.right 
-      let currentParent = dragTarget.parentNode.id
+      let currentDragArray = getCurrentArray(dragTarget)
+      let dragElemData = getCardData(dragTarget, currentDragArray)
+      dragStack = dragTarget.parentNode  
+      let dragIndex = dragTarget.style.zIndex
+      let dragTop = dragTarget.style.top
+      let dragRight = dragTarget.style.right 
+      let dragInfo = [dragTarget, dragTop, dragRight, dragIndex, dragStack]
+      dragArray.push(dragInfo)
+
       dragTarget.style.removeProperty('left')
       dragTarget.style.removeProperty('top')
       dragTarget.style.removeProperty('right')
-      let dragInfo = [dragTarget, targetTop, targetRight, currentIndex, currentParent]
-      let currentDragtargetArray = getCurrentArray(dragTarget)
-      let elemData = getCardData(dragTarget, currentDragtargetArray)
-      
       dragTarget.querySelector('.frontCard').classList.add('bigger')
-  
+      dragTarget.style.zIndex = 9999
       dragTarget.style.left = (e.touches[0].clientX) - (dragTarget.offsetWidth/2) + window.scrollX + 'px'
       dragTarget.style.top = (e.touches[0].clientY) - (dragTarget.offsetHeight/1.2) + window.scrollY + 'px'
       document.body.appendChild(dragTarget)
-      dragArray.push(dragInfo)
       let indexCounter = 9999
 
-      if (currentDragtargetArray.indexOf(elemData) != currentDragtargetArray.length - 1 && currentStack != drawnCard ) {
-        for (let i = currentDragtargetArray.indexOf(elemData) + 1; i < currentDragtargetArray.length; i++) {
+      if (currentDragArray.indexOf(dragElemData) != currentDragArray.length - 1 && dragStack != drawnCard ) {
+        for (let i = currentDragArray.indexOf(dragElemData) + 1; i < currentDragArray.length; i++) {
           indexCounter++
-          let currentCard = currentDragtargetArray[i][0]
+          let currentCard = currentDragArray[i][0]
           let currentTop = currentCard.style.top
-          let currentRight = currentCard.parentNode.style.right 
+          let currentRight = currentCard.style.right 
           let currentCardIndex = currentCard.style.zIndex
-          
+          let currentCardInfo = [currentCard, currentTop, currentRight, currentCardIndex, dragStack]
+          dragArray.push(currentCardInfo)
+
           currentCard.style.removeProperty('left')
           currentCard.style.removeProperty('top')
           currentCard.style.removeProperty('right')
           currentCard.querySelector('.frontCard').classList.add('bigger')
           currentCard.style.zIndex = indexCounter
-
-          let currentCardInfo = [currentCard, currentTop, currentRight, currentCardIndex, currentParent]
-          dragArray.push(currentCardInfo)
           currentCard.style.left = (e.touches[0].clientX) - (dragTarget.offsetWidth/2) + window.scrollX + 'px'
           currentCard.style.top = (e.touches[0].clientY) - (dragTarget.offsetHeight/1.2) + window.scrollY + (cardHeight/1.45 * (dragArray.indexOf(currentCardInfo))) + 'px'
           document.body.appendChild(currentCard)
         }
       }
-    
+  
       offSet = [dragTarget.offsetLeft - e.touches[0].clientX, dragTarget.offsetTop - e.touches[0].clientY]
-      
       clicked = true 
-    
     }
-
   }, { passive: false})
 
  
@@ -889,14 +876,14 @@ function createDraggable(elem) {
   elem.addEventListener('touchend', (e) => { 
     clicked = false;
     let dropped  = false;
-    currentTouch = {
-        x : e.changedTouches[0].clientX,
-        y : e.changedTouches[0].clientY
+    let currentTouch = {
+      x : e.changedTouches[0].clientX,
+      y : e.changedTouches[0].clientY
     };
     
     dragTarget.querySelector('.frontCard').classList.remove('bigger')
 
-    allDropSpots.forEach(spot => {
+    dropSpotArrays[2].forEach(spot => {
       if (dropped  == false) {
         if (checkDrop(currentTouch, spot)) {
           if (getNewStackArray(dragTarget, dropSpot)) {
@@ -912,22 +899,7 @@ function createDraggable(elem) {
     })
 
     if (dropped == false) {
-      currentStack.appendChild(dragTarget)
-      dragTarget.style.removeProperty('left')
-      dragTarget.style.top = targetTop
-      dragTarget.style.right = targetRight      
-      dragTarget.style.zIndex = dragArray[0][3]
-
-      dragArray.forEach((item) => {
-        if (item[0] != dragTarget) {
-          item[0].querySelector('.frontCard').classList.remove('bigger')
-          item[0].style.removeProperty('left')
-          item[0].style.top = item[1]
-          item[0].style.right = item[2]
-          item[0].style.zIndex = item[3]
-          currentStack.appendChild(item[0])
-        }
-      })
+      resetCardPosition(dragTarget, dragArray) 
     } 
     clearDragInfo() 
   }) 
@@ -938,7 +910,7 @@ document.addEventListener('mousemove', (e) => {
   if (clicked == true) {
     dragTarget.style.left = (e.clientX + offSet[0]) + 'px'
     dragTarget.style.top = (e.clientY+ offSet[1]) + 'px' 
-    currentMouse = {
+    let currentMouse = {
       x : e.clientX,
       y : e.clientY  
     }
@@ -950,11 +922,10 @@ document.addEventListener('mousemove', (e) => {
       }
     })
 
-    foundationSpotArray.forEach(spot => {
+    dropSpotArrays[0].forEach(spot => {
       toggleFlash(currentMouse, spot)
     })
-    
-    dropSpotArray.forEach(spot => {
+    dropSpotArrays[1].forEach(spot => {
       toggleFlash(currentMouse, spot)
     })
   } 
@@ -980,16 +951,14 @@ document.addEventListener('touchmove', (e) => {
       }
     })
 
-    foundationSpotArray.forEach(spot => {
+    dropSpotArrays[0].forEach(spot => {
       toggleFlash(currentTouch, spot)
     })
-    
-    dropSpotArray.forEach(spot => {
+    dropSpotArrays[1].forEach(spot => {
       toggleFlash(currentTouch, spot)
     })
   } 
 }, { passive: false})
-
 
 
 
@@ -1003,13 +972,12 @@ function clearDragInfo() {
 }
 
 
-
 //////////////////////  START AND RESET GAME FUNCTIONS  //////////////////////
 
 function startGame() {
   DECK = createDeck()
   playerTurn = true
-  createDropSpot()
+  dropSpotArrays = createDropSpot()
 
   setTimeout(() => {
     dealSolitaire() 
@@ -1042,42 +1010,7 @@ function startGameButton() {
   }, 600 )
 }
 
-
-
-function reset() {
-  dealCount = 0
-  cardIndex = 1000;
-  playerTurn = false
-
-  DECK = []
-
-  STACK_1 = []
-  STACK_2 = []
-  STACK_3 = []
-  STACK_4 = []
-  STACK_5 = []
-  STACK_6 = []
-  STACK_7 = []
-
-  CLUBS = []
-  DIAMONDS = []
-  HEARTS = []
-  SPADES = []
-
-
-  DRAWN_DECK = []
-
-  firstPass = true
-
-  dropSpotArray = []
-  dropSpot = ''
-  foundationSpotArray = []
-  foundationSpot = ''
-  allDropSpots = []
-
-  STACKS_ALL = [STACK_1, STACK_2, STACK_3, STACK_4, STACK_5, STACK_6, STACK_7]
-  
-
+function clearBoard() {
   let allCards = document.querySelectorAll(".cardDiv")
 
   allCards.forEach((elem) => {
@@ -1093,10 +1026,38 @@ function reset() {
   document.querySelectorAll('.turnMessage').forEach(elem => {
     elem.remove()
   })
-
   document.querySelectorAll('.message').forEach(elem => {
     elem.remove()
   })
+}
+
+
+function reset() {
+  dealCount = 0
+  cardIndex = 1000;
+  playerTurn = false
+
+  DECK = []
+  DRAWN_DECK = []
+
+  STACK_1 = []
+  STACK_2 = []
+  STACK_3 = []
+  STACK_4 = []
+  STACK_5 = []
+  STACK_6 = []
+  STACK_7 = []
+  STACKS_ALL = [STACK_1, STACK_2, STACK_3, STACK_4, STACK_5, STACK_6, STACK_7]
+
+  CLUBS = []
+  DIAMONDS = []
+  HEARTS = []
+  SPADES = []
+
+  dropSpotArrays = []
+
+  clearBoard()
+ 
 }
 
 
@@ -1170,7 +1131,6 @@ function turnNotification(msgText, parent, acceptText, rejectText, colorData) {
   messageDiv.appendChild(btnDiv)
 
   parent.appendChild(messageDiv)
-
 
   closeBtn.addEventListener('click', (e) => {
     fadeOut(messageDiv, 200, position, position - 20, true)
