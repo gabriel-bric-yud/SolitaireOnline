@@ -302,14 +302,9 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, flipBool, stack
     }
 
     if (flipBool)  {
-      if (drawnCard.querySelectorAll('.cardDiv').length == 1){
+      setTimeout(() => {
         addCardFlip(newCard[0])
-      }
-      else {
-        setTimeout(() => {
-          addCardFlip(newCard[0])
-        }, 300)           
-      }
+      }, 300)           
     }
 
     if (firstPass == true) {
