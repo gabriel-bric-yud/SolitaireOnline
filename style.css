@@ -51,6 +51,7 @@ button {
   color: white;
   text-align: center;
   z-index: 1000;
+  font-family: "Bungee Spice";
 }
 
 .titleDiv a {
