@@ -889,9 +889,9 @@ function createDraggable(elem) {
           if (getNewStackArray(dragTarget, dropSpot)) {
             dropped = true
             dragTarget.style.opacity = 0
-            dragTarget.style.removeProperty('left')  
             dragTarget.style.zIndex = cardIndex
             spot.appendChild(dragTarget)
+            dragTarget.style.removeProperty('left')  
             topCardShadow(drawnCard)
           }
         }
