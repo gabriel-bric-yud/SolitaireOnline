@@ -1025,7 +1025,8 @@ function clearBoard() {
 function reset() {
   dealCount = 0
   cardIndex = 1000;
-  playerTurn = false
+  playerTurn = true
+  firstPass = true
 
   DECK = []
   DRAWN_DECK = []
