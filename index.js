@@ -860,8 +860,8 @@ function createDraggable(elem) {
           let currentCard = currentDragtargetArray[i][0]
           let currentTop = currentCard.style.top
           let currentRight = currentCard.parentNode.style.right 
-          let currentCardIndex = currentCard.parentNode.style.zIndex
-
+          let currentCardIndex = currentCard.style.zIndex
+          
           currentCard.style.removeProperty('left')
           currentCard.style.removeProperty('top')
           currentCard.style.removeProperty('right')
