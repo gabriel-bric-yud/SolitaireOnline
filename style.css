@@ -55,11 +55,12 @@ button {
 
 .titleDiv a {
   height: fit-content;
+  font-family: 'Bungee Spice';
 }
 
-.titleDiv span {
-  margin: 0 auto;
+a span {
   font-family: 'Bungee Spice';
+  margin: 0 auto;
   font-size: 35px;
   height: 2ch;
   display: inline-block;
