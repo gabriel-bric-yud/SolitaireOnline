@@ -294,14 +294,12 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, flipBool, stack
     }
     cardArray.push(newCard)
     parent.appendChild(newCard[0])
-    setTimeout(() => {
-      fadeIn(newCard[0], .05, 20)
-      if (parent == drawnCard ) {
-        slideIn(newCard[0], 50, 0, 'right', -5)
-        //newCard[0].style.removeProperty('right')     
-      }
 
-    }, 200)
+    fadeIn(newCard[0], .05, 20)
+    if (parent == drawnCard ) {
+      slideIn(newCard[0], 50, 0, 'right', -5)
+        //newCard[0].style.removeProperty('right')     
+    }
 
     if (flipBool)  {
       if (drawnCard.querySelectorAll('.cardDiv').length == 1){
@@ -354,7 +352,6 @@ function deal() {
           elem.remove()
         }
         else {
-          
           fadeOut(elem, 1, 0, 1, true )
           setTimeout(() => { addCardFlip(elem) }, 1000)
         }
@@ -364,10 +361,8 @@ function deal() {
     DRAWN_DECK = []
   }
   else {
-    setTimeout(() => {
-      dealCount = 0
-      dealCards(1, 0, drawnCard, DRAWN_DECK, true, "drawnCard")
-    }, 100)  
+    dealCount = 0
+    dealCards(1, 0, drawnCard, DRAWN_DECK, true, "drawnCard")
   }
 
 }
