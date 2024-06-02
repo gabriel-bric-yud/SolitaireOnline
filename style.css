@@ -480,6 +480,9 @@ a span {
 
 
 .flash {
+  box-shadow: 0 0 3px white;
+}
+.flash-anim {
   animation: glowing1 1500ms infinite;
 }
 
