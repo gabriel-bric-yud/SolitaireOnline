@@ -338,6 +338,24 @@ function dealSolitaire() {
   }, 10)
 }
 
+function dealSolitairePromise() {
+  return new Promise(resolve => setTimeout(() => {
+    for (let i = 1; i <= 7; i++) {
+      for (let x = 0; x < i; x++) {
+        if (x < i - 1) {
+          dealCards(1, x, document.getElementById(`stack${i}`), STACKS_ALL[i-1], false, i);
+        }
+        else {
+          dealCards(1, x, document.getElementById(`stack${i}`), STACKS_ALL[i-1], true, i);
+        }
+      }
+      dealCount = 0
+    }
+    resolve()
+  }, 10) )
+}
+
+
 
 function deal() { 
   if (DECK.length == 0) {
@@ -993,14 +1011,13 @@ function startGame() {
   dropSpotArrays = createDropSpot()
 
   setTimeout(() => {
-    dealSolitaire() 
+    dealSolitairePromise().then(() => {
+      STACKS_ALL.forEach((stack) => {
+        positionCardsBottom(stack)
+      })
+    })
   }, 100)
 
-  setTimeout(() => {
-    STACKS_ALL.forEach((stack) => {
-      positionCardsBottom(stack)
-    })
-  }, 400)
 }
 
 function startGameButton() {
