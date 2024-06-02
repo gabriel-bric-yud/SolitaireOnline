@@ -56,19 +56,6 @@ let dropSpotArrays
 
 //////////////////////  CREATING DECK AND CARDS FUNCTIONS  //////////////////////
 
-
-function showHide(elem) {
-  if (elem.classList.contains('show')) {
-    elem.classList.remove('show')
-    elem.classList.add('hide')
-  }
-  else {
-    elem.classList.remove('hide')
-    elem.classList.add('show')
-  }
-}
-
-
 function createDeck() {
   let newDeck = []
   for (const suit of SUITS) {
@@ -104,6 +91,14 @@ function topCardShadow(parent) {
       }
     })
   }
+}
+
+function topCardShadowMinimal(parent) {
+  array = parent.querySelectorAll('.cardDiv')
+  if (array.length > 1) {
+    array[array.length-2].classList.add('noShadow')
+  }
+  array[array.length-1].classList.remove('noShadow')
 }
 
 
@@ -142,7 +137,6 @@ function loadCardRank(card) {
   card.dataset.suit = randomCard.suit
   changeCardLabel(card);
   removeFromArray(randomCard, DECK)
-  topCardShadow(drawnCard)
   return randomCard
 }
 
@@ -192,6 +186,18 @@ function createCard(deckArray, cardArray, stack) {
 
 
 //////////////////////  POSITION AND FLIP CARD FUNCTIONS  //////////////////////
+
+function showHide(elem) {
+  if (elem.classList.contains('show')) {
+    elem.classList.remove('show')
+    elem.classList.add('hide')
+  }
+  else {
+    elem.classList.remove('hide')
+    elem.classList.add('show')
+  }
+}
+
 
 
 function addCardFlip(card) {
@@ -298,7 +304,8 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, flipBool, stack
     fadeIn(newCard[0], .05, 20)
     if (parent == drawnCard ) {
       slideIn(newCard[0], 50, 0, 'right', -5)
-        //newCard[0].style.removeProperty('right')     
+        //newCard[0].style.removeProperty('right')
+      topCardShadowMinimal(drawnCard)     
     }
 
     if (flipBool)  {
@@ -315,7 +322,7 @@ function dealCards(numberOfCards, cardNumber, parent, cardArray, flipBool, stack
   }  
 }
 
-async function dealSolitaire() {
+function dealSolitaire() {
   setTimeout(() => {
     for (let i = 1; i <= 7; i++) {
       for (let x = 0; x < i; x++) {
@@ -336,6 +343,12 @@ function deal() {
   if (DECK.length == 0) {
     if (DRAWN_DECK.length == 0) {
       document.querySelector('#deckPlaceholder').classList.remove("cardBackground")
+      playerTurn = false
+    }
+    else {
+      if (playerTurn != false) {
+        document.querySelector('#deckPlaceholder').classList.add("cardBackground")
+      }
     }
     firstPass = false;
     DECK = DRAWN_DECK
@@ -345,17 +358,22 @@ function deal() {
         if (elem != currentDrawnCards[currentDrawnCards.length - 1]) {
           addCardFlipNoAnimation(elem)
           elem.remove()
+          
         }
         else {
           fadeOut(elem, 1, 0, 1, true )
           setTimeout(() => { addCardFlip(elem) }, 1000)
         }
+        elem.classList.remove("noShadow")
       })
       
     }
     DRAWN_DECK = []
   }
   else {
+    if (DECK.length == 1 ) {
+      document.querySelector('#deckPlaceholder').classList.remove("cardBackground")
+    }
     dealCount = 0
     dealCards(1, 0, drawnCard, DRAWN_DECK, true, "drawnCard")
   }
@@ -614,7 +632,6 @@ function getNewStackArray(elem, parent) {
       if (checkFoundationOrder(elem, CLUBS, 'clubs')) {
         if (currentArray.indexOf(cardData) == currentLength || currentArray == DRAWN_DECK) {
           moveCards(elem, parent, currentArray, CLUBS, 'clubs')
-          topCardShadow(parent)
           flipNextCard(cardData, currentArray)
           dropBool = true
         }
@@ -624,7 +641,6 @@ function getNewStackArray(elem, parent) {
       if (checkFoundationOrder(elem, DIAMONDS, 'diamonds')) {
         if (currentArray.indexOf(cardData) == currentLength || currentArray == DRAWN_DECK) {
           moveCards(elem, parent, currentArray, DIAMONDS, 'diamonds')
-          topCardShadow(parent)
           flipNextCard(cardData, currentArray)
           dropBool = true
         }
@@ -634,7 +650,6 @@ function getNewStackArray(elem, parent) {
       if (checkFoundationOrder(elem, HEARTS, 'hearts')) {
         if (currentArray.indexOf(cardData) == currentLength || currentArray == DRAWN_DECK) {
           moveCards(elem, parent, currentArray, HEARTS, 'hearts')
-          topCardShadow(parent)
           flipNextCard(cardData, currentArray)
           dropBool = true
         }
@@ -644,7 +659,6 @@ function getNewStackArray(elem, parent) {
       if (checkFoundationOrder(elem, SPADES, 'spades')) {
         if (currentArray.indexOf(cardData) == currentLength || currentArray == DRAWN_DECK) {
           moveCards(elem, parent, currentArray, SPADES, 'spades')
-          topCardShadow(parent)
           flipNextCard(cardData, currentArray)
           dropBool = true
         }
@@ -700,9 +714,9 @@ function toggleFlash(coordinate, container) {
 
 function createDropSpot() {
   return [
-    dropSpotArray = document.querySelectorAll('.cardStack'),
-    foundationSpotArray = document.querySelectorAll('.foundationSpot'),
-    allDropSpots = document.querySelectorAll('.foundationSpot, .cardStack')
+    document.querySelectorAll('.cardStack'),
+    document.querySelectorAll('.foundationSpot'),
+    document.querySelectorAll('.foundationSpot, .cardStack')
   ]
 }
 
@@ -780,7 +794,9 @@ function createDraggable(elem) {
   elem.addEventListener('mouseup', (e) => { 
     clicked = false;
     let dropped  = false;
-    dragTarget.style.cursor = "grab"
+    if (dragTarget != undefined) {
+      dragTarget.style.cursor = "grab"
+    }
     let currentMouse = {
       x : e.clientX,
       y : e.clientY
@@ -797,7 +813,12 @@ function createDraggable(elem) {
             dragTarget.style.removeProperty('left')  
             dragTarget.style.zIndex = cardIndex
             spot.appendChild(dragTarget)
-            topCardShadow(drawnCard)
+            if (spot.classList.contains("foundationSpot")) {
+              topCardShadowMinimal(spot)
+            }
+            if (dragArray[0][4] == drawnCard) {
+              topCardShadowMinimal(drawnCard)
+            }
           }
         }
       }
@@ -882,7 +903,9 @@ function createDraggable(elem) {
             dragTarget.style.zIndex = cardIndex
             spot.appendChild(dragTarget)
             dragTarget.style.removeProperty('left')  
-            topCardShadow(drawnCard)
+            if (spot.classList.contains("foundationSpot") || spot == dragArray[0][4]) {
+              topCardShadowMinimal(spot)
+            }
           }
         }
       }
@@ -977,7 +1000,7 @@ function startGame() {
     STACKS_ALL.forEach((stack) => {
       positionCardsBottom(stack)
     })
-  }, 300)
+  }, 400)
 }
 
 function startGameButton() {
@@ -1004,7 +1027,7 @@ function clearBoard() {
   let allCards = document.querySelectorAll(".cardDiv")
 
   allCards.forEach((elem) => {
-    if (!elem.classList.contains("flip")) {
+    if (!elem.classList.contains("flip") || elem.classList.contains("noShadow")) {
       elem.remove()
     }
     else {
