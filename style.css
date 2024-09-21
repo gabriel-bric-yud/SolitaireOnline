@@ -56,18 +56,21 @@ button {
 
 .titleDiv a {
   height: fit-content;
-  font-family: "Bungee Spice";
 }
 
 a span {
-  font-family: "Bungee Spice";
+  font-family: "Tektur";
+  color: orange;
+  font-weight: bolder;
+  text-decoration: none;
   margin: 0 auto;
-  font-size: 35px;
+  font-size: 50px;
   height: 2ch;
   display: inline-block;
   transition: transform .5s;
   /**transform-style: preserve-3d;*/
 } 
+
 
 
 .startGame {
@@ -592,9 +595,22 @@ a span {
   }
 
   .titleDiv span {
-    font-size: 4em;
     height: fit-content;
   }
+
+  .titleDiv a {
+    font-family: "Bungee Spice";
+  }
+  
+  a span {
+    font-family: "Bungee Spice";
+    margin: 0 auto;
+    font-size: 5em;
+    height: 2ch;
+    display: inline-block;
+    transition: transform .5s;
+    /**transform-style: preserve-3d;*/
+  } 
 
   button:hover {
     background-color: #ddd;
