@@ -98,7 +98,9 @@ function topCardShadowMinimal(parent) {
   if (array.length > 1) {
     array[array.length-2].classList.add('noShadow')
   }
-  array[array.length-1].classList.remove('noShadow')
+  if (array.length > 0) {
+    array[array.length-1].classList.remove('noShadow')
+  }
 }
 
 
